@@ -1,16 +1,16 @@
-// db.ts
-import { Client } from 'pg';
 import dotenv from 'dotenv';
+import { DataSource } from 'typeorm';
 
 dotenv.config();
 
-// Define the database connection configuration
-const client = new Client({
-  user: process.env.DB_USER, // Your PostgreSQL username
-  host: 'localhost', // Server host
-  database: process.env.DB_NAME, // Your PostgreSQL database name
-  password: process.env.DB_PASSWORD, // Your PostgreSQL password
-  port: 5432, // Default PostgreSQL port
+export const dataSource = new DataSource({
+  type: 'postgres',
+  host: 'localhost',
+  port: 5432,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  entities: ['src/model/*.ts'],
+  logging: true,
+  synchronize: true,
 });
-
-export default client;

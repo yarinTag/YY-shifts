@@ -1,14 +1,15 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import dotenv from 'dotenv';
-import client from './db';
+import { dataSource } from './db';
+import userRoute from './routes/userRoute';
 
 dotenv.config();
 
 const app = express();
+app.use(express.json());
 
-// Connect to the PostgreSQL database once the app starts
-client
-  .connect()
+dataSource
+  .initialize()
   .then(() => {
     console.log('Connected to PostgreSQL database');
 
@@ -22,6 +23,4 @@ client
     process.exit(1); // Exit the process if the database connection fails
   });
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, TypeScript + Node.js + Express!');
-});
+app.use(userRoute);
