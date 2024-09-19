@@ -13,14 +13,4 @@ const client = new Client({
   port: 5432, // Default PostgreSQL port
 });
 
-// Connect to the PostgreSQL database
-client
-  .connect()
-  .then(() => {
-    console.log('Connected to PostgreSQL database');
-  })
-  .catch((err) => {
-    console.error('Error connecting to PostgreSQL database:', err);
-  });
-
 export default client;
