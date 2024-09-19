@@ -1,13 +1,13 @@
 import express, { Request, Response } from 'express';
+import client from './db';
 
 const app = express();
 
-const port: number = 3000;
-
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello, TypeScript + Node.js + Express!');
+  client.connect();
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on http://localhost:${process.env.PORT}`);
 });
