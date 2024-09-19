@@ -1,5 +1,8 @@
 // db.ts
 import { Client } from 'pg';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // Define the database connection configuration
 const client = new Client({
