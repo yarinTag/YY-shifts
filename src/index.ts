@@ -1,13 +1,26 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
+import dotenv from 'dotenv';
+import { dataSource } from './db';
+import userRoute from './routes/userRoute';
+
+dotenv.config();
 
 const app = express();
+app.use(express.json());
 
-const port: number = 3000;
+dataSource
+  .initialize()
+  .then(() => {
+    console.log('Connected to PostgreSQL database');
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, TypeScript + Node.js + Express!');
-});
+    // Start the Express server only after the database connection is successful
+    app.listen(process.env.PORT, () => {
+      console.log(`Server is running on http://localhost:${process.env.PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Error connecting to PostgreSQL database:', err);
+    process.exit(1); // Exit the process if the database connection fails
+  });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+app.use(userRoute);
