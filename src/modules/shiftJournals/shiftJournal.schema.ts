@@ -1,26 +1,22 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, Column } from "typeorm";
-import { Shift } from "../shifts/shift.schema";
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class ShiftJournal {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column("text")
+  @Column('text')
   start_time: Date;
 
-  @Column("text")
+  @Column('text')
   end_time: Date;
 
-  @Column("text")
+  @Column('text')
   work_cycle_id: string;
-  
-  @Column("text")
+
+  @Column('text')
   shift_configuration_id: string;
 
-  @ManyToOne(
-    () => Shift,
-    (shift) => shift.id
-  )
+  @Column('text')
   shift_id: string;
 }
