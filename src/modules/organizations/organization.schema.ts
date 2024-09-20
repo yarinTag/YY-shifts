@@ -5,13 +5,16 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  JoinColumn,
+  OneToOne,
 } from 'typeorm';
-import { User } from './user';
+import { User } from '../users/user.schema';
+import { WorkCycleConfiguration } from '../workCycleConfigurations/workCycleConfiguration.schema';
 
 @Entity()
 export class Organization {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   name: string;
@@ -20,11 +23,15 @@ export class Organization {
   active: boolean;
 
   @CreateDateColumn()
-  public created_at: Date;
+  created_at: Date;
 
   @UpdateDateColumn()
-  public updated_at: Date;
+  updated_at: Date;
 
   @OneToMany(() => User, (user) => user.organization)
   users: User[];
+
+  @OneToOne(() => WorkCycleConfiguration)
+  @JoinColumn()
+  workCycleConfiguration: WorkCycleConfiguration;
 }

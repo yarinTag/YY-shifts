@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
-import { dataSource } from '../db';
-import { User } from '../model/user';
-// get all users
+import { dataSource } from '../../db';
+import { User } from './user.schema';
 
 const userRepository = dataSource.getRepository(User);
 

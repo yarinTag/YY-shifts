@@ -5,13 +5,15 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  OneToMany,
 } from 'typeorm';
-import { Organization } from './organization';
+import { Organization } from '../organizations/organization.schema';
+import { Availability } from '../availabilities/availability.schema';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column('text')
   name: string;
@@ -33,4 +35,7 @@ export class User {
 
   @ManyToOne(() => Organization, (organization) => organization.id)
   organization: Organization;
+
+  @OneToMany(() => Availability, (availability) => availability.user)
+  availabilities: Availability[];
 }
