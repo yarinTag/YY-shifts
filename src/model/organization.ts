@@ -16,7 +16,7 @@ export class Organization {
   @Column()
   name: string;
 
-  @Column('bit')
+  @Column({ type: 'boolean', default: true })
   active: boolean;
 
   @CreateDateColumn()
