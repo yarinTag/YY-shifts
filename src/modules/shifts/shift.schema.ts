@@ -14,10 +14,10 @@ export class Shift {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('text')
+  @Column('timestamp')
   start: Date;
 
-  @Column('text')
+  @Column('timestamp')
   end: Date;
 
   @ManyToOne(

@@ -23,11 +23,11 @@ export class ShiftConfiguration {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('text')
-  start: Date;
+  @Column('time')
+  start: string;
 
-  @Column('text')
-  end: Date;
+  @Column('time')
+  end: string;
 
   @Column({ type: 'int', default: 0 })
   amountOfWorkers: number;
