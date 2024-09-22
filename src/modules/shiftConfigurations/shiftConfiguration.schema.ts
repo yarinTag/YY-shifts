@@ -2,11 +2,21 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  ManyToOne,
   OneToMany,
+  ManyToOne,
 } from 'typeorm';
-import { WorkDay } from '../workDays/workDay.schema';
 import { Shift } from '../shifts/shift.schema';
+import { Organization } from '../organizations/organization.schema';
+
+export enum WorkDay {
+  Sunday = 1,
+  Monday = 2,
+  Tuesday = 3,
+  Wednesday = 4,
+  Thursday = 5,
+  Friday = 6,
+  Saturday = 7
+}
 
 @Entity()
 export class ShiftConfiguration {
@@ -22,8 +32,14 @@ export class ShiftConfiguration {
   @Column({ type: 'int', default: 0 })
   amountOfWorkers: number;
 
-  @ManyToOne(() => WorkDay, (workDay: WorkDay) => workDay.id)
-  workDay: WorkDay;
+  @Column('int')
+  day: WorkDay;
+
+  @ManyToOne(
+    () => Organization,
+    (organization: Organization) => organization.id
+  )
+  organization: Organization;
 
   @OneToMany(() => Shift, (shift) => shift.shiftConfiguration)
   shifts: Shift[];

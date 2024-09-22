@@ -7,7 +7,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { User } from '../users/user.schema';
-import { WorkDay } from '../workDays/workDay.schema';
+import { ShiftConfiguration } from '../shiftConfigurations/shiftConfiguration.schema';
 
 @Entity()
 export class Organization {
@@ -29,6 +29,9 @@ export class Organization {
   @OneToMany(() => User, (user) => user.organization)
   users: User[];
 
-  @OneToMany(() => WorkDay, (workDay) => workDay.organization)
-  workDay: WorkDay[];
+  @OneToMany(
+    () => ShiftConfiguration,
+    (shiftConfiguration: ShiftConfiguration) => shiftConfiguration.day
+  )
+  shiftConfigurations: ShiftConfiguration[];
 }
