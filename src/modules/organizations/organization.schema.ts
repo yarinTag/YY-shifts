@@ -5,11 +5,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
-  JoinColumn,
-  OneToOne,
 } from 'typeorm';
 import { User } from '../users/user.schema';
-import { WorkCycleConfiguration } from '../workCycleConfigurations/workCycleConfiguration.schema';
+import { WorkDay } from '../workDays/workDay.schema';
 
 @Entity()
 export class Organization {
@@ -31,7 +29,6 @@ export class Organization {
   @OneToMany(() => User, (user) => user.organization)
   users: User[];
 
-  @OneToOne(() => WorkCycleConfiguration)
-  @JoinColumn()
-  workCycleConfiguration: WorkCycleConfiguration;
+  @OneToMany(() => WorkDay, (workDay) => workDay.organization)
+  workDay: WorkDay[];
 }

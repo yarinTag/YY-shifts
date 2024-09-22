@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Organization } from '../organizations/organization.schema';
 import { Availability } from '../availabilities/availability.schema';
+import { Shift } from '../shifts/shift.schema';
 
 @Entity()
 export class User {
@@ -35,6 +36,9 @@ export class User {
 
   @ManyToOne(() => Organization, (organization) => organization.id)
   organization: Organization;
+
+  @OneToMany(() => Shift, (shift) => shift.id)
+  shifts: Shift[];
 
   @OneToMany(() => Availability, (availability) => availability.user)
   availabilities: Availability[];

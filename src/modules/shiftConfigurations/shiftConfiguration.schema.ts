@@ -5,9 +5,8 @@ import {
   ManyToOne,
   OneToMany,
 } from 'typeorm';
-import { WorkCycleConfiguration } from '../workCycleConfigurations/workCycleConfiguration.schema';
+import { WorkDay } from '../workDays/workDay.schema';
 import { Shift } from '../shifts/shift.schema';
-import { Availability } from '../availabilities/availability.schema';
 
 @Entity()
 export class ShiftConfiguration {
@@ -23,18 +22,9 @@ export class ShiftConfiguration {
   @Column({ type: 'int', default: 0 })
   amountOfWorkers: number;
 
-  @ManyToOne(
-    () => WorkCycleConfiguration,
-    (workCycleConfiguration) => workCycleConfiguration.id
-  )
-  workCycleConfiguration: WorkCycleConfiguration;
+  @ManyToOne(() => WorkDay, (workDay: WorkDay) => workDay.id)
+  workDay: WorkDay;
 
   @OneToMany(() => Shift, (shift) => shift.shiftConfiguration)
   shifts: Shift[];
-
-  @OneToMany(
-    () => Availability,
-    (availability) => availability.shiftConfiguration
-  )
-  availabilities: Availability[];
 }

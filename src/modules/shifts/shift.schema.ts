@@ -1,6 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { WorkCycle } from '../workCycle/workCycle.schema';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { ShiftConfiguration } from '../shiftConfigurations/shiftConfiguration.schema';
+import { User } from '../users/user.schema';
+import { Availability } from '../availabilities/availability.schema';
 
 @Entity()
 export class Shift {
@@ -13,12 +20,15 @@ export class Shift {
   @Column('text')
   end: Date;
 
-  @ManyToOne(() => WorkCycle, (workCycle) => workCycle.id)
-  workCycle: WorkCycle;
-
   @ManyToOne(
     () => ShiftConfiguration,
     (shiftConfiguration) => shiftConfiguration.id
   )
-  shiftConfiguration: string;
+  shiftConfiguration: ShiftConfiguration;
+
+  @ManyToOne(() => User, (user) => user.shifts)
+  user: User;
+
+  @OneToMany(() => Availability, (availability) => availability.shift)
+  availabilities: Availability[];
 }
