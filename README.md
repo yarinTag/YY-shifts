@@ -7,19 +7,17 @@ Shift - The actual time and date the employee(User) will work.
 
 Shift configuration - The data specific for a shift: time, date, amount of workers.
 
-Organization - A group that the user is related to/ Place the user works for.
+Department - A group that the user is related to/ Place the user works for.
 
-Availability - A user will choose the time and date he would like to work on, based on the shifts, a manager configured.
+Availability - A user will choose the time and date he would like to work on, based on the shifts.
 
-Work cycle- The actual time for a set of shifts for each cycle of the organization's work schedule. (Monday to Monday).
+Work cycle- This table will allow you to manage and publish individual cycles based on the configurations.
 
-Work cycle configuration - The data specific for a work cycle: working days, not working days, priority.
-How many days are you working?
-There are days not working in the cycle?
-Priority to employees? Gender priority? 
+Work cycle configuration - Tied to the department, ensuring each department can have customized cycle configurations.
 
 Shift journal - History of each shift.(switch from user 1 to 2, changed time).
 
+Work cycle journal - Added for tracking historical information about work cycles.
 
-![DB](https://github.com/user-attachments/assets/cbb314ed-685d-473f-98af-3d576b48982d)
+![DB](https://github.com/user-attachments/assets/67f13f93-be9d-4fa5-9a5a-1ab1a9797f84)
 
