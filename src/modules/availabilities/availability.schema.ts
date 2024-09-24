@@ -4,6 +4,7 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  Column,
 } from 'typeorm';
 import { User } from '../users/user.schema';
 import { Shift } from '../shifts/shift.schema';
@@ -18,6 +19,18 @@ export class Availability {
 
   @UpdateDateColumn()
   public updated_at: Date;
+
+  @Column('uuid')
+  created_by: string;
+
+  @Column('uuid')
+  updated_by: string;
+
+  @Column({ type: 'boolean', default: true })
+  active: boolean;
+
+  @Column('text')
+  memo: string;
 
   @ManyToOne(() => User, (user) => user.id)
   user: User;

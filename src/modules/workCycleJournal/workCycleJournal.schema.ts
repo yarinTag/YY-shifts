@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
-export class ShiftJournal {
+export class WorkCycleJournal {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -10,6 +10,12 @@ export class ShiftJournal {
 
   @Column('text')
   end_time: Date;
+  
+  @Column('bigint')
+  work_cycle_number: number;
+
+  @Column({ type: 'boolean', default: true })
+  publish: boolean;
 
   @CreateDateColumn()
   created_at: Date;
@@ -22,16 +28,10 @@ export class ShiftJournal {
 
   @Column('uuid')
   updated_by: string;
-
-  @Column('text')
-  user_id: string;
-
-  @Column('text')
-  shift_id: string;
   
   @Column('text')
   work_cycle_id: string;
 
   @Column('text')
-  shift_configuration_id: string;
+  work_cycle_configuration_id: string;
 }

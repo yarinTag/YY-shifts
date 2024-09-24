@@ -4,9 +4,13 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToOne,
 } from 'typeorm';
 import { Shift } from '../shifts/shift.schema';
-import { Organization } from '../organizations/organization.schema';
+import { Department } from '../departments/department.schema';
+import { WorkCycleConfiguration } from '../workCycleConfiguration/workCycleConfiguration.schema';
 
 export enum WorkDay {
   Sunday = 1,
@@ -15,7 +19,7 @@ export enum WorkDay {
   Wednesday = 4,
   Thursday = 5,
   Friday = 6,
-  Saturday = 7
+  Saturday = 7,
 }
 
 @Entity()
@@ -29,17 +33,33 @@ export class ShiftConfiguration {
   @Column('time')
   end: string;
 
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @Column('uuid')
+  created_by: string;
+
+  @Column('uuid')
+  updated_by: string;
+
   @Column({ type: 'int', default: 0 })
-  amountOfWorkers: number;
+  amount_of_workers: number;
 
   @Column('int')
-  day: WorkDay;
+  day_of_week: WorkDay;
 
-  @ManyToOne(
-    () => Organization,
-    (organization: Organization) => organization.id
+  @OneToOne(
+    () => WorkCycleConfiguration,
+    (workCycleConfiguration: WorkCycleConfiguration) =>
+      workCycleConfiguration.id
   )
-  organization: Organization;
+  work_cycle_configuration_id: WorkCycleConfiguration;
+  
+  @ManyToOne(() => Department, (department: Department) => department.id)
+  department: Department;
 
   @OneToMany(() => Shift, (shift) => shift.shiftConfiguration)
   shifts: Shift[];

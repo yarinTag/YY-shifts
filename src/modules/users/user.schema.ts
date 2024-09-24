@@ -7,9 +7,14 @@ import {
   ManyToOne,
   OneToMany,
 } from 'typeorm';
-import { Organization } from '../organizations/organization.schema';
+import { Department } from '../departments/department.schema';
 import { Availability } from '../availabilities/availability.schema';
 import { Shift } from '../shifts/shift.schema';
+
+export enum Gender {
+  MALE = 'male',
+  FEMALE = 'female',
+}
 
 @Entity()
 export class User {
@@ -25,6 +30,12 @@ export class User {
   @Column('text')
   phone: string;
 
+  @Column('text')
+  gender: Gender;
+
+  @Column('text')
+  photo: string;
+
   @Column({ type: 'boolean', default: true })
   active: boolean;
 
@@ -34,8 +45,14 @@ export class User {
   @UpdateDateColumn()
   public updated_at: Date;
 
-  @ManyToOne(() => Organization, (organization) => organization.id)
-  organization: Organization;
+  @Column('uuid')
+  created_by: string;
+
+  @Column('uuid')
+  updated_by: string;
+
+  @ManyToOne(() => Department, (department) => department.id)
+  department_id: Department;
 
   @OneToMany(() => Shift, (shift) => shift.id)
   shifts: Shift[];
