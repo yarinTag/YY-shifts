@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { BaseEntity } from '../BaseEntity';
 
 @Entity()
-export class ShiftJournal extends BaseEntity {
+export class WorkCycleJournal extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -12,15 +12,15 @@ export class ShiftJournal extends BaseEntity {
   @Column('text')
   end: Date;
 
-  @Column('uuid')
-  userId: string;
+  @Column('bigint')
+  workCycleNumber: number;
 
-  @Column('uuid')
-  shiftId: string;
+  @Column({ type: 'boolean', default: true })
+  publish: boolean;
 
   @Column('uuid')
   workCycleId: string;
 
   @Column('uuid')
-  shiftConfigurationId: string;
+  workCycleConfigurationId: string;
 }

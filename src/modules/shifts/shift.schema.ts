@@ -1,24 +1,42 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { WorkCycle } from '../workCycle/workCycle.schema';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { ShiftConfiguration } from '../shiftConfigurations/shiftConfiguration.schema';
+import { User } from '../users/user.schema';
+import { Availability } from '../availabilities/availability.schema';
+import { WorkCycle } from '../workCycle/workCycle.schema';
+import { BaseEntity } from '../BaseEntity';
 
 @Entity()
-export class Shift {
+export class Shift extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('text')
+  @Column('timestamp')
   start: Date;
 
-  @Column('text')
+  @Column('timestamp')
   end: Date;
 
-  @ManyToOne(() => WorkCycle, (workCycle) => workCycle.id)
+  @ManyToOne(() => WorkCycle, (workCycle: WorkCycle) => workCycle.shifts)
   workCycle: WorkCycle;
 
   @ManyToOne(
     () => ShiftConfiguration,
-    (shiftConfiguration) => shiftConfiguration.id
+    (shiftConfiguration: ShiftConfiguration) => shiftConfiguration.shifts
   )
-  shiftConfiguration: string;
+  shiftConfiguration: ShiftConfiguration;
+
+  @ManyToOne(() => User, (user: User) => user.shifts)
+  user: User;
+
+  @OneToMany(
+    () => Availability,
+    (availability: Availability) => availability.shift
+  )
+  availabilities: Availability[];
 }

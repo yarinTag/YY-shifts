@@ -2,29 +2,33 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
+  ManyToOne,
   OneToMany,
 } from 'typeorm';
-import { Organization } from '../organizations/organization.schema';
+import { Department } from '../departments/department.schema';
 import { ShiftConfiguration } from '../shiftConfigurations/shiftConfiguration.schema';
 import { WorkCycle } from '../workCycle/workCycle.schema';
+import { BaseEntity } from '../BaseEntity';
 
 @Entity()
-export class WorkCycleConfiguration {
+export class WorkCycleConfiguration extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column('int')
-  amount_of_days: number;
+  cycleDays: number;
 
-  @Column({ type: 'boolean', default: false })
-  priority: boolean;
+  @Column('int')
+  legalAmountOfWorkDays: number;
 
-  @OneToOne(
-    () => Organization,
-    (organization: Organization) => organization.workCycleConfiguration
+  @Column('int')
+  amountOfDayOff: number;
+
+  @ManyToOne(
+    () => Department,
+    (department: Department) => department.workCycleConfigurations
   )
-  organization: Organization;
+  department: Department;
 
   @OneToMany(
     () => ShiftConfiguration,
@@ -37,5 +41,5 @@ export class WorkCycleConfiguration {
     () => WorkCycle,
     (workCycle: WorkCycle) => workCycle.workCycleConfiguration
   )
-  workCycles: WorkCycle[];
+  workCycle: WorkCycle[];
 }

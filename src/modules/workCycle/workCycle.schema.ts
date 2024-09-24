@@ -1,23 +1,37 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { WorkCycleConfiguration } from '../workCycleConfigurations/workCycleConfiguration.schema';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
+import { WorkCycleConfiguration } from '../workCycleConfiguration/workCycleConfiguration.schema';
+import { Shift } from '../shifts/shift.schema';
+import { BaseEntity } from '../BaseEntity';
 
 @Entity()
-export class WorkCycle {
+export class WorkCycle extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('text')
+  @Column('timestamp')
   start: Date;
 
-  @Column('text')
+  @Column('timestamp')
   end: Date;
 
-  @Column({ type: 'boolean', default: false })
-  priority: boolean;
+  @Column('bigint')
+  workCycleNumber: number;
+
+  @Column({ type: 'boolean', default: true })
+  publish: boolean;
+
+  @OneToMany(() => Shift, (shift: Shift) => shift.workCycle)
+  shifts: Shift[];
 
   @ManyToOne(
     () => WorkCycleConfiguration,
-    (workCycleConfiguration) => workCycleConfiguration.id
+    (workConfiguration) => workConfiguration.workCycle
   )
   workCycleConfiguration: WorkCycleConfiguration;
 }

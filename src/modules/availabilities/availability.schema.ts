@@ -1,18 +1,22 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, ManyToOne, Column } from 'typeorm';
 import { User } from '../users/user.schema';
-import { ShiftConfiguration } from '../shiftConfigurations/shiftConfiguration.schema';
+import { Shift } from '../shifts/shift.schema';
+import { BaseEntity } from '../BaseEntity';
 
 @Entity()
-export class Availability {
+export class Availability extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User, (user) => user.id)
+  @Column({ type: 'boolean', default: true })
+  active: boolean;
+
+  @Column('text')
+  memo: string;
+
+  @ManyToOne(() => User, (user) => user.availabilities)
   user: User;
 
-  @ManyToOne(
-    () => ShiftConfiguration,
-    (shiftConfiguration) => shiftConfiguration.id
-  )
-  shiftConfiguration: ShiftConfiguration;
+  @ManyToOne(() => Shift, (shift) => shift.availabilities)
+  shift: Shift;
 }
