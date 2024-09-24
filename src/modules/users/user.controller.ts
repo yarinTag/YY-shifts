@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
 import { dataSource } from '../../db';
 import { User } from './user.schema';
+import { UserService } from './user.service';
 
 const userRepository = dataSource.getRepository(User);
+const userService = new UserService;
 
 export const getAllUsers = async (req: Request, res: Response) => {
   const users = await userRepository.find();
@@ -10,7 +12,6 @@ export const getAllUsers = async (req: Request, res: Response) => {
 };
 
 export const createUser = async (req: Request, res: Response) => {
-  const user = await userRepository.create(req.body);
-  const results = await userRepository.save(user);
-  return res.send(results);
+  const results = await userService.createUser(req.body);
+  return res.json(results);
 };
