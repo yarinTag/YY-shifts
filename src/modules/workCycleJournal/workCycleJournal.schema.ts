@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class WorkCycleJournal {
@@ -6,32 +12,32 @@ export class WorkCycleJournal {
   id: string;
 
   @Column('text')
-  start_time: Date;
+  start: Date;
 
   @Column('text')
-  end_time: Date;
-  
+  end: Date;
+
   @Column('bigint')
-  work_cycle_number: number;
+  workCycleNumber: number;
 
   @Column({ type: 'boolean', default: true })
   publish: boolean;
 
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updatedAt: Date;
 
   @Column('uuid')
-  created_by: string;
+  createdBy: string;
 
   @Column('uuid')
-  updated_by: string;
-  
-  @Column('text')
-  work_cycle_id: string;
+  updatedBy: string;
 
-  @Column('text')
-  work_cycle_configuration_id: string;
+  @Column('uuid')
+  workCycleId: string;
+
+  @Column('uuid')
+  workCycleConfigurationId: string;
 }

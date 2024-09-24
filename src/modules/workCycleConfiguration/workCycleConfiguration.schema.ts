@@ -1,43 +1,58 @@
 import {
-    Entity,
-    Column,
-    PrimaryGeneratedColumn,
-    ManyToOne,
-    CreateDateColumn,
-    UpdateDateColumn,
-  } from 'typeorm';
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
 import { Department } from '../departments/department.schema';
-  
-  @Entity()
-  export class WorkCycleConfiguration {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
-  
-    @CreateDateColumn()
-    created_at: Date;
-  
-    @UpdateDateColumn()
-    updated_at: Date;
-  
-    @Column('uuid')
-    created_by: string;
-  
-    @Column('uuid')
-    updated_by: string;
-  
-    @Column('int')
-    cycle_days: number;
+import { ShiftConfiguration } from '../shiftConfigurations/shiftConfiguration.schema';
+import { WorkCycle } from '../workCycle/workCycle.schema';
 
-    @Column('int')
-    legal_amount_of_work_days: number;
+@Entity()
+export class WorkCycleConfiguration {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column('int')
-    amount_of_day_off: number;
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @ManyToOne(
-      () => Department,
-      (department) => department.id
-    )
-    department_id: Department;
-  }
-  
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @Column('uuid')
+  createdBy: string;
+
+  @Column('uuid')
+  updatedBy: string;
+
+  @Column('int')
+  cycleDays: number;
+
+  @Column('int')
+  legalAmountOfWorkDays: number;
+
+  @Column('int')
+  amountOfDayOff: number;
+
+  @ManyToOne(
+    () => Department,
+    (department: Department) => department.workCycleConfigurations
+  )
+  department: Department;
+
+  @OneToMany(
+    () => ShiftConfiguration,
+    (shiftConfiguration: ShiftConfiguration) =>
+      shiftConfiguration.workCycleConfiguration
+  )
+  shiftConfigurations: ShiftConfiguration[];
+
+  @OneToMany(
+    () => WorkCycle,
+    (workCycle: WorkCycle) => workCycle.workCycleConfiguration
+  )
+  workCycle: WorkCycle[];
+}

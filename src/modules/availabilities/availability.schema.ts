@@ -15,16 +15,16 @@ export class Availability {
   id: string;
 
   @CreateDateColumn()
-  public created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  public updated_at: Date;
+  updatedAt: Date;
 
   @Column('uuid')
-  created_by: string;
+  createdBy: string;
 
   @Column('uuid')
-  updated_by: string;
+  updatedBy: string;
 
   @Column({ type: 'boolean', default: true })
   active: boolean;
@@ -32,9 +32,9 @@ export class Availability {
   @Column('text')
   memo: string;
 
-  @ManyToOne(() => User, (user) => user.id)
+  @ManyToOne(() => User, (user) => user.availabilities)
   user: User;
 
-  @ManyToOne(() => Shift, (shift) => shift.id)
+  @ManyToOne(() => Shift, (shift) => shift.availabilities)
   shift: Shift;
 }

@@ -40,21 +40,21 @@ export class User {
   active: boolean;
 
   @CreateDateColumn()
-  public created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  public updated_at: Date;
+  updatedAt: Date;
 
   @Column('uuid')
-  created_by: string;
+  createdBy: string;
 
   @Column('uuid')
-  updated_by: string;
+  updatedBy: string;
 
-  @ManyToOne(() => Department, (department) => department.id)
-  department_id: Department;
+  @ManyToOne(() => Department, (department) => department.users)
+  department: Department;
 
-  @OneToMany(() => Shift, (shift) => shift.id)
+  @OneToMany(() => Shift, (shift) => shift.user)
   shifts: Shift[];
 
   @OneToMany(() => Availability, (availability) => availability.user)

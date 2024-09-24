@@ -7,7 +7,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { User } from '../users/user.schema';
-import { ShiftConfiguration } from '../shiftConfigurations/shiftConfiguration.schema';
+import { WorkCycleConfiguration } from '../workCycleConfiguration/workCycleConfiguration.schema';
 
 @Entity()
 export class Department {
@@ -24,23 +24,24 @@ export class Department {
   address: string;
 
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updatedAt: Date;
 
   @Column('uuid')
-  created_by: string;
+  createdBy: string;
 
   @Column('uuid')
-  updated_by: string;
+  updatedBy: string;
 
-  @OneToMany(() => User, (user) => user.department_id)
+  @OneToMany(() => User, (user: User) => user.department)
   users: User[];
 
   @OneToMany(
-    () => ShiftConfiguration,
-    (shiftConfiguration: ShiftConfiguration) => shiftConfiguration.day_of_week
+    () => WorkCycleConfiguration,
+    (workCycleConfiguration: WorkCycleConfiguration) =>
+      workCycleConfiguration.department
   )
-  shiftConfigurations: ShiftConfiguration[];
+  workCycleConfigurations: WorkCycleConfiguration[];
 }

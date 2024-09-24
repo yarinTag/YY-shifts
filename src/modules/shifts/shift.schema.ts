@@ -24,32 +24,32 @@ export class Shift {
   end: Date;
 
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updatedAt: Date;
 
   @Column('uuid')
-  created_by: string;
+  createdBy: string;
 
   @Column('uuid')
-  updated_by: string;
+  updatedBy: string;
 
-  @ManyToOne(
-    () => WorkCycle,
-    (workCycle) => workCycle.id
-  )
+  @ManyToOne(() => WorkCycle, (workCycle: WorkCycle) => workCycle.shifts)
   workCycle: WorkCycle;
 
   @ManyToOne(
     () => ShiftConfiguration,
-    (shiftConfiguration) => shiftConfiguration.id
+    (shiftConfiguration: ShiftConfiguration) => shiftConfiguration.shifts
   )
   shiftConfiguration: ShiftConfiguration;
 
-  @ManyToOne(() => User, (user) => user.shifts)
+  @ManyToOne(() => User, (user: User) => user.shifts)
   user: User;
 
-  @OneToMany(() => Availability, (availability) => availability.shift)
+  @OneToMany(
+    () => Availability,
+    (availability: Availability) => availability.shift
+  )
   availabilities: Availability[];
 }
