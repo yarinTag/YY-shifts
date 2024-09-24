@@ -5,6 +5,7 @@ export abstract class BaseEntity {
     name: 'created_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
+    update: false,
   })
   createdAt: Date;
 
@@ -12,6 +13,7 @@ export abstract class BaseEntity {
     name: 'created_by',
     type: 'uuid',
     nullable: false,
+    update: false,
   })
   createdBy: string;
 
