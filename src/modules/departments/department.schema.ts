@@ -1,16 +1,10 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  OneToMany,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { User } from '../users/user.schema';
 import { WorkCycleConfiguration } from '../workCycleConfiguration/workCycleConfiguration.schema';
+import { BaseEntity } from '../BaseEntity';
 
 @Entity()
-export class Department {
+export class Department extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -22,18 +16,6 @@ export class Department {
 
   @Column('text')
   address: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @Column('uuid')
-  createdBy: string;
-
-  @Column('uuid')
-  updatedBy: string;
 
   @OneToMany(() => User, (user: User) => user.department)
   users: User[];

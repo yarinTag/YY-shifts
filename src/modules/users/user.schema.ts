@@ -2,14 +2,13 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
   ManyToOne,
   OneToMany,
 } from 'typeorm';
 import { Department } from '../departments/department.schema';
 import { Availability } from '../availabilities/availability.schema';
 import { Shift } from '../shifts/shift.schema';
+import { BaseEntity } from '../BaseEntity';
 
 export enum Gender {
   MALE = 'male',
@@ -17,7 +16,7 @@ export enum Gender {
 }
 
 @Entity()
-export class User {
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -38,18 +37,6 @@ export class User {
 
   @Column({ type: 'boolean', default: true })
   active: boolean;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @Column('uuid')
-  createdBy: string;
-
-  @Column('uuid')
-  updatedBy: string;
 
   @ManyToOne(() => Department, (department) => department.users)
   department: Department;

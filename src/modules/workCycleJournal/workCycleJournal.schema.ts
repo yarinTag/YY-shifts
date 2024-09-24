@@ -1,13 +1,8 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { BaseEntity } from '../BaseEntity';
 
 @Entity()
-export class WorkCycleJournal {
+export class WorkCycleJournal extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -22,18 +17,6 @@ export class WorkCycleJournal {
 
   @Column({ type: 'boolean', default: true })
   publish: boolean;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @Column('uuid')
-  createdBy: string;
-
-  @Column('uuid')
-  updatedBy: string;
 
   @Column('uuid')
   workCycleId: string;

@@ -1,30 +1,12 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  CreateDateColumn,
-  UpdateDateColumn,
-  Column,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, ManyToOne, Column } from 'typeorm';
 import { User } from '../users/user.schema';
 import { Shift } from '../shifts/shift.schema';
+import { BaseEntity } from '../BaseEntity';
 
 @Entity()
-export class Availability {
+export class Availability extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @Column('uuid')
-  createdBy: string;
-
-  @Column('uuid')
-  updatedBy: string;
 
   @Column({ type: 'boolean', default: true })
   active: boolean;

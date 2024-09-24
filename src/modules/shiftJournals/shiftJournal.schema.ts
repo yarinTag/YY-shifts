@@ -1,13 +1,8 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { BaseEntity } from '../BaseEntity';
 
 @Entity()
-export class ShiftJournal {
+export class ShiftJournal extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -16,18 +11,6 @@ export class ShiftJournal {
 
   @Column('text')
   end: Date;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @Column('uuid')
-  createdBy: string;
-
-  @Column('uuid')
-  updatedBy: string;
 
   @Column('uuid')
   userId: string;

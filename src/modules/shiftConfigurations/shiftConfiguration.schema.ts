@@ -4,11 +4,10 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   ManyToOne,
-  CreateDateColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { Shift } from '../shifts/shift.schema';
 import { WorkCycleConfiguration } from '../workCycleConfiguration/workCycleConfiguration.schema';
+import { BaseEntity } from '../BaseEntity';
 
 export enum WorkDay {
   Sunday = 1,
@@ -21,7 +20,7 @@ export enum WorkDay {
 }
 
 @Entity()
-export class ShiftConfiguration {
+export class ShiftConfiguration extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -30,18 +29,6 @@ export class ShiftConfiguration {
 
   @Column('time')
   end: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @Column('uuid')
-  createdBy: string;
-
-  @Column('uuid')
-  updatedBy: string;
 
   @Column({ type: 'int', default: 0 })
   amountOfWorkers: number;

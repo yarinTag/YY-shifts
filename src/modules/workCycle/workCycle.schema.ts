@@ -3,15 +3,14 @@ import {
   Column,
   PrimaryGeneratedColumn,
   ManyToOne,
-  CreateDateColumn,
-  UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
 import { WorkCycleConfiguration } from '../workCycleConfiguration/workCycleConfiguration.schema';
 import { Shift } from '../shifts/shift.schema';
+import { BaseEntity } from '../BaseEntity';
 
 @Entity()
-export class WorkCycle {
+export class WorkCycle extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -20,18 +19,6 @@ export class WorkCycle {
 
   @Column('timestamp')
   end: Date;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @Column('uuid')
-  createdBy: string;
-
-  @Column('uuid')
-  updatedBy: string;
 
   @Column('bigint')
   workCycleNumber: number;

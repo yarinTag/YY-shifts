@@ -4,16 +4,15 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   OneToMany,
-  CreateDateColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { ShiftConfiguration } from '../shiftConfigurations/shiftConfiguration.schema';
 import { User } from '../users/user.schema';
 import { Availability } from '../availabilities/availability.schema';
 import { WorkCycle } from '../workCycle/workCycle.schema';
+import { BaseEntity } from '../BaseEntity';
 
 @Entity()
-export class Shift {
+export class Shift extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -22,18 +21,6 @@ export class Shift {
 
   @Column('timestamp')
   end: Date;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @Column('uuid')
-  createdBy: string;
-
-  @Column('uuid')
-  updatedBy: string;
 
   @ManyToOne(() => WorkCycle, (workCycle: WorkCycle) => workCycle.shifts)
   workCycle: WorkCycle;

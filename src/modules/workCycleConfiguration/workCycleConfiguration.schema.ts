@@ -3,30 +3,17 @@ import {
   Column,
   PrimaryGeneratedColumn,
   ManyToOne,
-  CreateDateColumn,
-  UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
 import { Department } from '../departments/department.schema';
 import { ShiftConfiguration } from '../shiftConfigurations/shiftConfiguration.schema';
 import { WorkCycle } from '../workCycle/workCycle.schema';
+import { BaseEntity } from '../BaseEntity';
 
 @Entity()
-export class WorkCycleConfiguration {
+export class WorkCycleConfiguration extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @Column('uuid')
-  createdBy: string;
-
-  @Column('uuid')
-  updatedBy: string;
 
   @Column('int')
   cycleDays: number;
