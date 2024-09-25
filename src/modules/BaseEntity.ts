@@ -12,7 +12,7 @@ export abstract class BaseEntity {
   @Column({
     name: 'created_by',
     type: 'uuid',
-    nullable: false,
+    nullable: true,
     update: false,
   })
   createdBy: string;
@@ -28,7 +28,7 @@ export abstract class BaseEntity {
   @Column({
     name: 'updated_by',
     type: 'uuid',
-    nullable: false,
+    nullable: true,
   })
   updatedBy: string;
 }

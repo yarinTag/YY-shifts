@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Length } from 'class-validator';
 import { User } from '../users/user.schema';
 import { WorkCycleConfiguration } from '../workCycleConfiguration/workCycleConfiguration.schema';
 import { BaseEntity } from '../BaseEntity';
@@ -8,6 +9,7 @@ export class Department extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Length(3, 50)
   @Column()
   name: string;
 
