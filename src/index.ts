@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { dataSource } from './db';
 import userRoute from './routes/userRoute';
+import departmentRoute from './routes/departmentRoute';
 
 dotenv.config();
 
@@ -24,3 +25,4 @@ dataSource
   });
 
 app.use(userRoute);
+app.use('/departments', departmentRoute);
