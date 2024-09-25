@@ -36,7 +36,6 @@ export const userValidationRules = (isUpdate = false) => {
     body('name').notEmpty().withMessage('Name is required'),
     body('password', 'password does not Empty').not().isEmpty(),
     body('password', 'The minimum password length is 6 characters').isLength({min: 8}),
-
   ];
 };
 

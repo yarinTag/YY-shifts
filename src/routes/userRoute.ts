@@ -1,11 +1,13 @@
 import { Router } from 'express';
-import { createUser, getAllUsers } from '../modules/users/user.controller';
+import UserController from '../modules/users/user.controller';
 import { userValidationRules, validate } from '../validationMiddleware';
 
 const router = Router();
 
-router.get('/users', getAllUsers);
-router.post('/users',userValidationRules(), validate,  createUser);
+router.post('/sign-in', UserController.signIn);
+
+router.get('/users', UserController.verifyToken,UserController.getAllUsers);
+router.post('/users',userValidationRules(),validate, UserController.createUser);
 // router.get('/users/:id');
 
 export default router;
