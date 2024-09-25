@@ -25,3 +25,12 @@ export const createDepartment = async (req: Request, res: Response) => {
   });
   res.json(respone);
 };
+
+export const updateDepartment = async (req: Request, res: Response) => {
+  const respone = await addDepartment(req.body).catch((err) => {
+    console.error('Failed create new Department: ', err);
+
+    return err.detail;
+  });
+  res.json(respone);
+};

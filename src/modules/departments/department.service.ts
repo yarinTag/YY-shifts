@@ -1,7 +1,6 @@
-import { Request } from 'express';
-
 import { dataSource } from '../../db';
 import { Department } from './department.schema';
+import { CreateRequest } from './dto/createRequest';
 
 const departmentRepository = dataSource.getRepository(Department);
 export const findAllDepartments = async () => {
@@ -18,10 +17,8 @@ export const findDepartmentById = async (departmentId: string) => {
   return department;
 };
 
-export const addDepartment = async (req: Request) => {
-  const department = await departmentRepository.create({
-    ...req.body,
-  });
+export const addDepartment = async (req: CreateRequest) => {
+  const department = await departmentRepository.create(req);
   const result = await departmentRepository.save(department);
 
   return result;

@@ -5,25 +5,13 @@ import {
   getDepartmentById,
 } from '../modules/departments/department.controller';
 import { validationMiddleware } from '../middlewares/validate';
-import { IsString, IsUUID, Length } from 'class-validator';
+import { CreateRequest } from '../modules/departments/dto/createRequest';
+import { GetByIdRequest } from '../modules/departments/dto/getByIdRequest';
 
 const router = Router();
 router.get('/', getAllDepartments);
 
-class CreateRequest {
-  @IsString()
-  @Length(1, 50)
-  name: string;
-  @IsString()
-  address: string;
-}
-
 router.post('/', validationMiddleware(CreateRequest), createDepartment);
-
-class getByIdRequest {
-  @IsUUID()
-  id: string;
-}
-router.get('/:id', validationMiddleware(getByIdRequest), getDepartmentById);
+router.get('/:id', validationMiddleware(GetByIdRequest), getDepartmentById);
 
 export default router;
