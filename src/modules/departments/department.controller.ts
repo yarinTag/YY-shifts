@@ -3,6 +3,7 @@ import {
   findAllDepartments,
   addDepartment,
   findDepartmentById,
+  updateDepartment,
 } from './department.service';
 
 export const getAllDepartments = async (req: Request, res: Response) => {
@@ -11,7 +12,6 @@ export const getAllDepartments = async (req: Request, res: Response) => {
 };
 
 export const getDepartmentById = async (req: Request, res: Response) => {
-  console.log(req.params.id);
   const department = await findDepartmentById(req.params.id);
 
   res.json(department);
@@ -26,11 +26,24 @@ export const createDepartment = async (req: Request, res: Response) => {
   res.json(respone);
 };
 
-export const updateDepartment = async (req: Request, res: Response) => {
-  const respone = await addDepartment(req.body).catch((err) => {
-    console.error('Failed create new Department: ', err);
+export const patchDepartment = async (req: Request, res: Response) => {
+  try {
+    const response = await updateDepartment({ ...req.body, ...req.params });
 
-    return err.detail;
-  });
-  res.json(respone);
+    return res.status(200).json(response);
+  } catch (err) {
+    console.error('Failed to update Department: ', err);
+
+    if (err instanceof Error) {
+      return res.status(500).json({
+        success: false,
+        message: err.message,
+      });
+    } else {
+      return res.status(500).json({
+        success: false,
+        message: 'An unknown error occurred',
+      });
+    }
+  }
 };
