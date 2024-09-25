@@ -12,7 +12,7 @@ export const getAllDepartments = async (req: Request, res: Response) => {
 
 export const getDepartmentById = async (req: Request, res: Response) => {
   console.log(req.params.id);
-  const department = findDepartmentById(req.params.id);
+  const department = await findDepartmentById(req.params.id);
 
   res.json(department);
 };
