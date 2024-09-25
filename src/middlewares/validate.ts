@@ -9,7 +9,7 @@ export const validationMiddleware =
       ...req.params,
     });
 
-    if (!result.success) {
+    if (result.success === false) {
       return res.status(400).json(result);
     }
 
