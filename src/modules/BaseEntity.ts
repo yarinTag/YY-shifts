@@ -9,13 +9,13 @@ export abstract class BaseEntity {
   })
   createdAt: Date;
 
-  // @Column({
-  //   name: 'created_by',
-  //   type: 'uuid',
-  //   nullable: false,
-  //   update: false,
-  // })
-  // createdBy: string;
+  @Column({
+    name: 'created_by',
+    type: 'uuid',
+    nullable: true,
+    update: false,
+  })
+  createdBy: string;
 
   @UpdateDateColumn({
     name: 'updated_at',
@@ -25,10 +25,10 @@ export abstract class BaseEntity {
   })
   updatedAt: Date;
 
-  // @Column({
-  //   name: 'updated_by',
-  //   type: 'uuid',
-  //   nullable: false,
-  // })
-  // updatedBy: string;
+  @Column({
+    name: 'updated_by',
+    type: 'uuid',
+    nullable: true,
+  })
+  updatedBy: string;
 }
