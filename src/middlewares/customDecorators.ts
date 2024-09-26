@@ -1,11 +1,12 @@
 import {
-    registerDecorator,
-    ValidationOptions,
-    ValidatorConstraint,
-    ValidatorConstraintInterface,
-    ValidationArguments,
+  registerDecorator,
+  ValidationOptions,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+  ValidationArguments,
 } from 'class-validator';
 import jwt from 'jsonwebtoken';
+import { Request, Response, NextFunction } from 'express';
 
 import { dataSource } from '../db';
 import { User } from '../modules/users/user.schema';
@@ -16,11 +17,11 @@ export class IsUniqueConstraint implements ValidatorConstraintInterface {
 
   async validate(value: string, args: ValidationArguments) {
     const property = args.property;
-    const dto = args.object as {cookie:string};
+    const dto = args.object as { cookie: string };
     let userId: string;
     try {
       const decodedToken = jwt.verify(
-        dto.cookie.split("=")[1],
+        dto.cookie.split('=')[1],
         process.env.JWT_SECRET ?? ''
       ) as User;
       userId = decodedToken.id;
@@ -54,5 +55,40 @@ export function IsUnique(validationOptions?: ValidationOptions) {
       constraints: [],
       validator: IsUniqueConstraint,
     });
+  };
+}
+
+function extractUserRole(req: Request): string | null {
+  const token = req.cookies['token'];
+  if (!token) return null;
+
+  try {
+    const decodedToken = jwt.verify(
+      token,
+      process.env.JWT_SECRET ?? ''
+    ) as jwt.JwtPayload;
+    return decodedToken.role;
+  } catch (error) {
+    return null;
+  }
+}
+
+export function RoleGuard(requiredRoles: string[]) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const userRole = extractUserRole(req);
+
+    if (!userRole) {
+      return res.status(401).json({ message: 'Unauthorized: No role found' });
+    }
+
+    if (!requiredRoles.includes(userRole)) {
+      return res.status(403).json({
+        message: `Forbidden: Requires one of the following roles: ${requiredRoles.join(
+          ', '
+        )}`,
+      });
+    }
+
+    next();
   };
 }

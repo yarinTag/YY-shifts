@@ -3,8 +3,8 @@ import { IsEmail, IsOptional, IsPhoneNumber, IsString, Length, MinLength } from 
 
 import UserController from '../modules/users/user.controller';
 import { validationMiddleware } from '../middlewares/validate';
-import { IsUnique } from '../middlewares/customDecorators';
-import { Gender } from '../modules/users/user.schema';
+import { IsUnique, RoleGuard } from '../middlewares/customDecorators';
+import { Gender, Role } from '../modules/users/user.schema';
 
 const router = Router();
 
@@ -59,6 +59,8 @@ export class UpdateUserRequest {
     validationMiddleware(UpdateUserRequest),
     UserController.updateUser
   );
+
+  router.delete('/users/:id', RoleGuard([Role.Admin, Role.MANAGER]),UserController.deleteUser);
 // router.get('/users/:id');
 
 export default router;

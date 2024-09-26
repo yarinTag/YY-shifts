@@ -54,7 +54,7 @@ export class UserService {
         name: user.name,
         phone: user.phone,
         email: user.email,
-        // role: user.role,
+        role: user.role,
         createdAt: user.createdAt,
         gender: user.gender,
       };
@@ -78,10 +78,10 @@ export class UserService {
     }
   }
 
-  async updateUserById(data: IUpdateUser,id: string) {
+  async updateUserById(data: IUpdateUser, id: string) {
     const userRepository = dataSource.getRepository(User);
     const existingUser = await userRepository.findOneBy({
-      id
+      id,
     });
 
     if (!existingUser) {
@@ -109,6 +109,19 @@ export class UserService {
     if (!user || !user.id) {
       throw new Error('User not found');
     }
-    return await this.updateUserById(data,user.id)
+    return await this.updateUserById(data, user.id);
+  }
+
+  async deleteUser(phone: string) {
+    const user = await this.userRepository.findOne({ where: { phone } });
+
+    if (!user) {
+      return null;
+    }
+
+    user.active = false;
+    await this.userRepository.save(user);
+
+    return user;
   }
 }
