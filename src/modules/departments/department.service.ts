@@ -3,7 +3,6 @@ import { dataSource } from '../../db';
 import { Department } from './department.schema';
 import { CreateRequest } from './dto/CreateRequest';
 import { UpdateRequest } from './dto/UpdateRequest';
-import { validate } from 'class-validator';
 import { validationEntity } from '../../middlewares/validate';
 
 const departmentRepository = dataSource.getRepository(Department);
