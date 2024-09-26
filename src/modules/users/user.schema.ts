@@ -16,6 +16,12 @@ export enum Gender {
   FEMALE = 'female',
 }
 
+export enum Role {
+  Admin = 'admin',
+  MANAGER = 'manager',
+  EMPLOYEE = 'EMPLOYEE',
+}
+
 @Entity()
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -24,10 +30,10 @@ export class User extends BaseEntity {
   @Column('text')
   name: string;
 
-  @Column({ type:'text', unique: true })
+  @Column({ type: 'text', unique: true })
   email: string;
 
-  @Column({ type:'text', unique: true })
+  @Column({ type: 'text', unique: true })
   phone: string;
 
   @Column()
@@ -36,7 +42,10 @@ export class User extends BaseEntity {
   @Column('text')
   gender: Gender;
 
-  @Column({type: 'text', nullable: true })
+  @Column({ type: 'text', default: Role.EMPLOYEE })
+  role: Role;
+
+  @Column({ type: 'text', nullable: true })
   photo?: string;
 
   @Column({ type: 'boolean', default: true })
