@@ -18,12 +18,21 @@ export const getDepartmentById = async (req: Request, res: Response) => {
 };
 
 export const createDepartment = async (req: Request, res: Response) => {
-  const respone = await addDepartment(req.body).catch((err) => {
+  try {
+    const response = await addDepartment(req.body);
+    return res.status(200).json(response);
+  } catch (err) {
     console.error('Failed create new Department: ', err);
 
-    return err.detail;
-  });
-  res.json(respone);
+    if (err instanceof Error) {
+      return res.status(500).json({
+        success: false,
+        message: err.message,
+      });
+    } else {
+      return res.status(500).json(err);
+    }
+  }
 };
 
 export const patchDepartment = async (req: Request, res: Response) => {
@@ -40,10 +49,7 @@ export const patchDepartment = async (req: Request, res: Response) => {
         message: err.message,
       });
     } else {
-      return res.status(500).json({
-        success: false,
-        message: 'An unknown error occurred',
-      });
+      return res.status(500).json(err);
     }
   }
 };

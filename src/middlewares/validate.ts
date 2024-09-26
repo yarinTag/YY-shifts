@@ -22,6 +22,18 @@ export const validationMiddleware =
     return true;
   };
 
+export const validationEntity = async (
+  validationSchema: new () => object,
+  entity: object
+) => {
+  const result = await validationPipe(validationSchema, entity);
+
+  if (result.success === false) {
+    return { sucsses: false, errors: flattenErrors(result) };
+  }
+  return result;
+};
+
 function flattenErrors(errorObject: ValidationResponse) {
   return errorObject.errors.map((error) => {
     return {
