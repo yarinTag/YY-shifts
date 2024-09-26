@@ -1,55 +1,66 @@
 import { Request, Response } from 'express';
 import { DepartmentService } from './department.service';
 
-const departmentService = new DepartmentService();
+export class DepartmentController {
+  private departmentService = new DepartmentService();
 
-export const getAllDepartments = async (req: Request, res: Response) => {
-  const departments = await departmentService.findAllDepartments();
-  res.json(departments);
-};
+  getAllDepartments = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    const departments = await this.departmentService.findAllDepartments();
 
-export const getDepartmentById = async (req: Request, res: Response) => {
-  const department = await departmentService.findDepartmentById(req.params.id);
+    return res.json(departments);
+  };
 
-  res.json(department);
-};
+  getDepartmentById = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    const department = await this.departmentService.findDepartmentById(
+      req.params.id
+    );
 
-export const createDepartment = async (req: Request, res: Response) => {
-  try {
-    const response = await departmentService.addDepartment(req.body);
-    return res.status(200).json(response);
-  } catch (err) {
-    console.error('Failed create new Department: ', err);
+    return res.json(department);
+  };
 
-    if (err instanceof Error) {
-      return res.status(500).json({
-        success: false,
-        message: err.message,
-      });
-    } else {
-      return res.status(500).json(err);
+  createDepartment = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const response = await this.departmentService.addDepartment(req.body);
+      return res.status(200).json(response);
+    } catch (err) {
+      console.error('Failed create new Department: ', err);
+
+      if (err instanceof Error) {
+        return res.status(500).json({
+          success: false,
+          message: err.message,
+        });
+      } else {
+        return res.status(500).json(err);
+      }
     }
-  }
-};
+  };
 
-export const patchDepartment = async (req: Request, res: Response) => {
-  try {
-    const response = await departmentService.updateDepartment({
-      ...req.body,
-      ...req.params,
-    });
-
-    return res.status(200).json(response);
-  } catch (err) {
-    console.error('Failed to update Department: ', err);
-
-    if (err instanceof Error) {
-      return res.status(500).json({
-        success: false,
-        message: err.message,
+  patchDepartment = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const response = await this.departmentService.updateDepartment({
+        ...req.body,
+        ...req.params,
       });
-    } else {
-      return res.status(500).json(err);
+
+      return res.status(200).json(response);
+    } catch (err) {
+      console.error('Failed to update Department: ', err);
+
+      if (err instanceof Error) {
+        return res.status(500).json({
+          success: false,
+          message: err.message,
+        });
+      } else {
+        return res.status(500).json(err);
+      }
     }
-  }
-};
+  };
+}
