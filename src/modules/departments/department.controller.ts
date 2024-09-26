@@ -63,4 +63,26 @@ export class DepartmentController {
       }
     }
   };
+
+  deleteDepartment = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const response = await this.departmentService.deleteDepartment({
+        ...req.body,
+        ...req.params,
+      });
+
+      return res.status(200).json(response);
+    } catch (err) {
+      console.error('Failed to delete Department: ', err);
+
+      if (err instanceof Error) {
+        return res.status(500).json({
+          success: false,
+          message: err.message,
+        });
+      } else {
+        return res.status(500).json(err);
+      }
+    }
+  };
 }

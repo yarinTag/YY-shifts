@@ -5,6 +5,7 @@ import { Department } from './department.schema';
 import { CreateRequest } from './dto/CreateRequest';
 import { UpdateRequest } from './dto/UpdateRequest';
 import { validationEntity } from '../../middlewares/validate';
+import { DeleteRequest } from './dto/DeleteRequest';
 
 export class DepartmentService {
   departmentRepository = dataSource.getRepository(Department);
@@ -41,6 +42,7 @@ export class DepartmentService {
   async updateDepartment(req: UpdateRequest) {
     const department = await this.departmentRepository.findOneBy({
       id: req.id,
+      active: true,
     });
 
     if (!department) {
@@ -56,6 +58,25 @@ export class DepartmentService {
       );
     }
 
+    await this.departmentRepository.update({ id: req.id }, req);
+
+    return {
+      sucsses: true,
+      message: 'Department updated successfully',
+    };
+  }
+
+  async deleteDepartment(req: DeleteRequest) {
+    const department = await this.departmentRepository.findOneBy({
+      id: req.id,
+      active: true,
+    });
+
+    if (!department) {
+      throw new Error(`Departments with Id: ${req.id} not found`);
+    }
+
+    department.active = false;
     await this.departmentRepository.update({ id: req.id }, req);
 
     return {

@@ -4,6 +4,7 @@ import { validationMiddleware } from '../middlewares/validate';
 import { CreateRequest } from '../modules/departments/dto/CreateRequest';
 import { UpdateRequest } from '../modules/departments/dto/UpdateRequest';
 import { GetByIdRequest } from '../modules/departments/dto/GetByIdRequest';
+import { DeleteRequest } from '../modules/departments/dto/DeleteRequest';
 
 const departmentController = new DepartmentController();
 const router = Router();
@@ -22,6 +23,11 @@ router.patch(
   '/:id',
   validationMiddleware(UpdateRequest),
   departmentController.patchDepartment
+);
+router.delete(
+  '/:id',
+  validationMiddleware(DeleteRequest),
+  departmentController.deleteDepartment
 );
 
 export default router;
