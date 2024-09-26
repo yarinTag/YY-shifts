@@ -1,25 +1,22 @@
 import { Request, Response } from 'express';
-import {
-  findAllDepartments,
-  addDepartment,
-  findDepartmentById,
-  updateDepartment,
-} from './department.service';
+import { DepartmentService } from './department.service';
+
+const departmentService = new DepartmentService();
 
 export const getAllDepartments = async (req: Request, res: Response) => {
-  const departments = await findAllDepartments();
+  const departments = await departmentService.findAllDepartments();
   res.json(departments);
 };
 
 export const getDepartmentById = async (req: Request, res: Response) => {
-  const department = await findDepartmentById(req.params.id);
+  const department = await departmentService.findDepartmentById(req.params.id);
 
   res.json(department);
 };
 
 export const createDepartment = async (req: Request, res: Response) => {
   try {
-    const response = await addDepartment(req.body);
+    const response = await departmentService.addDepartment(req.body);
     return res.status(200).json(response);
   } catch (err) {
     console.error('Failed create new Department: ', err);
@@ -37,7 +34,10 @@ export const createDepartment = async (req: Request, res: Response) => {
 
 export const patchDepartment = async (req: Request, res: Response) => {
   try {
-    const response = await updateDepartment({ ...req.body, ...req.params });
+    const response = await departmentService.updateDepartment({
+      ...req.body,
+      ...req.params,
+    });
 
     return res.status(200).json(response);
   } catch (err) {
