@@ -1,10 +1,8 @@
-import { NextFunction, Request, Response } from 'express';
-import { dataSource } from '../../db';
-import { User } from './user.schema';
+import { Request, Response } from 'express';
+
 import { UserService } from './user.service';
 
 class UserController {
-  private userRepository = dataSource.getRepository(User);
   private userService = new UserService();
 
   public signIn = async (req: Request, res: Response): Promise<Response> => {
@@ -22,32 +20,16 @@ class UserController {
     return res.status(401).json({ message: 'Invalid credentials' });
   };
 
-  public verifyToken = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> => {
-    const token = req.cookies.token;
-    if (!token) {
-      return res.status(403).json({ message: 'Token not found' });
-    }
-    try {
-      const verify = await this.userService.verifyToken(token);
-      return res.json({ data: verify, message: 'successful' });
-    } catch (err) {
-      return res.status(401).json({ message: 'Invalid token' });
-    }
-  };
-
   public getAllUsers = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
+    const currentUserId = req.userId ?? '';
     try {
-      const users = await this.userRepository.find();
+      const users = await this.userService.getAllUsers(currentUserId);
       return res.json(users);
     } catch (error) {
-      return res.status(500).json({ error: 'Error fetching users' });
+      return res.status(500).json({ error: error });
     }
   };
 
@@ -70,7 +52,7 @@ class UserController {
     try {
       const updateUser = await this.userService.updateUser(
         req.body,
-        req.cookies.token
+        req.userId
       );
       return res.status(201).json(updateUser);
     } catch (error) {
@@ -82,13 +64,11 @@ class UserController {
     req: Request,
     res: Response
   ): Promise<Response> => {
-    const phone = req.params.id;
+    const phone = req.params.phone;
 
     try {
       const updatedUser = await this.userService.deleteUser(phone);
-      if (!updatedUser) {
-        return res.status(404).json({ message: 'User not found' });
-      }
+
       return res
         .status(200)
         .json({ message: 'User deactivated successfully', user: updatedUser });

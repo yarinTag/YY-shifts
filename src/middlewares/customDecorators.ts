@@ -57,38 +57,3 @@ export function IsUnique(validationOptions?: ValidationOptions) {
     });
   };
 }
-
-function extractUserRole(req: Request): string | null {
-  const token = req.cookies['token'];
-  if (!token) return null;
-
-  try {
-    const decodedToken = jwt.verify(
-      token,
-      process.env.JWT_SECRET ?? ''
-    ) as jwt.JwtPayload;
-    return decodedToken.role;
-  } catch (error) {
-    return null;
-  }
-}
-
-export function RoleGuard(requiredRoles: string[]) {
-  return (req: Request, res: Response, next: NextFunction) => {
-    const userRole = extractUserRole(req);
-
-    if (!userRole) {
-      return res.status(401).json({ message: 'Unauthorized: No role found' });
-    }
-
-    if (!requiredRoles.includes(userRole)) {
-      return res.status(403).json({
-        message: `Forbidden: Requires one of the following roles: ${requiredRoles.join(
-          ', '
-        )}`,
-      });
-    }
-
-    next();
-  };
-}

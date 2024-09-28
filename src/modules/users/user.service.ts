@@ -1,13 +1,11 @@
 import * as bcrypt from 'bcrypt';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import { plainToInstance } from 'class-transformer';
 
 import { dataSource } from '../../db';
 import { Gender, User } from './user.schema';
-import jwt, { JwtPayload } from 'jsonwebtoken';
-import { env } from 'process';
-import { Not } from 'typeorm';
-import { plainToInstance } from 'class-transformer';
-import { Department } from '../departments/department.schema';
 import { validationEntity } from '../../middlewares/validate';
+import { Not } from 'typeorm';
 
 interface IUser {
   name: string;
@@ -51,12 +49,8 @@ export class UserService {
     if (user && (await bcrypt.compare(password, user.password))) {
       const payload = {
         id: user.id,
-        name: user.name,
-        phone: user.phone,
-        email: user.email,
         role: user.role,
-        createdAt: user.createdAt,
-        gender: user.gender,
+        departmentId: user.department,
       };
       const token = jwt.sign(payload, process.env.JWT_SECRET ?? '', {
         expiresIn: '30d',
@@ -66,21 +60,17 @@ export class UserService {
     }
   }
 
-  async verifyToken(token: string) {
-    if (!token) {
-      throw new Error('Token not provided');
-    }
+  async getAllUsers(id: string) {
     try {
-      const verify = jwt.verify(token, process.env.JWT_SECRET ?? '');
-      return verify;
-    } catch (err) {
-      throw new Error('Invalid token');
+      const users = await this.userRepository.find({ where: { id: Not(id) } });
+      return users;
+    } catch (error) {
+      throw new Error('Error fetching users');
     }
   }
 
   async updateUserById(data: IUpdateUser, id: string) {
-    const userRepository = dataSource.getRepository(User);
-    const existingUser = await userRepository.findOneBy({
+    const existingUser = await this.userRepository.findOneBy({
       id,
     });
 
@@ -97,30 +87,29 @@ export class UserService {
       );
     }
 
-    await userRepository.update({ id }, entity);
+    await this.userRepository.update({ id }, entity);
     return {
       sucsses: true,
       message: 'User updated successfully',
     };
   }
 
-  async updateUser(data: IUpdateUser, token: string) {
-    const user = jwt.verify(token, process.env.JWT_SECRET ?? '') as JwtPayload;
-    if (!user || !user.id) {
+  async updateUser(data: IUpdateUser, userId: string | undefined) {
+    if (!userId) {
       throw new Error('User not found');
     }
-    return await this.updateUserById(data, user.id);
+    return await this.updateUserById(data, userId);
   }
 
   async deleteUser(phone: string) {
     const user = await this.userRepository.findOne({ where: { phone } });
 
     if (!user) {
-      return null;
+      throw new Error('User not found');
     }
 
     user.active = false;
-    await this.userRepository.save(user);
+    await this.userRepository.update({ phone }, user);
 
     return user;
   }
