@@ -5,6 +5,18 @@ import { UserService } from './user.service';
 class UserController {
   private userService = new UserService();
 
+  public createUser = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const newUser = await this.userService.createUser(req.body);
+      return res.status(201).json(newUser);
+    } catch (error) {
+      return res.status(500).json({ error: 'Error creating user' });
+    }
+  };
+
   public signIn = async (req: Request, res: Response): Promise<Response> => {
     const token = await this.userService.signIn(req.body);
     if (token) {
@@ -30,18 +42,6 @@ class UserController {
       return res.json(users);
     } catch (error) {
       return res.status(500).json({ error: error });
-    }
-  };
-
-  public createUser = async (
-    req: Request,
-    res: Response
-  ): Promise<Response> => {
-    try {
-      const newUser = await this.userService.createUser(req.body);
-      return res.status(201).json(newUser);
-    } catch (error) {
-      return res.status(500).json({ error: 'Error creating user' });
     }
   };
 

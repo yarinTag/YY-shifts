@@ -1,34 +1,21 @@
+import { Not } from 'typeorm';
+import jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
-import jwt, { JwtPayload } from 'jsonwebtoken';
 import { plainToInstance } from 'class-transformer';
 
 import { dataSource } from '../../db';
 import { Gender, User } from './user.schema';
+import { CreateUserRequest } from './dto/CreateRequest';
 import { validationEntity } from '../../middlewares/validate';
-import { Not } from 'typeorm';
-
-interface IUser {
-  name: string;
-  email: string;
-  phone: string;
-  gender: Gender.MALE;
-  password: string;
-}
-
-interface IUpdateUser {
-  id?: string;
-  name?: string;
-  email?: string;
-  phone?: string;
-  gender?: Gender;
-}
+import { UpdateUserRequest } from './dto/UpdateRequest';
 
 export class UserService {
   private userRepository = dataSource.getRepository(User);
 
-  async createUser(data: IUser) {
+  async createUser(data: CreateUserRequest) {
     const encrypthPassword = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(data.password, encrypthPassword);
+
     const user = this.userRepository.create({
       name: data.name,
       email: data.email,
@@ -36,7 +23,14 @@ export class UserService {
       gender: data.gender,
       password: hashedPassword,
     });
+    const entity = plainToInstance(User, user);
+    const validationResult = await validationEntity(User, entity);
 
+    if (validationResult.sucsses === false) {
+      throw new Error(
+        `User with name: ${data.name}, Failed to create: ${validationResult.errors}`
+      );
+    }
     return await this.userRepository.save(user);
   }
 
@@ -69,7 +63,7 @@ export class UserService {
     }
   }
 
-  async updateUserById(data: IUpdateUser, id: string) {
+  async updateUserById(data: UpdateUserRequest, id: string) {
     const existingUser = await this.userRepository.findOneBy({
       id,
     });
@@ -94,7 +88,7 @@ export class UserService {
     };
   }
 
-  async updateUser(data: IUpdateUser, userId: string | undefined) {
+  async updateUser(data: UpdateUserRequest, userId: string | undefined) {
     if (!userId) {
       throw new Error('User not found');
     }

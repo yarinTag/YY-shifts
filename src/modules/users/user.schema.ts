@@ -10,6 +10,7 @@ import { Department } from '../departments/department.schema';
 import { Availability } from '../availabilities/availability.schema';
 import { Shift } from '../shifts/shift.schema';
 import { BaseEntity } from '../BaseEntity';
+import { IsEmail, IsPhoneNumber } from 'class-validator';
 
 export enum Gender {
   MALE = 'male',
@@ -31,9 +32,11 @@ export class User extends BaseEntity {
   name: string;
 
   @Column({ type: 'text', unique: true })
+  @IsEmail()
   email: string;
 
   @Column({ type: 'text', unique: true })
+  @IsPhoneNumber('IL')
   phone: string;
 
   @Column()
