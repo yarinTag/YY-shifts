@@ -4,6 +4,8 @@ import cookieParser from 'cookie-parser';
 
 import { dataSource } from './db';
 import userRoute from './routes/userRoute';
+import departmentRoute from './routes/departmentRoute';
+import { verifyTokenMiddleware } from './middlewares/authMiddleware';
 
 dotenv.config();
 
@@ -25,5 +27,6 @@ dataSource
     console.error('Error connecting to PostgreSQL database:', err);
     process.exit(1); // Exit the process if the database connection fails
   });
-
-app.use('/users', userRoute);
+app.use(verifyTokenMiddleware);
+app.use('/user', userRoute);
+app.use('/department', departmentRoute);

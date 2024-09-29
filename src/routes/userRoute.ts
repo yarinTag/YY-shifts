@@ -8,7 +8,6 @@ import {
 import UserController from '../modules/users/user.controller';
 import { validationMiddleware } from '../middlewares/validate';
 import { SingInRequest } from '../modules/users/dto/SingInRequest';
-import { verifyTokenMiddleware } from '../middlewares/authMiddleware';
 import { CreateUserRequest } from '../modules/users/dto/CreateRequest';
 import { UpdateUserRequest } from '../modules/users/dto/UpdateRequest';
 import { DeleteUserRequest } from '../modules/users/dto/DeleteRequest';
@@ -23,7 +22,6 @@ router.post(
 
 router.get(
   '/',
-  verifyTokenMiddleware,
   RoleGuard([Role.Admin, Role.MANAGER]),
   UserController.getAllUsers
 );
@@ -31,12 +29,12 @@ router.get(
 router.post(
   '/',
   validationMiddleware(CreateUserRequest),
+  checkDepartmentMiddleware,
   UserController.createUser
 );
 
 router.patch(
   '/',
-  verifyTokenMiddleware,
   validationMiddleware(UpdateUserRequest),
   UserController.updateUser
 );
@@ -48,6 +46,5 @@ router.delete(
   validationMiddleware(DeleteUserRequest),
   UserController.deleteUser
 );
-// router.get('/users/:id');
 
 export default router;

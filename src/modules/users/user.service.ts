@@ -4,10 +4,11 @@ import * as bcrypt from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
 
 import { dataSource } from '../../db';
-import { Gender, User } from './user.schema';
+import { User } from './user.schema';
 import { CreateUserRequest } from './dto/CreateRequest';
 import { validationEntity } from '../../middlewares/validate';
 import { UpdateUserRequest } from './dto/UpdateRequest';
+import { SignInRequest } from './dto/SignInRequest';
 
 export class UserService {
   private userRepository = dataSource.getRepository(User);
@@ -34,7 +35,7 @@ export class UserService {
     return await this.userRepository.save(user);
   }
 
-  async signIn(authCredentials: { phone: string; password: string }) {
+  async signIn(authCredentials: SignInRequest) {
     const { phone, password } = authCredentials;
     const user = await this.userRepository.findOne({
       where: { phone, active: true },
@@ -59,6 +60,7 @@ export class UserService {
       const users = await this.userRepository.find({ where: { id: Not(id) } });
       return users;
     } catch (error) {
+      console.error(error);
       throw new Error('Error fetching users');
     }
   }

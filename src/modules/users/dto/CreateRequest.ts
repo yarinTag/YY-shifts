@@ -4,6 +4,7 @@ import {
   IsEmail,
   IsPhoneNumber,
   MinLength,
+  IsUUID,
 } from 'class-validator';
 
 import { Gender } from '../user.schema';
@@ -13,6 +14,9 @@ export class CreateUserRequest {
   @IsString()
   @Length(1, 50)
   name: string;
+
+  @IsUUID()
+  departmentId: string;
 
   @IsEmail({}, { message: 'Invalid email format' })
   @IsUnique({ message: 'Email is already in use' })
@@ -24,7 +28,7 @@ export class CreateUserRequest {
 
   @IsString()
   gender: Gender;
-  
+
   @MinLength(8)
   password: string;
 }

@@ -16,7 +16,7 @@ export class Department extends BaseEntity {
   @Column({ type: 'boolean', default: true })
   active: boolean;
 
-  @Column('text')
+  @Column({ type: 'text', nullable: true })
   address: string;
 
   @OneToMany(() => User, (user: User) => user.department)
