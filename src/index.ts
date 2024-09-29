@@ -1,5 +1,7 @@
-import express from 'express';
 import dotenv from 'dotenv';
+import express from 'express';
+import cookieParser from 'cookie-parser';
+
 import { dataSource } from './db';
 import userRoute from './routes/userRoute';
 
@@ -7,6 +9,7 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 
 dataSource
   .initialize()
@@ -23,4 +26,4 @@ dataSource
     process.exit(1); // Exit the process if the database connection fails
   });
 
-app.use(userRoute);
+app.use('/users', userRoute);
