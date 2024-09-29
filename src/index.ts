@@ -3,8 +3,9 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 
 import { dataSource } from './db';
-import userRoute from './routes/userRoute';
-import departmentRoute from './routes/departmentRoute';
+import userRouter from './routes/userRoute';
+import departmentRouter from './routes/departmentRoute';
+import { errorHandler } from './middlewares/error/asyncWrapper';
 import { verifyTokenMiddleware } from './middlewares/authMiddleware';
 
 dotenv.config();
@@ -28,5 +29,6 @@ dataSource
     process.exit(1); // Exit the process if the database connection fails
   });
 app.use(verifyTokenMiddleware);
-app.use('/user', userRoute);
-app.use('/department', departmentRoute);
+app.use('/user', userRouter.getRouter());
+app.use('/department', departmentRouter.getRouter());
+app.use(errorHandler);
