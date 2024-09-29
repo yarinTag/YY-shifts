@@ -8,7 +8,6 @@ import {
 import UserController from '../modules/users/user.controller';
 import { validationMiddleware } from '../middlewares/validate';
 import { SingInRequest } from '../modules/users/dto/SingInRequest';
-import { verifyTokenMiddleware } from '../middlewares/authMiddleware';
 import { CreateUserRequest } from '../modules/users/dto/CreateRequest';
 import { UpdateUserRequest } from '../modules/users/dto/UpdateRequest';
 import { DeleteUserRequest } from '../modules/users/dto/DeleteRequest';
