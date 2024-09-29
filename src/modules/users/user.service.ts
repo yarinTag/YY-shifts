@@ -46,8 +46,8 @@ export class UserService {
         role: user.role,
         departmentId: user.department,
       };
-      const token = jwt.sign(payload, process.env.JWT_SECRET ?? '', {
-        expiresIn: process.env.TOKEN_EXPIRATION,
+      const token = jwt.sign(payload, `${process.env.JWT_SECRET}`, {
+        expiresIn: `${process.env.TOKEN_EXPIR}`,
       });
 
       return token;

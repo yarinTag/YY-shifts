@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
 
 import { dataSource } from './db';
@@ -27,4 +26,4 @@ dataSource
     process.exit(1); // Exit the process if the database connection fails
   });
 
-app.use('/users',userRoute);
+app.use('/users', userRoute);
