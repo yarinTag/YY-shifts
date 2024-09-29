@@ -23,7 +23,6 @@ router.post(
 
 router.get(
   '/',
-  verifyTokenMiddleware,
   RoleGuard([Role.Admin, Role.MANAGER]),
   UserController.getAllUsers
 );
@@ -36,7 +35,6 @@ router.post(
 
 router.patch(
   '/',
-  verifyTokenMiddleware,
   validationMiddleware(UpdateUserRequest),
   UserController.updateUser
 );
@@ -48,6 +46,5 @@ router.delete(
   validationMiddleware(DeleteUserRequest),
   UserController.deleteUser
 );
-// router.get('/users/:id');
 
 export default router;
