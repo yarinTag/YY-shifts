@@ -6,12 +6,20 @@ class ValidationResponse {
   errors: ValidationError[];
 }
 
+import { ValidationError, validationPipe } from './validation';
+
+class ValidationResponse {
+  success: boolean;
+  errors: ValidationError[];
+}
+
 export const validationMiddleware =
   (validationSchema: new () => object) =>
   async (req: Request, res: Response, next: NextFunction) => {
     const result = await validationPipe(validationSchema, {
       ...req.body,
       ...req.params,
+      ...req.headers,
     });
 
     if (result.success === false) {
