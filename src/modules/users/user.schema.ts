@@ -39,13 +39,13 @@ export class User extends BaseEntity {
   @IsPhoneNumber('IL')
   phone: string;
 
-  @Column()
+  @Column({ nullable: false })
   password: string;
 
   @Column('text')
   gender: Gender;
 
-  @Column({ type: 'text', default: Role.EMPLOYEE })
+  @Column({ type: 'text', default: Role.EMPLOYEE, nullable: false })
   role: Role;
 
   @Column({ type: 'text', nullable: true })

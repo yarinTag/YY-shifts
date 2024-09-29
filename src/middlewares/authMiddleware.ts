@@ -79,15 +79,16 @@ export const checkDepartmentMiddleware = async (
   next: NextFunction
 ): Promise<Response | void> => {
   const departmentId = req.departmentId;
+  const isAcountAdmin = req.userRold === Role.Admin;
 
-  if (!departmentId) {
+  if (!departmentId || !isAcountAdmin) {
     return res.status(403).json({ message: 'department id not found' });
   }
 
   try {
     const departmentRepository = dataSource.getRepository(Department);
     const department = await departmentRepository.findOne({
-      where: { id: departmentId },
+      where: { id: departmentId, active: true },
     });
 
     if (!department) {
