@@ -19,6 +19,7 @@ export class DepartmentService {
   async findDepartmentById(departmentId: string) {
     const department = await this.departmentRepository.findOneBy({
       id: departmentId,
+      active: true,
     });
 
     return department;
