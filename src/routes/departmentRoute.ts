@@ -8,7 +8,8 @@ import { DeleteRequest } from '../modules/departments/dto/DeleteRequest';
 
 const departmentController = new DepartmentController();
 const router = Router();
-router.get('/', departmentController.getAllDepartments);
+router.get('/all', departmentController.getAllDepartments);
+router.get('/', departmentController.getDepartmentById);
 router.get(
   '/:id',
   validationMiddleware(GetByIdRequest),

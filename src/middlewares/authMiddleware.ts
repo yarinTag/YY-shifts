@@ -5,13 +5,13 @@ import { dataSource } from '../db';
 import { Role } from '../modules/users/user.schema';
 import { Department } from '../modules/departments/department.schema';
 
-declare module 'express-serve-static-core' {
-  interface Request {
-    departmentId?: string;
-    userRold?: Role;
-    userId?: string;
-  }
-}
+// declare module 'express-serve-static-core' {
+//   interface Request {
+//     departmentId?: string;
+//     userRold?: Role;
+//     userId?: string;
+//   }
+// }
 
 export const verifyTokenMiddleware = async (
   req: Request,
@@ -33,6 +33,7 @@ export const verifyTokenMiddleware = async (
 
     next();
   } catch (err) {
+    console.error(err);
     return res.status(401).json({ message: 'Invalid token' });
   }
 };
@@ -49,6 +50,7 @@ function extractUserRole(req: Request): string | null {
     req.departmentId = decodedToken.departmentId;
     return decodedToken.role;
   } catch (error) {
+    console.error(error);
     return null;
   }
 }
@@ -68,7 +70,7 @@ export function RoleGuard(requiredRoles: string[]) {
         )}`,
       });
     }
-    req.userRold = userRole;
+    req.userRole = userRole;
     next();
   };
 }
@@ -79,7 +81,7 @@ export const checkDepartmentMiddleware = async (
   next: NextFunction
 ): Promise<Response | void> => {
   const departmentId = req.departmentId;
-  const isAcountAdmin = req.userRold === Role.Admin;
+  const isAcountAdmin = req.userRole === Role.Admin;
 
   if (!departmentId || !isAcountAdmin) {
     return res.status(403).json({ message: 'department id not found' });
@@ -97,6 +99,7 @@ export const checkDepartmentMiddleware = async (
 
     next();
   } catch (err) {
+    console.error(err);
     return res.status(401).json({ message: 'Invalid token' });
   }
 };

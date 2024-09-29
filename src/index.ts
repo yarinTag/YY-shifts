@@ -28,5 +28,5 @@ dataSource
     process.exit(1); // Exit the process if the database connection fails
   });
 app.use(verifyTokenMiddleware);
-app.use('/users', userRoute);
-app.use('/departments', departmentRoute);
+app.use('/user', userRoute);
+app.use('/department', departmentRoute);

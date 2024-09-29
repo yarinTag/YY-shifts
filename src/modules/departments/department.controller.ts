@@ -17,9 +17,10 @@ export class DepartmentController {
     req: Request,
     res: Response
   ): Promise<Response> => {
-    const department = await this.departmentService.findDepartmentById(
-      req.params.id
-    );
+    const departmentId = req.params.id ?? req.departmentId;
+    const department = await this.departmentService.findDepartmentById({
+      id: departmentId,
+    });
 
     return res.json(department);
   };

@@ -6,6 +6,7 @@ import { CreateRequest } from './dto/CreateRequest';
 import { UpdateRequest } from './dto/UpdateRequest';
 import { validationEntity } from '../../middlewares/validate';
 import { DeleteRequest } from './dto/DeleteRequest';
+import { GetByIdRequest } from './dto/GetByIdRequest';
 
 export class DepartmentService {
   departmentRepository = dataSource.getRepository(Department);
@@ -16,9 +17,9 @@ export class DepartmentService {
     return departments;
   }
 
-  async findDepartmentById(departmentId: string) {
+  async findDepartmentById(req: GetByIdRequest) {
     const department = await this.departmentRepository.findOneBy({
-      id: departmentId,
+      id: req.id,
       active: true,
     });
 
