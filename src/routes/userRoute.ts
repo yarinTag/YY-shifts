@@ -29,6 +29,7 @@ router.get(
 router.post(
   '/',
   validationMiddleware(CreateUserRequest),
+  checkDepartmentMiddleware,
   UserController.createUser
 );
 
