@@ -15,9 +15,10 @@ import { CreateUserRequest } from './dto/CreateRequest';
 import { UpdateUserRequest } from './dto/UpdateRequest';
 import { validationEntity } from '../../middlewares/validate';
 import { GetByIdRequest } from './dto/GetByIdRequest';
+import { UserRepository } from './userRepository';
 
 export class UserService {
-  private userRepository = dataSource.getRepository(User);
+  private userRepository = new UserRepository(dataSource);
 
   async createUser(data: CreateUserRequest) {
     const encrypthPassword = await bcrypt.genSalt();
@@ -91,9 +92,7 @@ export class UserService {
   }
 
   async updateUserById(data: UpdateUserRequest, id: string) {
-    const existingUser = await this.userRepository.findOneBy({
-      id,
-    });
+    const existingUser = await this.userRepository.findById(id);
 
     if (!existingUser) {
       throw new EntityNotFoundError(User.name, id);
@@ -122,16 +121,13 @@ export class UserService {
     return await this.updateUserById(data, userId);
   }
 
-  async deleteUser(phone: string) {
-    const user = await this.userRepository.findOne({ where: { phone } });
+  async deleteUser(id: string) {
+    const user = await this.userRepository.deleteById(id);
 
     if (!user) {
-      throw new EntityNotFoundError(User.name, phone);
+      throw new EntityNotFoundError(User.name, id);
     }
-
-    user.active = false;
-    await this.userRepository.update({ phone }, user);
-
+  
     return user;
   }
 }
