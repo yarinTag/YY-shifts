@@ -69,9 +69,9 @@ class UserController {
     req: Request,
     res: Response
   ): Promise<Response> => {
-    const phone = req.params.phone;
+    const id = req.params.id;
 
-    const updatedUser = await this.userService.deleteUser(phone);
+    const updatedUser = await this.userService.deleteUser(id);
     return res.status(200).json({
       message: 'User deactivated successfully',
       user: updatedUser,

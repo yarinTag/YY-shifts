@@ -52,7 +52,7 @@ userRouter.patch(
 );
 
 userRouter.delete(
-  '/:phone',
+  '/:id',
   RoleGuard([Role.Admin, Role.MANAGER]),
   checkDepartmentMiddleware,
   validationMiddleware(DeleteUserRequest),

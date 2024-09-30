@@ -1,6 +1,6 @@
-import { IsPhoneNumber } from 'class-validator';
+import { IsUUID } from 'class-validator';
 
 export class DeleteUserRequest {
-  @IsPhoneNumber('IL')
-  phone: string;
+  @IsUUID()
+  id: string;
 }
