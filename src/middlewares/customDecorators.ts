@@ -6,7 +6,6 @@ import {
   ValidationArguments,
 } from 'class-validator';
 import jwt from 'jsonwebtoken';
-import { Request, Response, NextFunction } from 'express';
 
 import { dataSource } from '../db';
 import { User } from '../modules/users/user.schema';

@@ -1,5 +1,3 @@
-import { Router } from 'express';
-
 import { Role } from '../modules/users/user.schema';
 import {
   checkDepartmentMiddleware,
@@ -11,35 +9,36 @@ import { SingInRequest } from '../modules/users/dto/SingInRequest';
 import { CreateUserRequest } from '../modules/users/dto/CreateRequest';
 import { UpdateUserRequest } from '../modules/users/dto/UpdateRequest';
 import { DeleteUserRequest } from '../modules/users/dto/DeleteRequest';
+import AsyncRouter from './AsyncRouter';
 
-const router = Router();
+const userRouter = new AsyncRouter();
 
-router.post(
+userRouter.post(
   '/sign-in',
   validationMiddleware(SingInRequest),
   UserController.signIn
 );
 
-router.get(
+userRouter.get(
   '/',
   RoleGuard([Role.Admin, Role.MANAGER]),
   UserController.getAllUsers
 );
 
-router.post(
+userRouter.post(
   '/',
   validationMiddleware(CreateUserRequest),
   checkDepartmentMiddleware,
   UserController.createUser
 );
 
-router.patch(
+userRouter.patch(
   '/',
   validationMiddleware(UpdateUserRequest),
   UserController.updateUser
 );
 
-router.delete(
+userRouter.delete(
   '/:phone',
   RoleGuard([Role.Admin, Role.MANAGER]),
   checkDepartmentMiddleware,
@@ -47,4 +46,4 @@ router.delete(
   UserController.deleteUser
 );
 
-export default router;
+export default userRouter;

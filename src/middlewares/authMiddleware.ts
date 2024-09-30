@@ -5,14 +5,6 @@ import { dataSource } from '../db';
 import { Role } from '../modules/users/user.schema';
 import { Department } from '../modules/departments/department.schema';
 
-// declare module 'express-serve-static-core' {
-//   interface Request {
-//     departmentId?: string;
-//     userRold?: Role;
-//     userId?: string;
-//   }
-// }
-
 export const verifyTokenMiddleware = async (
   req: Request,
   res: Response,

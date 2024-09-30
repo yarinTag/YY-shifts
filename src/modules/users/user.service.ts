@@ -5,10 +5,14 @@ import { plainToInstance } from 'class-transformer';
 
 import { dataSource } from '../../db';
 import { User } from './user.schema';
-import { CreateUserRequest } from './dto/CreateRequest';
-import { validationEntity } from '../../middlewares/validate';
-import { UpdateUserRequest } from './dto/UpdateRequest';
+import {
+  BadRequestError,
+  NotFoundError,
+} from '../../middlewares/error/ApiError';
 import { SignInRequest } from './dto/SignInRequest';
+import { CreateUserRequest } from './dto/CreateRequest';
+import { UpdateUserRequest } from './dto/UpdateRequest';
+import { validationEntity } from '../../middlewares/validate';
 
 export class UserService {
   private userRepository = dataSource.getRepository(User);
@@ -56,13 +60,8 @@ export class UserService {
   }
 
   async getAllUsers(id: string) {
-    try {
-      const users = await this.userRepository.find({ where: { id: Not(id) } });
-      return users;
-    } catch (error) {
-      console.error(error);
-      throw new Error('Error fetching users');
-    }
+    const users = await this.userRepository.find({ where: { id: Not(id) } });
+    return users;
   }
 
   async updateUserById(data: UpdateUserRequest, id: string) {
@@ -78,7 +77,7 @@ export class UserService {
     const validationResult = await validationEntity(User, entity);
 
     if (validationResult.sucsses === false) {
-      throw new Error(
+      throw new BadRequestError(
         `User with Id: ${id}, Failed to update: ${validationResult.errors}`
       );
     }
@@ -101,7 +100,7 @@ export class UserService {
     const user = await this.userRepository.findOne({ where: { phone } });
 
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundError(`User with phone ${phone}`);
     }
 
     user.active = false;

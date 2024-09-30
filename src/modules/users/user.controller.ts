@@ -1,6 +1,10 @@
 import { Request, Response } from 'express';
 
 import { UserService } from './user.service';
+import {
+  BadRequestError,
+  UnauthorizedError
+} from '../../middlewares/error/ApiError';
 
 class UserController {
   private userService = new UserService();
@@ -9,13 +13,10 @@ class UserController {
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const newUser = await this.userService.createUser(req.body);
-      return res.status(201).json(newUser);
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ error: 'Error creating user' });
-    }
+    const newUser = await this.userService.createUser(req.body);
+    if (newUser) return res.status(201).json(newUser);
+
+    throw new BadRequestError('Error creating user');
   };
 
   public signIn = async (req: Request, res: Response): Promise<Response> => {
@@ -30,7 +31,7 @@ class UserController {
 
       return res.json({ data: token, message: 'Login successful' });
     }
-    return res.status(401).json({ message: 'Invalid credentials' });
+    throw new UnauthorizedError('Invalid credentials');
   };
 
   public getAllUsers = async (
@@ -38,27 +39,16 @@ class UserController {
     res: Response
   ): Promise<Response> => {
     const currentUserId = req.userId ?? '';
-    try {
-      const users = await this.userService.getAllUsers(currentUserId);
-      return res.json(users);
-    } catch (error) {
-      return res.status(500).json({ error: error });
-    }
+    const users = await this.userService.getAllUsers(currentUserId);
+    return res.json(users);
   };
 
   public updateUser = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const updateUser = await this.userService.updateUser(
-        req.body,
-        req.userId
-      );
-      return res.status(201).json(updateUser);
-    } catch (error) {
-      return res.status(500).json({ error: 'Error updating user' });
-    }
+    const updateUser = await this.userService.updateUser(req.body, req.userId);
+    return res.status(201).json(updateUser);
   };
 
   public deleteUser = async (
@@ -67,17 +57,11 @@ class UserController {
   ): Promise<Response> => {
     const phone = req.params.phone;
 
-    try {
-      const updatedUser = await this.userService.deleteUser(phone);
-
-      return res
-        .status(200)
-        .json({ message: 'User deactivated successfully', user: updatedUser });
-    } catch (error) {
-      return res
-        .status(500)
-        .json({ message: 'Error deactivating user', error });
-    }
+    const updatedUser = await this.userService.deleteUser(phone);
+    return res.status(200).json({
+      message: 'User deactivated successfully',
+      user: updatedUser,
+    });
   };
 }
 

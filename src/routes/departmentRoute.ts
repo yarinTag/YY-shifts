@@ -1,34 +1,35 @@
-import { Router } from 'express';
-import { DepartmentController } from '../modules/departments/department.controller';
+import AsyncRouter from './AsyncRouter';
 import { validationMiddleware } from '../middlewares/validate';
 import { CreateRequest } from '../modules/departments/dto/CreateRequest';
 import { UpdateRequest } from '../modules/departments/dto/UpdateRequest';
-import { GetByIdRequest } from '../modules/departments/dto/GetByIdRequest';
 import { DeleteRequest } from '../modules/departments/dto/DeleteRequest';
+import { GetByIdRequest } from '../modules/departments/dto/GetByIdRequest';
+import { DepartmentController } from '../modules/departments/department.controller';
 
 const departmentController = new DepartmentController();
-const router = Router();
-router.get('/all', departmentController.getAllDepartments);
-router.get('/', departmentController.getDepartmentById);
-router.get(
+const departmentRouter = new AsyncRouter();
+
+departmentRouter.get('/all', departmentController.getAllDepartments);
+departmentRouter.get('/', departmentController.getDepartmentById);
+departmentRouter.get(
   '/:id',
   validationMiddleware(GetByIdRequest),
   departmentController.getDepartmentById
 );
-router.post(
+departmentRouter.post(
   '/',
   validationMiddleware(CreateRequest),
   departmentController.createDepartment
 );
-router.patch(
+departmentRouter.patch(
   '/:id',
   validationMiddleware(UpdateRequest),
   departmentController.patchDepartment
 );
-router.delete(
+departmentRouter.delete(
   '/:id',
   validationMiddleware(DeleteRequest),
   departmentController.deleteDepartment
 );
 
-export default router;
+export default departmentRouter;
