@@ -1,35 +1,4 @@
-enum ClientStatusCodes {
-  BadRequest = 400,
-  Conflict = 409,
-  ExpectationFailed = 417,
-  FailedDependency = 424,
-  Forbidden = 403,
-  Gone = 410,
-  ImATeapot = 418,
-  LengthRequired = 411,
-  Locked = 423,
-  LoginTimeOut = 440,
-  MethodNotAllowed = 405,
-  MisdirectedRequest = 421,
-  NotAcceptable = 406,
-  NotFound = 404,
-  PayloadTooLarge = 413,
-  PaymentRequired = 402,
-  PreconditionFailed = 412,
-  PreconditionRequired = 428,
-  ProxyAuthRequired = 407,
-  RangeNotSatisfiable = 416,
-  RequestHeaderFieldsTooLarge = 431,
-  RequestTimeout = 408,
-  RetryWith = 449,
-  TooManyRequests = 429,
-  Unauthorized = 401,
-  UnavailableForLegalReasons = 451,
-  UnprocessableEntity = 422,
-  UnsupportedMediaType = 415,
-  UpgradeRequired = 426,
-  URITooLong = 414,
-}
+import { ClientStatusCode } from '../../types/enum/ClientStatusCode';
 
 export class ApiError extends Error {
   statusCode: number;
@@ -41,182 +10,188 @@ export class ApiError extends Error {
   }
 }
 
+export class EntityNotFoundError extends ApiError {
+  constructor(id: string, type: string) {
+    super(ClientStatusCode.NotFound, `Entity ${type} with ${id} not found!`);
+  }
+}
+
 export class NotFoundError extends ApiError {
   constructor(path: string) {
-    super(ClientStatusCodes.NotFound, `The requested path ${path} not found!`);
+    super(ClientStatusCode.NotFound, `The requested path ${path} not found!`);
   }
 }
 
 export class BadRequestError extends ApiError {
   constructor(message: string = 'Bad Request') {
-    super(ClientStatusCodes.BadRequest, message);
+    super(ClientStatusCode.BadRequest, message);
   }
 }
 
 export class UnauthorizedError extends ApiError {
   constructor(message: string = 'Unauthorized') {
-    super(ClientStatusCodes.Unauthorized, message);
+    super(ClientStatusCode.Unauthorized, message);
   }
 }
 
 export class ConflictError extends ApiError {
   constructor(message: string = 'Conflict') {
-    super(ClientStatusCodes.Conflict, message);
+    super(ClientStatusCode.Conflict, message);
   }
 }
 
 export class ExpectationFailedError extends ApiError {
   constructor(message: string = 'Expectation Failed') {
-    super(ClientStatusCodes.ExpectationFailed, message);
+    super(ClientStatusCode.ExpectationFailed, message);
   }
 }
 
 export class FailedDependencyError extends ApiError {
   constructor(message: string = 'Failed Dependency') {
-    super(ClientStatusCodes.FailedDependency, message);
+    super(ClientStatusCode.FailedDependency, message);
   }
 }
 
 export class ForbiddenError extends ApiError {
   constructor(message: string = 'Forbidden') {
-    super(ClientStatusCodes.Forbidden, message);
+    super(ClientStatusCode.Forbidden, message);
   }
 }
 
 export class GoneError extends ApiError {
   constructor(message: string = 'Gone') {
-    super(ClientStatusCodes.Gone, message);
+    super(ClientStatusCode.Gone, message);
   }
 }
 
 export class ImATeapotError extends ApiError {
   constructor(message: string = "I'm a teapot") {
-    super(ClientStatusCodes.ImATeapot, message);
+    super(ClientStatusCode.ImATeapot, message);
   }
 }
 
 export class LengthRequiredError extends ApiError {
   constructor(message: string = 'Length Required') {
-    super(ClientStatusCodes.LengthRequired, message);
+    super(ClientStatusCode.LengthRequired, message);
   }
 }
 
 export class LockedError extends ApiError {
   constructor(message: string = 'Locked') {
-    super(ClientStatusCodes.Locked, message);
+    super(ClientStatusCode.Locked, message);
   }
 }
 
 export class LoginTimeOutError extends ApiError {
   constructor(message: string = 'Login Timeout') {
-    super(ClientStatusCodes.LoginTimeOut, message);
+    super(ClientStatusCode.LoginTimeOut, message);
   }
 }
 
 export class MethodNotAllowedError extends ApiError {
   constructor(message: string = 'Method Not Allowed') {
-    super(ClientStatusCodes.MethodNotAllowed, message);
+    super(ClientStatusCode.MethodNotAllowed, message);
   }
 }
 
 export class MisdirectedRequestError extends ApiError {
   constructor(message: string = 'Misdirected Request') {
-    super(ClientStatusCodes.MisdirectedRequest, message);
+    super(ClientStatusCode.MisdirectedRequest, message);
   }
 }
 
 export class NotAcceptableError extends ApiError {
   constructor(message: string = 'Not Acceptable') {
-    super(ClientStatusCodes.NotAcceptable, message);
+    super(ClientStatusCode.NotAcceptable, message);
   }
 }
 
 export class PayloadTooLargeError extends ApiError {
   constructor(message: string = 'Payload Too Large') {
-    super(ClientStatusCodes.PayloadTooLarge, message);
+    super(ClientStatusCode.PayloadTooLarge, message);
   }
 }
 
 export class PaymentRequiredError extends ApiError {
   constructor(message: string = 'Payment Required') {
-    super(ClientStatusCodes.PaymentRequired, message);
+    super(ClientStatusCode.PaymentRequired, message);
   }
 }
 
 export class PreconditionFailedError extends ApiError {
   constructor(message: string = 'Precondition Failed') {
-    super(ClientStatusCodes.PreconditionFailed, message);
+    super(ClientStatusCode.PreconditionFailed, message);
   }
 }
 
 export class PreconditionRequiredError extends ApiError {
   constructor(message: string = 'Precondition Required') {
-    super(ClientStatusCodes.PreconditionRequired, message);
+    super(ClientStatusCode.PreconditionRequired, message);
   }
 }
 
 export class ProxyAuthRequiredError extends ApiError {
   constructor(message: string = 'Proxy Authentication Required') {
-    super(ClientStatusCodes.ProxyAuthRequired, message);
+    super(ClientStatusCode.ProxyAuthRequired, message);
   }
 }
 
 export class RangeNotSatisfiableError extends ApiError {
   constructor(message: string = 'Range Not Satisfiable') {
-    super(ClientStatusCodes.RangeNotSatisfiable, message);
+    super(ClientStatusCode.RangeNotSatisfiable, message);
   }
 }
 
 export class RequestHeaderFieldsTooLargeError extends ApiError {
   constructor(message: string = 'Request Header Fields Too Large') {
-    super(ClientStatusCodes.RequestHeaderFieldsTooLarge, message);
+    super(ClientStatusCode.RequestHeaderFieldsTooLarge, message);
   }
 }
 
 export class RequestTimeoutError extends ApiError {
   constructor(message: string = 'Request Timeout') {
-    super(ClientStatusCodes.RequestTimeout, message);
+    super(ClientStatusCode.RequestTimeout, message);
   }
 }
 
 export class RetryWithError extends ApiError {
   constructor(message: string = 'Retry With') {
-    super(ClientStatusCodes.RetryWith, message);
+    super(ClientStatusCode.RetryWith, message);
   }
 }
 
 export class TooManyRequestsError extends ApiError {
   constructor(message: string = 'Too Many Requests') {
-    super(ClientStatusCodes.TooManyRequests, message);
+    super(ClientStatusCode.TooManyRequests, message);
   }
 }
 
 export class UnavailableForLegalReasonsError extends ApiError {
   constructor(message: string = 'Unavailable For Legal Reasons') {
-    super(ClientStatusCodes.UnavailableForLegalReasons, message);
+    super(ClientStatusCode.UnavailableForLegalReasons, message);
   }
 }
 
 export class UnprocessableEntityError extends ApiError {
   constructor(message: string = 'Unprocessable Entity') {
-    super(ClientStatusCodes.UnprocessableEntity, message);
+    super(ClientStatusCode.UnprocessableEntity, message);
   }
 }
 
 export class UnsupportedMediaTypeError extends ApiError {
   constructor(message: string = 'Unsupported Media Type') {
-    super(ClientStatusCodes.UnsupportedMediaType, message);
+    super(ClientStatusCode.UnsupportedMediaType, message);
   }
 }
 
 export class UpgradeRequiredError extends ApiError {
   constructor(message: string = 'Upgrade Required') {
-    super(ClientStatusCodes.UpgradeRequired, message);
+    super(ClientStatusCode.UpgradeRequired, message);
   }
 }
 
 export class URITooLongError extends ApiError {
   constructor(message: string = 'URI Too Long') {
-    super(ClientStatusCodes.URITooLong, message);
+    super(ClientStatusCode.URITooLong, message);
   }
 }

@@ -7,7 +7,8 @@ import { dataSource } from '../../db';
 import { Role, User } from './user.schema';
 import {
   BadRequestError,
-  NotFoundError,
+  EntityNotFoundError,
+  UnprocessableEntityError,
 } from '../../middlewares/error/ApiError';
 import { SignInRequest } from './dto/SignInRequest';
 import { CreateUserRequest } from './dto/CreateRequest';
@@ -33,7 +34,7 @@ export class UserService {
     const validationResult = await validationEntity(User, entity);
 
     if (validationResult.sucsses === false) {
-      throw new Error(
+      throw new UnprocessableEntityError(
         `User with name: ${data.name}, Failed to create: ${validationResult.errors}`
       );
     }
@@ -61,7 +62,9 @@ export class UserService {
   }
 
   async getAllUsers(id: string) {
-    const users = await this.userRepository.find({ where: { id: Not(id) } });
+    const users = await this.userRepository.find({
+      where: { id: Not(id), active: true },
+    });
     return users;
   }
 
@@ -85,7 +88,7 @@ export class UserService {
         data.departmentId ?? ''
       );
 
-    if (!user) throw new NotFoundError('Ya gever');
+    if (!user) throw new EntityNotFoundError(User.name, data.userId);
 
     return user;
   }
@@ -96,14 +99,14 @@ export class UserService {
     });
 
     if (!existingUser) {
-      throw new Error('User not found');
+      throw new EntityNotFoundError(User.name, id);
     }
 
     const entity = plainToInstance(User, { ...existingUser, ...data });
     const validationResult = await validationEntity(User, entity);
 
     if (validationResult.sucsses === false) {
-      throw new BadRequestError(
+      throw new UnprocessableEntityError(
         `User with Id: ${id}, Failed to update: ${validationResult.errors}`
       );
     }
@@ -117,7 +120,7 @@ export class UserService {
 
   async updateUser(data: UpdateUserRequest, userId: string | undefined) {
     if (!userId) {
-      throw new Error('User not found');
+      throw new BadRequestError('User Id not found');
     }
     return await this.updateUserById(data, userId);
   }
@@ -126,7 +129,7 @@ export class UserService {
     const user = await this.userRepository.findOne({ where: { phone } });
 
     if (!user) {
-      throw new NotFoundError(`User with phone ${phone}`);
+      throw new EntityNotFoundError(User.name, phone);
     }
 
     user.active = false;

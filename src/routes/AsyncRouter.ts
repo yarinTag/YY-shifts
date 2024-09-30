@@ -1,5 +1,5 @@
 import { Router, RequestHandler, ErrorRequestHandler } from 'express';
-import { asyncWrapper } from '../middlewares/error/asyncWrapper';
+import { asyncWrapper } from '../middlewares/error/asyncErrorHandler';
 
 class AsyncRouter {
   private router = Router();
@@ -28,7 +28,7 @@ class AsyncRouter {
   ): this;
 
   public use(...handlers: Array<RequestHandler | ErrorRequestHandler>): this;
-  
+
   public use(
     pathOrHandler: string | RegExp | RequestHandler | ErrorRequestHandler,
     ...handlers: Array<RequestHandler | ErrorRequestHandler>

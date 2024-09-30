@@ -19,11 +19,9 @@ export class CreateUserRequest {
   departmentId: string;
 
   @IsEmail({}, { message: 'Invalid email format' })
-  @IsUnique({ message: 'Email is already in use' })
   email: string;
 
   @IsPhoneNumber('IL', { message: 'Invalid phone number format' })
-  @IsUnique({ message: 'Phone number is already in use' })
   phone: string;
 
   @IsString()

@@ -4,6 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 import { dataSource } from '../db';
 import { Role } from '../modules/users/user.schema';
 import { Department } from '../modules/departments/department.schema';
+import { ClientStatusCode } from '../types/enum/ClientStatusCode';
 
 export const verifyTokenMiddleware = async (
   req: Request,
@@ -13,7 +14,9 @@ export const verifyTokenMiddleware = async (
   const token = req.cookies.token;
 
   if (!token) {
-    return res.status(403).json({ message: 'Token not found' });
+    return res
+      .status(ClientStatusCode.Unauthorized)
+      .json({ message: 'Token not found' });
   }
 
   try {
@@ -27,7 +30,9 @@ export const verifyTokenMiddleware = async (
     next();
   } catch (err) {
     console.error(err);
-    return res.status(401).json({ message: 'Invalid token' });
+    return res
+      .status(ClientStatusCode.Unauthorized)
+      .json({ message: 'Invalid token' });
   }
 };
 
@@ -53,11 +58,13 @@ export function RoleGuard(requiredRoles: string[]) {
     const userRole = extractUserRole(req) as Role;
 
     if (!userRole) {
-      return res.status(401).json({ message: 'Unauthorized: No role found' });
+      return res
+        .status(ClientStatusCode.Unauthorized)
+        .json({ message: 'Unauthorized: No role found' });
     }
 
     if (!requiredRoles.includes(userRole)) {
-      return res.status(403).json({
+      return res.status(ClientStatusCode.Forbidden).json({
         message: `Forbidden: Requires one of the following roles: ${requiredRoles.join(
           ', '
         )}`,
@@ -76,8 +83,14 @@ export const checkDepartmentMiddleware = async (
   const departmentId = req.departmentId;
   const isAcountAdmin = req.userRole === Role.Admin;
 
-  if (!departmentId || !isAcountAdmin) {
-    return res.status(403).json({ message: 'department id not found' });
+  if (isAcountAdmin) {
+    next();
+  }
+
+  if (!departmentId) {
+    return res
+      .status(ClientStatusCode.BadRequest)
+      .json({ message: 'department id not found' });
   }
 
   try {
@@ -87,12 +100,16 @@ export const checkDepartmentMiddleware = async (
     });
 
     if (!department) {
-      return res.status(403).json({ message: 'Invalid department' });
+      return res
+        .status(ClientStatusCode.Forbidden)
+        .json({ message: 'Invalid department' });
     }
 
     next();
   } catch (err) {
     console.error(err);
-    return res.status(401).json({ message: 'Invalid token' });
+    return res
+      .status(ClientStatusCode.Unauthorized)
+      .json({ message: 'Invalid token' });
   }
 };

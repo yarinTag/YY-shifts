@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 import { dataSource } from './db';
 import userRouter from './routes/userRoute';
 import departmentRouter from './routes/departmentRoute';
-import { errorHandler } from './middlewares/error/asyncWrapper';
+import { errorHandler } from './middlewares/error/asyncErrorHandler';
 import { verifyTokenMiddleware } from './middlewares/authMiddleware';
 
 dotenv.config();
