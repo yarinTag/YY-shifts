@@ -4,7 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
 
 import { dataSource } from '../../db';
-import { User } from './user.schema';
+import { Role, User } from './user.schema';
 import {
   BadRequestError,
   NotFoundError,
@@ -13,6 +13,7 @@ import { SignInRequest } from './dto/SignInRequest';
 import { CreateUserRequest } from './dto/CreateRequest';
 import { UpdateUserRequest } from './dto/UpdateRequest';
 import { validationEntity } from '../../middlewares/validate';
+import { GetByIdRequest } from './dto/GetByIdRequest';
 
 export class UserService {
   private userRepository = dataSource.getRepository(User);
@@ -62,6 +63,31 @@ export class UserService {
   async getAllUsers(id: string) {
     const users = await this.userRepository.find({ where: { id: Not(id) } });
     return users;
+  }
+
+  private async findUserByIdAndDepartment(id: string, departmentId: string) {
+    const user = await this.userRepository.findOne({
+      where: { id, active: true, department: { id: departmentId } },
+    });
+    return user;
+  }
+
+  async findUserById(data: GetByIdRequest) {
+    let user: User | null;
+
+    if (data.role === Role.Admin) {
+      user = await this.userRepository.findOne({
+        where: { id: data.userId, active: true },
+      });
+    } else
+      user = await this.findUserByIdAndDepartment(
+        data.userId,
+        data.departmentId ?? ''
+      );
+
+    if (!user) throw new NotFoundError('Ya gever');
+
+    return user;
   }
 
   async updateUserById(data: UpdateUserRequest, id: string) {

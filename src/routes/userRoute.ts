@@ -20,9 +20,22 @@ userRouter.post(
 );
 
 userRouter.get(
-  '/',
+  '/all',
   RoleGuard([Role.Admin, Role.MANAGER]),
   UserController.getAllUsers
+);
+
+userRouter.get(
+  '/',
+  checkDepartmentMiddleware,
+  UserController.getUserById
+);
+
+userRouter.get(
+  '/:id',
+  RoleGuard([Role.Admin, Role.MANAGER]),
+  checkDepartmentMiddleware,
+  UserController.getUserById
 );
 
 userRouter.post(

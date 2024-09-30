@@ -22,6 +22,7 @@ export const verifyTokenMiddleware = async (
       process.env.JWT_SECRET ?? ''
     ) as jwt.JwtPayload;
     req.userId = user.id;
+    req.userRole = user.role;
 
     next();
   } catch (err) {

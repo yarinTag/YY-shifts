@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { UserService } from './user.service';
 import {
   BadRequestError,
-  UnauthorizedError
+  UnauthorizedError,
 } from '../../middlewares/error/ApiError';
 
 class UserController {
@@ -41,6 +41,20 @@ class UserController {
     const currentUserId = req.userId ?? '';
     const users = await this.userService.getAllUsers(currentUserId);
     return res.json(users);
+  };
+
+  public getUserById = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    const id = req.params.id ?? req.userId;
+    const user = await this.userService.findUserById({
+      departmentId: req.departmentId,
+      userId: id,
+      role: req.userRole,
+    });
+
+    return res.json(user);
   };
 
   public updateUser = async (
