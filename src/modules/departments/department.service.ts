@@ -7,7 +7,7 @@ import { UpdateRequest } from './dto/UpdateRequest';
 import { validationEntity } from '../../middlewares/validate';
 import { DeleteRequest } from './dto/DeleteRequest';
 import { GetByIdRequest } from './dto/GetByIdRequest';
-import { BadRequestError, NotFoundError, UnprocessableEntityError } from '../../middlewares/error/ApiError';
+import { NotFoundError, UnprocessableEntityError } from '../../middlewares/error/ApiError';
 
 export class DepartmentService {
   departmentRepository = dataSource.getRepository(Department);
@@ -32,7 +32,7 @@ export class DepartmentService {
     const validationResult = await validationEntity(Department, department);
 
     if (validationResult.sucsses === false) {
-      throw new BadRequestError(
+      throw new NotFoundError (
         `Failed to create new Department : ${validationResult.errors}`
       );
     }
@@ -49,14 +49,14 @@ export class DepartmentService {
     });
 
     if (!department) {
-      throw new BadRequestError(`Departments with Id: ${req.id} not found`);
+      throw new NotFoundError(`Departments with Id: ${req.id} not found`);
     }
 
     const entity = plainToInstance(Department, { ...department, ...req });
     const validationResult = await validationEntity(Department, entity);
 
     if (validationResult.sucsses === false) {
-      throw new BadRequestError(
+      throw new UnprocessableEntityError(
         `Departments with Id: ${req.id}, Failed to update: ${validationResult.errors}`
       );
     }
@@ -76,7 +76,7 @@ export class DepartmentService {
     });
 
     if (!department) {
-      throw new UnprocessableEntityError(`Departments with Id: ${req.id} not found`);
+      throw new NotFoundError (`Departments with Id: ${req.id} not found`);
     }
 
     department.active = false;

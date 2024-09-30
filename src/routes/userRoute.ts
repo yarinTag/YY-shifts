@@ -9,7 +9,7 @@ import { SingInRequest } from '../modules/users/dto/SingInRequest';
 import { CreateUserRequest } from '../modules/users/dto/CreateRequest';
 import { UpdateUserRequest } from '../modules/users/dto/UpdateRequest';
 import { DeleteUserRequest } from '../modules/users/dto/DeleteRequest';
-import AsyncRouter from './customRouter';
+import AsyncRouter from './AsyncRouter';
 
 const userRouter = new AsyncRouter();
 

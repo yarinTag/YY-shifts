@@ -1,4 +1,4 @@
-import AsyncRouter from './customRouter';
+import AsyncRouter from './AsyncRouter';
 import { validationMiddleware } from '../middlewares/validate';
 import { CreateRequest } from '../modules/departments/dto/CreateRequest';
 import { UpdateRequest } from '../modules/departments/dto/UpdateRequest';
