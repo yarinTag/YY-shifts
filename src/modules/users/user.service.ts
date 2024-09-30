@@ -1,4 +1,3 @@
-import { Not } from 'typeorm';
 import jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
@@ -15,7 +14,7 @@ import { CreateUserRequest } from './dto/CreateRequest';
 import { UpdateUserRequest } from './dto/UpdateRequest';
 import { validationEntity } from '../../middlewares/validate';
 import { GetByIdRequest } from './dto/GetByIdRequest';
-import { UserRepository } from './userRepository';
+import { UserRepository } from './user.repository';
 
 export class UserService {
   private userRepository = new UserRepository(dataSource);
@@ -41,15 +40,13 @@ export class UserService {
 
   async signIn(authCredentials: SignInRequest) {
     const { phone, password } = authCredentials;
-    const user = await this.userRepository.findOne({
-      where: { phone, active: true },
-    });
+    const user = await this.userRepository.findByPhone(phone);
 
     if (user && (await bcrypt.compare(password, user.password))) {
       const payload = {
         id: user.id,
         role: user.role,
-        departmentId: user.department,
+        departmentId: user.departmentId,
       };
       const token = jwt.sign(payload, `${process.env.JWT_SECRET}`, {
         expiresIn: `${process.env.TOKEN_EXPIR}`,
@@ -59,27 +56,38 @@ export class UserService {
     }
   }
 
-  async getAllUsers(id: string) {
-    const users = await this.userRepository.find({
-      where: { id: Not(id), active: true },
-    });
+  async getAllUsers(id: string, departmentId?: string) {
+    let users: User[] = [];
+
+    if (departmentId) {
+      users = await this.getUsersByDepartmentId(id, departmentId);
+    } else users = await this.userRepository.getAllUsers(id);
+
+    return users;
+  }
+
+  async getUsersByDepartmentId(id: string, departmentId: string) {
+    const users = await this.userRepository.getAllUsersByDepartmentId(
+      id,
+      departmentId
+    );
     return users;
   }
 
   private async findUserByIdAndDepartment(id: string, departmentId: string) {
-    const user = await this.userRepository.findOne({
-      where: { id, active: true, department: { id: departmentId } },
-    });
+    const user = await this.userRepository.findByIdAndDepartment(
+      id,
+      departmentId
+    );
     return user;
   }
 
   async findUserById(data: GetByIdRequest) {
     let user: User | null;
     if (data.role === Role.Admin) {
-      user = await this.userRepository.findOne({
-        where: { id: data.userId, active: true },
-        relations: ['department'],
-      });
+      user = await this.userRepository.findActiveById(data.userId, [
+        'department',
+      ]);
     } else
       user = await this.findUserByIdAndDepartment(
         data.userId,
@@ -127,7 +135,7 @@ export class UserService {
     if (!user) {
       throw new EntityNotFoundError(User.name, id);
     }
-  
+
     return user;
   }
 }

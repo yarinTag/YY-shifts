@@ -39,7 +39,11 @@ class UserController {
     res: Response
   ): Promise<Response> => {
     const currentUserId = req.userId ?? '';
-    const users = await this.userService.getAllUsers(currentUserId);
+    const departmentId = req.departmentId;
+    const users = await this.userService.getAllUsers(
+      currentUserId,
+      departmentId
+    );
     return res.json(users);
   };
 
