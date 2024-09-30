@@ -24,10 +24,7 @@ export class UserService {
     const hashedPassword = await bcrypt.hash(data.password, encrypthPassword);
 
     const user = this.userRepository.create({
-      name: data.name,
-      email: data.email,
-      phone: data.phone,
-      gender: data.gender,
+      ...data,
       password: hashedPassword,
     });
     const entity = plainToInstance(User, user);
@@ -80,7 +77,7 @@ export class UserService {
     if (data.role === Role.Admin) {
       user = await this.userRepository.findOne({
         where: { id: data.userId, active: true },
-        relations: ['department']
+        relations: ['department'],
       });
     } else
       user = await this.findUserByIdAndDepartment(
