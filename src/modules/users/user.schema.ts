@@ -54,6 +54,9 @@ export class User extends BaseEntity {
   @Column({ type: 'boolean', default: true })
   active: boolean;
 
+  @Column({ name: 'department_id' ,nullable: true })
+  departmentId: string;
+
   @ManyToOne(() => Department, (department) => department.users)
   department: Department;
 

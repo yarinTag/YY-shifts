@@ -77,10 +77,10 @@ export class UserService {
 
   async findUserById(data: GetByIdRequest) {
     let user: User | null;
-
     if (data.role === Role.Admin) {
       user = await this.userRepository.findOne({
         where: { id: data.userId, active: true },
+        relations: ['department']
       });
     } else
       user = await this.findUserByIdAndDepartment(
