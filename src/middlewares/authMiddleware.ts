@@ -84,7 +84,7 @@ export const checkDepartmentMiddleware = async (
   const isAcountAdmin = req.userRole === Role.Admin;
 
   if (isAcountAdmin) {
-    next();
+    return next();
   }
 
   if (!departmentId) {
