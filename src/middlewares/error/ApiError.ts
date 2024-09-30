@@ -11,7 +11,7 @@ export class ApiError extends Error {
 }
 
 export class EntityNotFoundError extends ApiError {
-  constructor(id: string, type: string) {
+  constructor(type: string, id: string) {
     super(ClientStatusCode.NotFound, `Entity ${type} with ${id} not found!`);
   }
 }
