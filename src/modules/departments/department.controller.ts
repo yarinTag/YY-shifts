@@ -8,7 +8,7 @@ export class DepartmentController {
     req: Request,
     res: Response
   ): Promise<Response> => {
-    const departments = await this.departmentService.findAllDepartments();
+    const departments = await this.departmentService.findAll();
 
     return res.json(departments);
   };
@@ -18,7 +18,7 @@ export class DepartmentController {
     res: Response
   ): Promise<Response> => {
     const departmentId = req.params.id ?? req.departmentId;
-    const department = await this.departmentService.findDepartmentById({
+    const department = await this.departmentService.findById({
       id: departmentId,
     });
 
@@ -26,24 +26,24 @@ export class DepartmentController {
   };
 
   createDepartment = async (req: Request, res: Response): Promise<Response> => {
-    const response = await this.departmentService.addDepartment(req.body);
+    const response = await this.departmentService.create(req.body);
     return res.status(200).json(response);
   };
 
   patchDepartment = async (req: Request, res: Response): Promise<Response> => {
-      const response = await this.departmentService.updateDepartment({
-        ...req.body,
-        ...req.params,
-      });
-      return res.status(200).json(response);
+    const response = await this.departmentService.update({
+      ...req.body,
+      ...req.params,
+    });
+    return res.status(200).json(response);
   };
 
   deleteDepartment = async (req: Request, res: Response): Promise<Response> => {
-      const response = await this.departmentService.deleteDepartment({
-        ...req.body,
-        ...req.params,
-      });
+    const response = await this.departmentService.deleteDepartment({
+      ...req.body,
+      ...req.params,
+    });
 
-      return res.status(200).json(response);
+    return res.status(200).json(response);
   };
 }

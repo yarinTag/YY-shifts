@@ -11,26 +11,28 @@ import {
   EntityNotFoundError,
   UnprocessableEntityError,
 } from '../../middlewares/error/ApiError';
+import { DepartmentRepository } from './department.repository';
 
 export class DepartmentService {
-  departmentRepository = dataSource.getRepository(Department);
+  departmentRepository = new DepartmentRepository(dataSource);
 
-  public async findAllDepartments() {
-    const departments = await this.departmentRepository.find();
+  public async findAll() {
+    const departments = await this.departmentRepository.findAll();
 
     return departments;
   }
 
-  async findDepartmentById(req: GetByIdRequest) {
-    const department = await this.departmentRepository.findOneBy({
-      id: req.id,
-      active: true,
-    });
-    if (!department) throw new EntityNotFoundError(Department.name, req.id);
+  async findById(req: GetByIdRequest) {
+    const department = await this.departmentRepository.findById(req.id);
+
+    if (!department) {
+      throw new EntityNotFoundError(Department.name, req.id);
+    }
+
     return department;
   }
 
-  async addDepartment(req: CreateRequest) {
+  async create(req: CreateRequest) {
     const department = await this.departmentRepository.create(req);
     const validationResult = await validationEntity(Department, department);
 
@@ -45,11 +47,8 @@ export class DepartmentService {
     return result;
   }
 
-  async updateDepartment(req: UpdateRequest) {
-    const department = await this.departmentRepository.findOneBy({
-      id: req.id,
-      active: true,
-    });
+  async update(req: UpdateRequest) {
+    const department = await this.departmentRepository.findActiveById(req.id);
 
     if (!department) {
       throw new EntityNotFoundError(Department.name, req.id);
@@ -64,7 +63,7 @@ export class DepartmentService {
       );
     }
 
-    await this.departmentRepository.update({ id: req.id }, req);
+    await this.departmentRepository.update({ id: req.id }, entity);
 
     return {
       sucsses: true,
@@ -73,17 +72,11 @@ export class DepartmentService {
   }
 
   async deleteDepartment(req: DeleteRequest) {
-    const department = await this.departmentRepository.findOneBy({
-      id: req.id,
-      active: true,
-    });
+    const department = await this.departmentRepository.deleteById(req.id);
 
     if (!department) {
       throw new EntityNotFoundError(Department.name, req.id);
     }
-
-    department.active = false;
-    await this.departmentRepository.update({ id: req.id }, department);
 
     return {
       sucsses: true,
