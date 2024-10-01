@@ -7,8 +7,8 @@ import {
   IsUUID,
 } from 'class-validator';
 
-import { Gender } from '../user.schema';
-import { IsUnique } from '../../../middlewares/customDecorators';
+import { IsUnique } from '../../../decorators/customDecorators';
+import { Gender } from '../../../types/enum/Gender';
 
 export class CreateUserRequest {
   @IsString()

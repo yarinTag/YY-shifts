@@ -1,4 +1,3 @@
-import { Role } from '../modules/users/user.schema';
 import {
   checkDepartmentMiddleware,
   RoleGuard,
@@ -10,6 +9,7 @@ import { CreateUserRequest } from '../modules/users/dto/CreateRequest';
 import { UpdateUserRequest } from '../modules/users/dto/UpdateRequest';
 import { DeleteUserRequest } from '../modules/users/dto/DeleteRequest';
 import AsyncRouter from './AsyncRouter';
+import { Role } from '../types/enum/Role';
 
 const userRouter = new AsyncRouter();
 
@@ -21,19 +21,15 @@ userRouter.post(
 
 userRouter.get(
   '/all',
-  RoleGuard([Role.Admin, Role.MANAGER]),
+  RoleGuard([Role.ADMIN, Role.MANAGER]),
   UserController.getAllUsers
 );
 
-userRouter.get(
-  '/',
-  checkDepartmentMiddleware,
-  UserController.getUserById
-);
+userRouter.get('/', checkDepartmentMiddleware, UserController.getUserById);
 
 userRouter.get(
   '/:id',
-  RoleGuard([Role.Admin, Role.MANAGER]),
+  RoleGuard([Role.ADMIN, Role.MANAGER]),
   checkDepartmentMiddleware,
   UserController.getUserById
 );
@@ -53,7 +49,7 @@ userRouter.patch(
 
 userRouter.delete(
   '/:id',
-  RoleGuard([Role.Admin, Role.MANAGER]),
+  RoleGuard([Role.ADMIN, Role.MANAGER]),
   checkDepartmentMiddleware,
   validationMiddleware(DeleteUserRequest),
   UserController.deleteUser

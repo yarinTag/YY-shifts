@@ -4,7 +4,6 @@ import { dataSource } from '../../db';
 import { Department } from './department.schema';
 import { CreateRequest } from './dto/CreateRequest';
 import { UpdateRequest } from './dto/UpdateRequest';
-import { validationEntity } from '../../middlewares/validate';
 import { DeleteRequest } from './dto/DeleteRequest';
 import { GetByIdRequest } from './dto/GetByIdRequest';
 import {
@@ -12,6 +11,7 @@ import {
   UnprocessableEntityError,
 } from '../../middlewares/error/ApiError';
 import { DepartmentRepository } from './department.repository';
+import { validationEntity } from '../../decorators/validateEntity';
 
 export class DepartmentService {
   departmentRepository = new DepartmentRepository(dataSource);

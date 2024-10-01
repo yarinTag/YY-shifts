@@ -2,9 +2,9 @@ import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 
 import { dataSource } from '../db';
-import { Role } from '../modules/users/user.schema';
 import { Department } from '../modules/departments/department.schema';
 import { ClientStatusCode } from '../types/enum/ClientStatusCode';
+import { Role } from '../types/enum/Role';
 
 export const verifyTokenMiddleware = async (
   req: Request,
@@ -82,7 +82,7 @@ export const checkDepartmentMiddleware = async (
   next: NextFunction
 ): Promise<Response | void> => {
   const departmentId = req.departmentId;
-  const isAcountAdmin = req.userRole === Role.Admin;
+  const isAcountAdmin = req.userRole === Role.ADMIN;
 
   if (isAcountAdmin) {
     return next();

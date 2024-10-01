@@ -3,7 +3,7 @@ import * as bcrypt from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
 
 import { dataSource } from '../../db';
-import { Role, User } from './user.schema';
+import { User } from './user.schema';
 import {
   BadRequestError,
   EntityNotFoundError,
@@ -12,9 +12,10 @@ import {
 import { SignInRequest } from './dto/SignInRequest';
 import { CreateUserRequest } from './dto/CreateRequest';
 import { UpdateUserRequest } from './dto/UpdateRequest';
-import { validationEntity } from '../../middlewares/validate';
 import { GetByIdRequest } from './dto/GetByIdRequest';
 import { UserRepository } from './user.repository';
+import { Role } from '../../types/enum/Role';
+import { validationEntity } from '../../decorators/validateEntity';
 
 export class UserService {
   private userRepository = new UserRepository(dataSource);
@@ -84,7 +85,7 @@ export class UserService {
 
   async findUserById(data: GetByIdRequest) {
     let user: User | null;
-    if (data.role === Role.Admin) {
+    if (data.role === Role.ADMIN) {
       user = await this.userRepository.findActiveById(data.userId, [
         'department',
       ]);
