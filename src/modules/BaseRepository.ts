@@ -38,6 +38,7 @@ export class BaseRepository<T extends BaseEntityWithId> extends Repository<T> {
     if (!entity) return null;
     entity.active = false;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await this.update(where, entity as any);
     return entity;
   }
