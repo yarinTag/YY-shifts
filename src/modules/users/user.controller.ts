@@ -1,14 +1,13 @@
 import { Request, Response } from 'express';
 
-import { UserService } from './user.service';
 import {
   BadRequestError,
   UnauthorizedError,
 } from '../../middlewares/error/ApiError';
-import { IUserController } from './user.interface';
+import { IUserController, IUserService } from './user.interface';
 
 class UserController implements IUserController {
-  constructor(private userService: UserService) {}
+  constructor(private userService: IUserService) {}
 
   public createUser = async (
     req: Request,

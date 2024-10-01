@@ -9,8 +9,7 @@ import {
   UnprocessableEntityError,
 } from '../../middlewares/error/ApiError';
 import { Role } from '../../types/enum/Role';
-import { IUserService } from './user.interface';
-import { UserRepository } from './user.repository';
+import { IUserRepository, IUserService } from './user.interface';
 import { SignInRequest } from './dto/SignInRequest';
 import { GetByIdRequest } from './dto/GetByIdRequest';
 import { CreateUserRequest } from './dto/CreateRequest';
@@ -18,7 +17,7 @@ import { UpdateUserRequest } from './dto/UpdateRequest';
 import { validationEntity } from '../../decorators/validateEntity';
 
 export class UserService implements IUserService {
-  constructor(private userRepository: UserRepository) {}
+  constructor(private userRepository: IUserRepository) {}
 
   async createUser(data: CreateUserRequest) {
     const encrypthPassword = await bcrypt.genSalt();
@@ -116,7 +115,7 @@ export class UserService implements IUserService {
       );
     }
 
-    await this.userRepository.update({ id }, entity);
+    await this.userRepository.update(entity);
     return {
       sucsses: true,
       message: 'User updated successfully',
@@ -131,7 +130,7 @@ export class UserService implements IUserService {
   }
 
   async deleteUser(id: string) {
-    const user = await this.userRepository.deleteById(id);
+    const user = await this.userRepository.deleteUser(id);
 
     if (!user) {
       throw new EntityNotFoundError(User.name, id);

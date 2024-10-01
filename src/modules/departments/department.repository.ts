@@ -6,6 +6,7 @@ import { CreateRequest } from './dto/CreateRequest';
 
 export class DepartmentRepository implements IDepartmentRepository {
   constructor(private repository: BaseRepository<Department>) {}
+
   save(department: Department): Promise<Department> {
     return this.repository.save(department);
   }
