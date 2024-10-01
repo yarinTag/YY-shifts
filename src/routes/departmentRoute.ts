@@ -5,6 +5,9 @@ import { UpdateRequest } from '../modules/departments/dto/UpdateRequest';
 import { DeleteRequest } from '../modules/departments/dto/DeleteRequest';
 import { GetByIdRequest } from '../modules/departments/dto/GetByIdRequest';
 import { DepartmentController } from '../modules/departments/department.controller';
+import { DepartmentService } from '../modules/departments/department.service';
+import { DepartmentRepository } from '../modules/departments/department.repository';
+import { dataSource } from '../db';
 
 class DepartmentRouter extends AsyncRouter {
   constructor(private departmentController: DepartmentController) {
@@ -38,4 +41,8 @@ class DepartmentRouter extends AsyncRouter {
   }
 }
 
-export default new DepartmentRouter(new DepartmentController()).getRouter();
+export default new DepartmentRouter(
+  new DepartmentController(
+    new DepartmentService(new DepartmentRepository(dataSource))
+  )
+).getRouter();

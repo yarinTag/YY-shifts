@@ -12,11 +12,12 @@ import {
 } from '../../middlewares/error/ApiError';
 import { DepartmentRepository } from './department.repository';
 import { validationEntity } from '../../decorators/validateEntity';
+import { IDepartmentService } from './department.interface';
 
-export class DepartmentService {
-  departmentRepository = new DepartmentRepository(dataSource);
+export class DepartmentService implements IDepartmentService {
+  constructor(private departmentRepository: DepartmentRepository) {}
 
-  public async findAll() {
+  async findAll() {
     const departments = await this.departmentRepository.findAll();
 
     return departments;
@@ -63,12 +64,7 @@ export class DepartmentService {
       );
     }
 
-    await this.departmentRepository.update({ id: req.id }, entity);
-
-    return {
-      sucsses: true,
-      message: 'Department updated successfully',
-    };
+    return await this.departmentRepository.update({ id: req.id }, entity);
   }
 
   async deleteDepartment(req: DeleteRequest) {
