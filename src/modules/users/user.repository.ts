@@ -22,6 +22,7 @@ export class UserRepository extends BaseRepository<User> {
     id: string,
     departmentId: string
   ): Promise<User[]> {
+    console.log('check check');
     return this.find({
       where: { id: Not(id), active: true, departmentId },
     });
