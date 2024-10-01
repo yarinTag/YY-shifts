@@ -9,6 +9,7 @@ import { Department } from '../departments/department.schema';
 import { ShiftConfiguration } from '../shiftConfigurations/shiftConfiguration.schema';
 import { WorkCycle } from '../workCycle/workCycle.schema';
 import { BaseEntity } from '../BaseEntity';
+import { WorkDay } from '../../types/enum/workDay';
 
 @Entity()
 export class WorkCycleConfiguration extends BaseEntity {
@@ -19,10 +20,16 @@ export class WorkCycleConfiguration extends BaseEntity {
   cycleDays: number;
 
   @Column('int')
+  startDay: WorkDay;
+
+  @Column('int')
   legalAmountOfWorkDays: number;
 
   @Column('int')
   amountOfDayOff: number;
+
+  @Column({ nullable: true }) // todo: check if it works or need to add  name: 'department_id'
+  departmentId: string;
 
   @ManyToOne(
     () => Department,
