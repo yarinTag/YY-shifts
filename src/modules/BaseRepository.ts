@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Repository,
   EntityTarget,
@@ -10,7 +11,9 @@ export interface BaseEntityWithId {
   active: boolean;
 }
 
-export class BaseRepository<T extends BaseEntityWithId> extends Repository<T> {
+export abstract class BaseRepository<
+  T extends BaseEntityWithId
+> extends Repository<T> {
   constructor(entity: EntityTarget<T>, dataSource: DataSource) {
     super(entity, dataSource.createEntityManager());
   }
@@ -38,7 +41,6 @@ export class BaseRepository<T extends BaseEntityWithId> extends Repository<T> {
     if (!entity) return null;
     entity.active = false;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await this.update(where, entity as any);
     return entity;
   }
