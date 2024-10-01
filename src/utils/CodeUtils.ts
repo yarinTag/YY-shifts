@@ -1,4 +1,4 @@
-import { ValidationResponse } from '../types/responses/ValidationResponse';
+import { ValidationResponse } from '../types/response/ValidationResponse';
 
 export function flattenErrors(errorObject: ValidationResponse) {
   return errorObject.errors.map((error) => {
