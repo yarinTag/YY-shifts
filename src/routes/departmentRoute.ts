@@ -8,9 +8,12 @@ import { DepartmentController } from '../modules/departments/department.controll
 import { DepartmentService } from '../modules/departments/department.service';
 import { DepartmentRepository } from '../modules/departments/department.repository';
 import { dataSource } from '../db';
+import { IDepartmentController } from '../modules/departments/department.interface';
+import { BaseRepository } from '../modules/BaseRepository';
+import { Department } from '../modules/departments/department.schema';
 
 class DepartmentRouter extends AsyncRouter {
-  constructor(private departmentController: DepartmentController) {
+  constructor(private departmentController: IDepartmentController) {
     super();
     this.initializeRoutes();
   }
@@ -43,6 +46,10 @@ class DepartmentRouter extends AsyncRouter {
 
 export default new DepartmentRouter(
   new DepartmentController(
-    new DepartmentService(new DepartmentRepository(dataSource))
+    new DepartmentService(
+      new DepartmentRepository(
+        new BaseRepository<Department>(Department, dataSource)
+      )
+    )
   )
 ).getRouter();

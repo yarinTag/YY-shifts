@@ -1,6 +1,5 @@
 import { plainToInstance } from 'class-transformer';
 
-import { dataSource } from '../../db';
 import { Department } from './department.schema';
 import { CreateRequest } from './dto/CreateRequest';
 import { UpdateRequest } from './dto/UpdateRequest';
@@ -10,12 +9,14 @@ import {
   EntityNotFoundError,
   UnprocessableEntityError,
 } from '../../middlewares/error/ApiError';
-import { DepartmentRepository } from './department.repository';
 import { validationEntity } from '../../decorators/validateEntity';
-import { IDepartmentService } from './department.interface';
+import {
+  IDepartmentRepository,
+  IDepartmentService,
+} from './department.interface';
 
 export class DepartmentService implements IDepartmentService {
-  constructor(private departmentRepository: DepartmentRepository) {}
+  constructor(private departmentRepository: IDepartmentRepository) {}
 
   async findAll() {
     const departments = await this.departmentRepository.findAll();
@@ -64,7 +65,7 @@ export class DepartmentService implements IDepartmentService {
       );
     }
 
-    return await this.departmentRepository.update({ id: req.id }, entity);
+    return await this.departmentRepository.update(entity);
   }
 
   async deleteDepartment(req: DeleteRequest) {

@@ -10,9 +10,7 @@ export interface BaseEntityWithId {
   active: boolean;
 }
 
-export abstract class BaseRepository<
-  T extends BaseEntityWithId
-> extends Repository<T> {
+export class BaseRepository<T extends BaseEntityWithId> extends Repository<T> {
   constructor(entity: EntityTarget<T>, dataSource: DataSource) {
     super(entity, dataSource.createEntityManager());
   }

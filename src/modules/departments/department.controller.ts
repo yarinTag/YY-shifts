@@ -1,11 +1,13 @@
 import { Request, Response } from 'express';
-import { DepartmentService } from './department.service';
-import { IDepartmentController } from './department.interface';
+import {
+  IDepartmentController,
+  IDepartmentService,
+} from './department.interface';
 
 export class DepartmentController implements IDepartmentController {
-  constructor(private departmentService: DepartmentService) {}
+  constructor(private departmentService: IDepartmentService) {}
 
-  public getAllDepartments = async (
+  getAllDepartments = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
