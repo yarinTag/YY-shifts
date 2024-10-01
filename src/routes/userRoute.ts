@@ -1,4 +1,3 @@
-import { Role } from '../modules/users/user.schema';
 import {
   checkDepartmentMiddleware,
   RoleGuard,
@@ -10,6 +9,7 @@ import { CreateUserRequest } from '../modules/users/dto/CreateRequest';
 import { UpdateUserRequest } from '../modules/users/dto/UpdateRequest';
 import { DeleteUserRequest } from '../modules/users/dto/DeleteRequest';
 import AsyncRouter from './AsyncRouter';
+import { Role } from '../types/enum/Role';
 
 const userRouter = new AsyncRouter();
 

@@ -10,16 +10,11 @@ import { Availability } from '../availabilities/availability.schema';
 import { Shift } from '../shifts/shift.schema';
 import { BaseEntity } from '../BaseEntity';
 import { IsEmail, IsPhoneNumber } from 'class-validator';
+import { Role } from '../../types/enum/Role';
 
 export enum Gender {
   MALE = 'male',
   FEMALE = 'female',
-}
-
-export enum Role {
-  ADMIN = 'ADMIN',
-  MANAGER = 'MANAGER',
-  EMPLOYEE = 'EMPLOYEE',
 }
 
 @Entity()

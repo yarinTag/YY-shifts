@@ -3,7 +3,7 @@ import * as bcrypt from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
 
 import { dataSource } from '../../db';
-import { Role, User } from './user.schema';
+import { User } from './user.schema';
 import {
   BadRequestError,
   EntityNotFoundError,
@@ -15,6 +15,7 @@ import { UpdateUserRequest } from './dto/UpdateRequest';
 import { validationEntity } from '../../middlewares/validate';
 import { GetByIdRequest } from './dto/GetByIdRequest';
 import { UserRepository } from './user.repository';
+import { Role } from '../../types/enum/Role';
 
 export class UserService {
   private userRepository = new UserRepository(dataSource);
