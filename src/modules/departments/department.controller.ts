@@ -1,8 +1,11 @@
 import { Request, Response } from 'express';
-import { DepartmentService } from './department.service';
+import {
+  IDepartmentController,
+  IDepartmentService,
+} from './department.interface';
 
-export class DepartmentController {
-  private departmentService = new DepartmentService();
+export class DepartmentController implements IDepartmentController {
+  constructor(private departmentService: IDepartmentService) {}
 
   getAllDepartments = async (
     req: Request,

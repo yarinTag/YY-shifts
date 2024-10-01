@@ -13,9 +13,10 @@ import { SingInRequest } from '../modules/users/dto/SingInRequest';
 import { CreateUserRequest } from '../modules/users/dto/CreateRequest';
 import { UpdateUserRequest } from '../modules/users/dto/UpdateRequest';
 import { DeleteUserRequest } from '../modules/users/dto/DeleteRequest';
+import { BaseRepository } from '../modules/BaseRepository';
+import { User } from '../modules/users/user.schema';
 
 class UserRouter extends AsyncRouter {
-
   constructor(private userController: UserController) {
     super();
     this.initializeRoutes();
@@ -34,11 +35,7 @@ class UserRouter extends AsyncRouter {
       this.userController.getAllUsers
     );
 
-    this.get(
-      '/',
-      checkDepartmentMiddleware,
-      this.userController.getUserById
-    );
+    this.get('/', checkDepartmentMiddleware, this.userController.getUserById);
 
     this.get(
       '/:id',
@@ -70,5 +67,9 @@ class UserRouter extends AsyncRouter {
   }
 }
 export default new UserRouter(
-  new UserController(new UserService(new UserRepository(dataSource)))
+  new UserController(
+    new UserService(
+      new UserRepository(new BaseRepository<User>(User, dataSource))
+    )
+  )
 ).getRouter();
