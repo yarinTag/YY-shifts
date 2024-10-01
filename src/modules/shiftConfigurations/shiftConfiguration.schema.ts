@@ -8,7 +8,7 @@ import {
 import { Shift } from '../shifts/shift.schema';
 import { WorkCycleConfiguration } from '../workCycleConfiguration/workCycleConfiguration.schema';
 import { BaseEntity } from '../BaseEntity';
-import { WorkDay } from '../../types/enum/WorkDay';
+import { WorkDay } from '../../types/enum/workDay';
 
 @Entity()
 export class ShiftConfiguration extends BaseEntity {

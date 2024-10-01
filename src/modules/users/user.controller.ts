@@ -5,9 +5,10 @@ import {
   BadRequestError,
   UnauthorizedError,
 } from '../../middlewares/error/ApiError';
+import { IUserController } from './user.interface';
 
-class UserController {
-  private userService = new UserService();
+class UserController implements IUserController {
+  constructor(private userService: UserService) {}
 
   public createUser = async (
     req: Request,
@@ -83,4 +84,4 @@ class UserController {
   };
 }
 
-export default new UserController();
+export default UserController;

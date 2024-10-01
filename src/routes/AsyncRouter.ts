@@ -1,7 +1,7 @@
 import { Router, RequestHandler, ErrorRequestHandler } from 'express';
 import { asyncWrapper } from '../middlewares/error/asyncErrorHandler';
 
-class AsyncRouter {
+abstract class AsyncRouter {
   private router = Router();
 
   constructor() {}

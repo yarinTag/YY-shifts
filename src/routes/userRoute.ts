@@ -2,57 +2,73 @@ import {
   checkDepartmentMiddleware,
   RoleGuard,
 } from '../middlewares/authMiddleware';
+import { dataSource } from '../db';
+import AsyncRouter from './AsyncRouter';
+import { Role } from '../types/enum/Role';
+import { UserService } from '../modules/users/user.service';
 import UserController from '../modules/users/user.controller';
 import { validationMiddleware } from '../middlewares/validate';
+import { UserRepository } from '../modules/users/user.repository';
 import { SingInRequest } from '../modules/users/dto/SingInRequest';
 import { CreateUserRequest } from '../modules/users/dto/CreateRequest';
 import { UpdateUserRequest } from '../modules/users/dto/UpdateRequest';
 import { DeleteUserRequest } from '../modules/users/dto/DeleteRequest';
-import AsyncRouter from './AsyncRouter';
-import { Role } from '../types/enum/Role';
 
-const userRouter = new AsyncRouter();
+class UserRouter extends AsyncRouter {
 
-userRouter.post(
-  '/sign-in',
-  validationMiddleware(SingInRequest),
-  UserController.signIn
-);
+  constructor(private userController: UserController) {
+    super();
+    this.initializeRoutes();
+  }
 
-userRouter.get(
-  '/all',
-  RoleGuard([Role.ADMIN, Role.MANAGER]),
-  UserController.getAllUsers
-);
+  private initializeRoutes() {
+    this.post(
+      '/sign-in',
+      validationMiddleware(SingInRequest),
+      this.userController.signIn
+    );
 
-userRouter.get('/', checkDepartmentMiddleware, UserController.getUserById);
+    this.get(
+      '/all',
+      RoleGuard([Role.ADMIN, Role.MANAGER]),
+      this.userController.getAllUsers
+    );
 
-userRouter.get(
-  '/:id',
-  RoleGuard([Role.ADMIN, Role.MANAGER]),
-  checkDepartmentMiddleware,
-  UserController.getUserById
-);
+    this.get(
+      '/',
+      checkDepartmentMiddleware,
+      this.userController.getUserById
+    );
 
-userRouter.post(
-  '/',
-  validationMiddleware(CreateUserRequest),
-  checkDepartmentMiddleware,
-  UserController.createUser
-);
+    this.get(
+      '/:id',
+      RoleGuard([Role.ADMIN, Role.MANAGER]),
+      checkDepartmentMiddleware,
+      this.userController.getUserById
+    );
 
-userRouter.patch(
-  '/',
-  validationMiddleware(UpdateUserRequest),
-  UserController.updateUser
-);
+    this.post(
+      '/',
+      validationMiddleware(CreateUserRequest),
+      checkDepartmentMiddleware,
+      this.userController.createUser
+    );
 
-userRouter.delete(
-  '/:id',
-  RoleGuard([Role.ADMIN, Role.MANAGER]),
-  checkDepartmentMiddleware,
-  validationMiddleware(DeleteUserRequest),
-  UserController.deleteUser
-);
+    this.patch(
+      '/',
+      validationMiddleware(UpdateUserRequest),
+      this.userController.updateUser
+    );
 
-export default userRouter;
+    this.delete(
+      '/:id',
+      RoleGuard([Role.ADMIN, Role.MANAGER]),
+      checkDepartmentMiddleware,
+      validationMiddleware(DeleteUserRequest),
+      this.userController.deleteUser
+    );
+  }
+}
+export default new UserRouter(
+  new UserController(new UserService(new UserRepository(dataSource)))
+).getRouter();
