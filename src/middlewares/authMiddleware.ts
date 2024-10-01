@@ -82,7 +82,7 @@ export const checkDepartmentMiddleware = async (
   next: NextFunction
 ): Promise<Response | void> => {
   const departmentId = req.departmentId;
-  const isAcountAdmin = req.userRole === Role.Admin;
+  const isAcountAdmin = req.userRole === Role.ADMIN;
 
   if (isAcountAdmin) {
     return next();

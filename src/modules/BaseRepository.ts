@@ -10,7 +10,9 @@ export interface BaseEntityWithId {
   active: boolean;
 }
 
-export class BaseRepository<T extends BaseEntityWithId> extends Repository<T> {
+export abstract class BaseRepository<
+  T extends BaseEntityWithId
+> extends Repository<T> {
   constructor(entity: EntityTarget<T>, dataSource: DataSource) {
     super(entity, dataSource.createEntityManager());
   }
@@ -25,7 +27,7 @@ export class BaseRepository<T extends BaseEntityWithId> extends Repository<T> {
       id,
       active: true,
     } as FindOptionsWhere<T>;
-    return this.findOne({ where ,relations});
+    return this.findOne({ where, relations });
   }
 
   async findAll(): Promise<T[]> {

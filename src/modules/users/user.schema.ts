@@ -4,7 +4,6 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   OneToMany,
-  DeleteDateColumn,
 } from 'typeorm';
 import { Department } from '../departments/department.schema';
 import { Availability } from '../availabilities/availability.schema';
@@ -18,7 +17,7 @@ export enum Gender {
 }
 
 export enum Role {
-  Admin = 'ADMIN',
+  ADMIN = 'ADMIN',
   MANAGER = 'MANAGER',
   EMPLOYEE = 'EMPLOYEE',
 }
@@ -54,7 +53,7 @@ export class User extends BaseEntity {
   @Column({ type: 'boolean', default: true })
   active: boolean;
 
-  @Column({ name: 'department_id' ,nullable: true })
+  @Column({ name: 'department_id', nullable: true })
   departmentId: string;
 
   @ManyToOne(() => Department, (department) => department.users)
@@ -65,7 +64,4 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Availability, (availability) => availability.user)
   availabilities: Availability[];
-
-  @DeleteDateColumn()
-  deletedAt?: Date;
 }

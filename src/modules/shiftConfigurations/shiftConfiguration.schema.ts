@@ -8,16 +8,7 @@ import {
 import { Shift } from '../shifts/shift.schema';
 import { WorkCycleConfiguration } from '../workCycleConfiguration/workCycleConfiguration.schema';
 import { BaseEntity } from '../BaseEntity';
-
-export enum WorkDay {
-  Sunday = 1,
-  Monday = 2,
-  Tuesday = 3,
-  Wednesday = 4,
-  Thursday = 5,
-  Friday = 6,
-  Saturday = 7,
-}
+import { WorkDay } from '../../types/enum/workDay';
 
 @Entity()
 export class ShiftConfiguration extends BaseEntity {

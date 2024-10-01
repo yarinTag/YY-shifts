@@ -84,7 +84,7 @@ export class UserService {
 
   async findUserById(data: GetByIdRequest) {
     let user: User | null;
-    if (data.role === Role.Admin) {
+    if (data.role === Role.ADMIN) {
       user = await this.userRepository.findActiveById(data.userId, [
         'department',
       ]);

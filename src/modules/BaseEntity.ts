@@ -1,4 +1,9 @@
-import { CreateDateColumn, UpdateDateColumn, Column } from 'typeorm';
+import {
+  CreateDateColumn,
+  UpdateDateColumn,
+  Column,
+  DeleteDateColumn,
+} from 'typeorm';
 
 export abstract class BaseEntity {
   @CreateDateColumn({
@@ -31,4 +36,7 @@ export abstract class BaseEntity {
     nullable: true,
   })
   updatedBy: string;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 }
