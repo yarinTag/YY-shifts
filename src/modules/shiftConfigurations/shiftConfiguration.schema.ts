@@ -34,6 +34,9 @@ export class ShiftConfiguration extends BaseEntity {
   )
   workCycleConfiguration: WorkCycleConfiguration;
 
+  @Column({ name: 'work_cycle_configuration_id', nullable: true })
+  workCycleConfigurationId: string;
+
   @OneToMany(() => Shift, (shift: Shift) => shift.shiftConfiguration)
   shifts: Shift[];
 }

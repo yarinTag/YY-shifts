@@ -8,7 +8,7 @@ import {
 
 export interface BaseEntityWithId {
   id: string;
-  active: boolean;
+  active?: boolean;
 }
 
 export class BaseRepository<T extends BaseEntityWithId> extends Repository<T> {
