@@ -12,10 +12,10 @@ import {
 import { SignInRequest } from './dto/SignInRequest';
 import { CreateUserRequest } from './dto/CreateRequest';
 import { UpdateUserRequest } from './dto/UpdateRequest';
-import { validationEntity } from '../../middlewares/validate';
 import { GetByIdRequest } from './dto/GetByIdRequest';
 import { UserRepository } from './user.repository';
 import { Role } from '../../types/enum/Role';
+import { validationEntity } from '../../decorators/validateEntity';
 
 export class UserService {
   private userRepository = new UserRepository(dataSource);

@@ -11,11 +11,7 @@ import { Shift } from '../shifts/shift.schema';
 import { BaseEntity } from '../BaseEntity';
 import { IsEmail, IsPhoneNumber } from 'class-validator';
 import { Role } from '../../types/enum/Role';
-
-export enum Gender {
-  MALE = 'male',
-  FEMALE = 'female',
-}
+import { Gender } from '../../types/enum/Gender';
 
 @Entity()
 export class User extends BaseEntity {
