@@ -22,6 +22,13 @@ class UserRouter extends AsyncRouter {
     this.initializeRoutes();
   }
 
+  static create() {
+    const userRepository = new UserRepository((new BaseRepository(User, dataSource)));
+    const userService = new UserService(userRepository);
+    const userController = new UserController(userService);
+    return new UserRouter(userController);
+  }
+
   private initializeRoutes() {
     this.post(
       '/sign-in',
@@ -66,10 +73,4 @@ class UserRouter extends AsyncRouter {
     );
   }
 }
-export default new UserRouter(
-  new UserController(
-    new UserService(
-      new UserRepository(new BaseRepository<User>(User, dataSource))
-    )
-  )
-).getRouter();
+export default UserRouter.create().getRouter();

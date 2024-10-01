@@ -18,6 +18,13 @@ class DepartmentRouter extends AsyncRouter {
     this.initializeRoutes();
   }
 
+  static create() {
+    const departmentRepository = new DepartmentRepository((new BaseRepository(Department, dataSource)));
+    const departmentService = new DepartmentService(departmentRepository);
+    const departmentController = new DepartmentController(departmentService);
+    return new DepartmentRouter(departmentController);
+  }
+
   private initializeRoutes() {
     this.get('/all', this.departmentController.getAllDepartments);
     this.get('/', this.departmentController.getDepartmentById);
@@ -44,12 +51,4 @@ class DepartmentRouter extends AsyncRouter {
   }
 }
 
-export default new DepartmentRouter(
-  new DepartmentController(
-    new DepartmentService(
-      new DepartmentRepository(
-        new BaseRepository<Department>(Department, dataSource)
-      )
-    )
-  )
-).getRouter();
+export default DepartmentRouter.create().getRouter();
