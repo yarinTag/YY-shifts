@@ -6,30 +6,36 @@ import { DeleteRequest } from '../modules/departments/dto/DeleteRequest';
 import { GetByIdRequest } from '../modules/departments/dto/GetByIdRequest';
 import { DepartmentController } from '../modules/departments/department.controller';
 
-const departmentController = new DepartmentController();
-const departmentRouter = new AsyncRouter();
+class DepartmentRouter extends AsyncRouter {
+  constructor(private departmentController: DepartmentController) {
+    super();
+    this.initializeRoutes();
+  }
 
-departmentRouter.get('/all', departmentController.getAllDepartments);
-departmentRouter.get('/', departmentController.getDepartmentById);
-departmentRouter.get(
-  '/:id',
-  validationMiddleware(GetByIdRequest),
-  departmentController.getDepartmentById
-);
-departmentRouter.post(
-  '/',
-  validationMiddleware(CreateRequest),
-  departmentController.createDepartment
-);
-departmentRouter.patch(
-  '/:id',
-  validationMiddleware(UpdateRequest),
-  departmentController.patchDepartment
-);
-departmentRouter.delete(
-  '/:id',
-  validationMiddleware(DeleteRequest),
-  departmentController.deleteDepartment
-);
+  private initializeRoutes() {
+    this.get('/all', this.departmentController.getAllDepartments);
+    this.get('/', this.departmentController.getDepartmentById);
+    this.get(
+      '/:id',
+      validationMiddleware(GetByIdRequest),
+      this.departmentController.getDepartmentById
+    );
+    this.post(
+      '/',
+      validationMiddleware(CreateRequest),
+      this.departmentController.createDepartment
+    );
+    this.patch(
+      '/:id',
+      validationMiddleware(UpdateRequest),
+      this.departmentController.patchDepartment
+    );
+    this.delete(
+      '/:id',
+      validationMiddleware(DeleteRequest),
+      this.departmentController.deleteDepartment
+    );
+  }
+}
 
-export default departmentRouter;
+export default new DepartmentRouter(new DepartmentController()).getRouter();

@@ -2,23 +2,23 @@ import jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
 
-import { dataSource } from '../../db';
 import { User } from './user.schema';
 import {
   BadRequestError,
   EntityNotFoundError,
   UnprocessableEntityError,
 } from '../../middlewares/error/ApiError';
+import { Role } from '../../types/enum/Role';
+import { IUserService } from './user.interface';
+import { UserRepository } from './user.repository';
 import { SignInRequest } from './dto/SignInRequest';
+import { GetByIdRequest } from './dto/GetByIdRequest';
 import { CreateUserRequest } from './dto/CreateRequest';
 import { UpdateUserRequest } from './dto/UpdateRequest';
-import { GetByIdRequest } from './dto/GetByIdRequest';
-import { UserRepository } from './user.repository';
-import { Role } from '../../types/enum/Role';
 import { validationEntity } from '../../decorators/validateEntity';
 
-export class UserService {
-  private userRepository = new UserRepository(dataSource);
+export class UserService implements IUserService {
+  constructor(private userRepository: UserRepository) {}
 
   async createUser(data: CreateUserRequest) {
     const encrypthPassword = await bcrypt.genSalt();
@@ -75,7 +75,7 @@ export class UserService {
     return users;
   }
 
-  private async findUserByIdAndDepartment(id: string, departmentId: string) {
+  async findUserByIdAndDepartment(id: string, departmentId: string) {
     const user = await this.userRepository.findByIdAndDepartment(
       id,
       departmentId
