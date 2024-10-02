@@ -1,6 +1,5 @@
 import { IsUUID, IsOptional } from 'class-validator';
-
-import { Role } from '../user.schema';
+import { Role } from '../../../types/enum/Role';
 
 export class GetByIdRequest {
   @IsOptional()

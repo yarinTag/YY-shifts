@@ -28,7 +28,7 @@ export class WorkCycleConfiguration extends BaseEntity {
   @Column('int')
   amountOfDayOff: number;
 
-  @Column({ nullable: true }) // todo: check if it works or need to add  name: 'department_id'
+  @Column('uuid')
   departmentId: string;
 
   @Column({ type: 'boolean', default: true })
