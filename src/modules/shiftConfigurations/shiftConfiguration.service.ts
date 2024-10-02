@@ -44,7 +44,7 @@ class ShiftConfigurationService implements IShiftConfigurationService {
     const shiftConfiguration = this.repository.findById(id);
 
     if (!shiftConfiguration) {
-      throw new EntityNotFoundError('shiftConfiguration', id);
+      throw new EntityNotFoundError(ShiftConfiguration.name, id);
     }
 
     return shiftConfiguration;
@@ -56,7 +56,7 @@ class ShiftConfigurationService implements IShiftConfigurationService {
     const shiftConfiguration = await this.repository.findById(data.id);
 
     if (!shiftConfiguration) {
-      throw new EntityNotFoundError('shiftConfiguration', data.id);
+      throw new EntityNotFoundError(ShiftConfiguration.name, data.id);
     }
 
     const entity = plainToInstance(ShiftConfiguration, {
@@ -82,7 +82,7 @@ class ShiftConfigurationService implements IShiftConfigurationService {
     const shiftConfiguration = await this.repository.delete(id);
 
     if (!shiftConfiguration) {
-      throw new EntityNotFoundError('shiftConfiguration', id);
+      throw new EntityNotFoundError(ShiftConfiguration.name, id);
     }
 
     return {
