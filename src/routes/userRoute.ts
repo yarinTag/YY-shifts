@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import {
   checkDepartmentMiddleware,
   RoleGuard,
@@ -15,15 +16,20 @@ import { UpdateUserRequest } from '../modules/users/dto/UpdateRequest';
 import { DeleteUserRequest } from '../modules/users/dto/DeleteRequest';
 import { BaseRepository } from '../modules/BaseRepository';
 import { User } from '../modules/users/user.schema';
+import { IUserController } from '../modules/users/user.interface';
+
+dotenv.config();
 
 class UserRouter extends AsyncRouter {
-  constructor(private userController: UserController) {
+  constructor(private userController: IUserController) {
     super();
     this.initializeRoutes();
   }
 
   static create() {
-    const userRepository = new UserRepository((new BaseRepository(User, dataSource)));
+    const userRepository = new UserRepository(
+      new BaseRepository(User, dataSource)
+    );
     const userService = new UserService(userRepository);
     const userController = new UserController(userService);
     return new UserRouter(userController);
@@ -57,6 +63,10 @@ class UserRouter extends AsyncRouter {
       checkDepartmentMiddleware,
       this.userController.createUser
     );
+
+    if (process.env.PROFILE === 'dev') {
+      this.post('/admin', this.userController.createUser);
+    }
 
     this.patch(
       '/',
