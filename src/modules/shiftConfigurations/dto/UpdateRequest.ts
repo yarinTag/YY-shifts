@@ -21,7 +21,4 @@ export class UpdateRequest {
   @IsOptional()
   @IsNumber()
   amountOfWorkers: number;
-
-  @IsUUID()
-  workCycleConfigurationId: string;
 }

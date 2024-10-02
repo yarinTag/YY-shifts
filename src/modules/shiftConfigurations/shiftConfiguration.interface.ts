@@ -16,7 +16,10 @@ export interface IShiftConfigurationService {
   create(data: CreateRequest): Promise<ShiftConfiguration>;
   getAll(workCycleConfigurationId: string): Promise<ShiftConfiguration[]>;
   getById(id: string): Promise<ShiftConfiguration | null>;
-  updateById(data: UpdateRequest): Promise<{
+  updateById(
+    data: UpdateRequest,
+    id: string
+  ): Promise<{
     sucsses: boolean;
     message: string;
   }>;

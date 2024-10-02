@@ -10,10 +10,14 @@ export class ShiftConfigurationRepository
   constructor(private repository: BaseRepository<ShiftConfiguration>) {}
 
   async getAllShifts(id: string): Promise<ShiftConfiguration[]> {
-    return this.repository.find({ where: { workCycleConfigurationId: id } });
+    return this.repository.find({
+      where: { workCycleConfigurationId: id, active: true },
+    });
   }
 
-  async save(shifConfiguration: ShiftConfiguration): Promise<ShiftConfiguration> {
+  async save(
+    shifConfiguration: ShiftConfiguration
+  ): Promise<ShiftConfiguration> {
     return this.repository.save(shifConfiguration);
   }
   async create(req: CreateRequest): Promise<ShiftConfiguration> {

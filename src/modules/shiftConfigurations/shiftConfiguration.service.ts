@@ -41,7 +41,7 @@ class ShiftConfigurationService implements IShiftConfigurationService {
   }
 
   async getById(id: string): Promise<ShiftConfiguration | null> {
-    const shiftConfiguration = this.repository.findById(id);
+    const shiftConfiguration = await this.repository.findById(id);
 
     if (!shiftConfiguration) {
       throw new EntityNotFoundError(ShiftConfiguration.name, id);
@@ -51,12 +51,13 @@ class ShiftConfigurationService implements IShiftConfigurationService {
   }
 
   async updateById(
-    data: UpdateRequest
+    data: UpdateRequest,
+    id:string
   ): Promise<{ sucsses: boolean; message: string }> {
-    const shiftConfiguration = await this.repository.findById(data.id);
+    const shiftConfiguration = await this.repository.findById(id);
 
     if (!shiftConfiguration) {
-      throw new EntityNotFoundError(ShiftConfiguration.name, data.id);
+      throw new EntityNotFoundError(ShiftConfiguration.name, id);
     }
 
     const entity = plainToInstance(ShiftConfiguration, {

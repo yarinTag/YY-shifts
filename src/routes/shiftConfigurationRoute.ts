@@ -31,7 +31,7 @@ class ShiftConfigurationRouter extends AsyncRouter {
   }
 
   private initializeRoutes() {
-    this.get('/all', this.shiftConfigurationController.getAll);
+    this.get('/', this.shiftConfigurationController.getAll);
     this.get(
       '/:id',
       validationMiddleware(GetByIdRequest),
