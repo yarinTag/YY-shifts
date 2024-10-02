@@ -1,11 +1,16 @@
 import AsyncRouter from './AsyncRouter';
 import { validationMiddleware } from '../middlewares/validate';
-import { CreateRequest } from '../modules/departments/dto/CreateRequest';
-import { UpdateRequest } from '../modules/departments/dto/UpdateRequest';
-import { DeleteRequest } from '../modules/departments/dto/DeleteRequest';
-import { GetByIdRequest } from '../modules/departments/dto/GetByIdRequest';
 import { IWorkCycleConfigurationController } from '../modules/workCycleConfiguration/workCycleConfiguration.interface';
 import { WorkCycleConfigurationController } from '../modules/workCycleConfiguration/workCycleConfiguration.controller';
+import { WorkCycleConfiguration } from '../modules/workCycleConfiguration/workCycleConfiguration.schema';
+import { dataSource } from '../db';
+import { WorkCycleConfigurationRepository } from '../modules/workCycleConfiguration/workCycleConfiguration.repository';
+import { BaseRepository } from '../modules/BaseRepository';
+import { WorkCycleConfigurationService } from '../modules/workCycleConfiguration/workCycleConfiguration.service';
+import { GetByIdRequest } from '../modules/workCycleConfiguration/dto/GetByIdRequest';
+import { CreateRequest } from '../modules/workCycleConfiguration/dto/CreateRequest';
+import { DeleteRequest } from '../modules/workCycleConfiguration/dto/DeleteRequest';
+import { UpdateRequest } from '../modules/workCycleConfiguration/dto/UpdateRequest';
 
 class WorkCycleConfigurationRouter extends AsyncRouter {
   constructor(
@@ -16,17 +21,16 @@ class WorkCycleConfigurationRouter extends AsyncRouter {
   }
 
   static create() {
-    // const departmentRepository = new DepartmentRepository(
-    //   new BaseRepository(Department, dataSource)
-    // );
-    // const departmentService = new DepartmentService(departmentRepository);
-    const controller = new WorkCycleConfigurationController();
+    const repository = new WorkCycleConfigurationRepository(
+      new BaseRepository(WorkCycleConfiguration, dataSource)
+    );
+    const service = new WorkCycleConfigurationService(repository);
+    const controller = new WorkCycleConfigurationController(service);
     return new WorkCycleConfigurationRouter(controller);
   }
 
   private initializeRoutes() {
     this.get('/all', this.workCycleConfigurationController.findAll);
-    this.get('/', this.workCycleConfigurationController.findById);
     this.get(
       '/:id',
       validationMiddleware(GetByIdRequest),

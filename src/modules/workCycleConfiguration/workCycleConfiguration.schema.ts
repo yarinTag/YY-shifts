@@ -31,6 +31,9 @@ export class WorkCycleConfiguration extends BaseEntity {
   @Column({ nullable: true }) // todo: check if it works or need to add  name: 'department_id'
   departmentId: string;
 
+  @Column({ type: 'boolean', default: true })
+  active: boolean;
+
   @ManyToOne(
     () => Department,
     (department: Department) => department.workCycleConfigurations

@@ -16,7 +16,4 @@ export class UpdateRequest {
   @IsOptional()
   @IsNumber()
   amountOfDayOff: number;
-  @IsOptional()
-  @IsUUID()
-  departmentId: string;
 }

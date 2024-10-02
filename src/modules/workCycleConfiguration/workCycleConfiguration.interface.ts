@@ -19,13 +19,11 @@ export interface IWorkCycleConfigurationService {
   findById(req: GetByIdRequest): Promise<WorkCycleConfiguration | null>;
   create(req: CreateRequest): Promise<WorkCycleConfiguration>;
   update(req: UpdateRequest): Promise<UpdateResult>;
-  delete(req: DeleteRequest): object;
+  delete(req: DeleteRequest): Promise<WorkCycleConfiguration>;
 }
 
 export interface IWorkCycleConfigurationRepository {
-  save(
-    WorkCycleConfiguration: WorkCycleConfiguration
-  ): Promise<WorkCycleConfiguration>;
+  save(entity: WorkCycleConfiguration): Promise<WorkCycleConfiguration>;
   create(req: CreateRequest): WorkCycleConfiguration;
   findById(id: string): Promise<WorkCycleConfiguration | null>;
   findActiveById(
