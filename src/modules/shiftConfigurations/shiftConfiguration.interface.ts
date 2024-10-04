@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
-import { CreateRequest } from "./dto/CreateRequest";
-import { ShiftConfiguration } from "./shiftConfiguration.schema";
-import { UpdateRequest } from "./dto/UpdateRequest";
-import { UpdateResult } from "typeorm";
+import { Request, Response } from 'express';
+import { CreateRequest } from './dto/CreateRequest';
+import { ShiftConfiguration } from './shiftConfiguration.schema';
+import { UpdateRequest } from './dto/UpdateRequest';
+import { UpdateResult } from 'typeorm';
 
 export interface IShiftConfigurationController {
   create(req: Request, res: Response): Promise<Response>;
