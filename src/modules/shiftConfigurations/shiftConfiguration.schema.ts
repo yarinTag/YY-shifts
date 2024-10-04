@@ -30,15 +30,15 @@ export class ShiftConfiguration extends BaseEntity {
   @Column({ type: 'boolean', default: true })
   active: boolean;
 
+  @Column({ name: 'work_cycle_configuration_id', nullable: true })
+  workCycleConfigurationId: string;
+
   @ManyToOne(
     () => WorkCycleConfiguration,
     (workCycleConfiguration: WorkCycleConfiguration) =>
       workCycleConfiguration.shiftConfigurations
   )
   workCycleConfiguration: WorkCycleConfiguration;
-
-  @Column({ name: 'work_cycle_configuration_id', nullable: true })
-  workCycleConfigurationId: string;
 
   @OneToMany(() => Shift, (shift: Shift) => shift.shiftConfiguration)
   shifts: Shift[];

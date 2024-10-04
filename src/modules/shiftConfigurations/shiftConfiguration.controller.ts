@@ -33,7 +33,7 @@ class ShiftConfigurationController implements IShiftConfigurationController {
   };
 
   public update = async (req: Request, res: Response): Promise<Response> => {
-    const updateConfiguration = await this.service.updateById(req.body,req.params.id);
+    const updateConfiguration = await this.service.updateById({...req.body,...req.params.id});
 
     return res.status(201).json(updateConfiguration);
   };

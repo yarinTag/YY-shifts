@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
-import { CreateRequest } from './dto/CreateRequest';
-import { ShiftConfiguration } from './shiftConfiguration.schema';
-import { UpdateRequest } from './dto/UpdateRequest';
-import { UpdateResult } from 'typeorm';
+import { Request, Response } from "express";
+import { CreateRequest } from "./dto/CreateRequest";
+import { ShiftConfiguration } from "./shiftConfiguration.schema";
+import { UpdateRequest } from "./dto/UpdateRequest";
+import { UpdateResult } from "typeorm";
 
 export interface IShiftConfigurationController {
   create(req: Request, res: Response): Promise<Response>;
@@ -16,10 +16,7 @@ export interface IShiftConfigurationService {
   create(data: CreateRequest): Promise<ShiftConfiguration>;
   getAll(workCycleConfigurationId: string): Promise<ShiftConfiguration[]>;
   getById(id: string): Promise<ShiftConfiguration | null>;
-  updateById(
-    data: UpdateRequest,
-    id: string
-  ): Promise<{
+  updateById(data: UpdateRequest): Promise<{
     sucsses: boolean;
     message: string;
   }>;

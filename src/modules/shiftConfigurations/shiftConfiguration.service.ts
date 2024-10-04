@@ -1,17 +1,17 @@
-import { Response } from 'express';
-import { CreateRequest } from './dto/CreateRequest';
-import { UpdateRequest } from './dto/UpdateRequest';
+import { Response } from "express";
+import { CreateRequest } from "./dto/CreateRequest";
+import { UpdateRequest } from "./dto/UpdateRequest";
 import {
   IShiftConfigurationRepository,
   IShiftConfigurationService,
-} from './shiftConfiguration.interface';
-import { ShiftConfiguration } from './shiftConfiguration.schema';
-import { validationEntity } from '../../decorators/validateEntity';
+} from "./shiftConfiguration.interface";
+import { ShiftConfiguration } from "./shiftConfiguration.schema";
+import { validationEntity } from "../../decorators/validateEntity";
 import {
   EntityNotFoundError,
   UnprocessableEntityError,
-} from '../../middlewares/error/ApiError';
-import { plainToInstance } from 'class-transformer';
+} from "../../middlewares/error/ApiError";
+import { plainToInstance } from "class-transformer";
 
 class ShiftConfigurationService implements IShiftConfigurationService {
   constructor(private repository: IShiftConfigurationRepository) {}
@@ -51,13 +51,12 @@ class ShiftConfigurationService implements IShiftConfigurationService {
   }
 
   async updateById(
-    data: UpdateRequest,
-    id:string
+    data: UpdateRequest
   ): Promise<{ sucsses: boolean; message: string }> {
-    const shiftConfiguration = await this.repository.findById(id);
+    const shiftConfiguration = await this.repository.findById(data.id);
 
     if (!shiftConfiguration) {
-      throw new EntityNotFoundError(ShiftConfiguration.name, id);
+      throw new EntityNotFoundError(ShiftConfiguration.name, data.id);
     }
 
     const entity = plainToInstance(ShiftConfiguration, {
@@ -75,7 +74,7 @@ class ShiftConfigurationService implements IShiftConfigurationService {
     await this.repository.update(entity);
     return {
       sucsses: true,
-      message: 'Shift configuration updated successfully',
+      message: "Shift configuration updated successfully",
     };
   }
 
@@ -88,7 +87,7 @@ class ShiftConfigurationService implements IShiftConfigurationService {
 
     return {
       sucsses: true,
-      message: 'Shift configuration deleted successfully',
+      message: "Shift configuration deleted successfully",
     };
   }
 }
