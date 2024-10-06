@@ -1,15 +1,3 @@
 {
-  "typescript.tsdk": "node_modules\\typescript\\lib",
-  "sqltools.connections": [
-    {
-      "previewLimit": 50,
-      "server": "localhost",
-      "port": 5432,
-      "askForPassword": true,
-      "driver": "PostgreSQL",
-      "name": "yy-db",
-      "database": "yy-db",
-      "username": "postgres"
-    }
-  ]
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }
