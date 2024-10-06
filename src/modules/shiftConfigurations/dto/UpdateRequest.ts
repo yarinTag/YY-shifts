@@ -1,6 +1,7 @@
 import { IsOptional, IsNumber, IsUUID } from 'class-validator';
 import { Column } from 'typeorm';
 import { WorkDay } from '../../../types/enum/workDay';
+import { LocalTime } from '@js-joda/core';
 
 export class UpdateRequest {
   @IsUUID()
@@ -8,11 +9,11 @@ export class UpdateRequest {
 
   @IsOptional()
   @Column('time')
-  start: string;
+  start: LocalTime;
 
   @IsOptional()
   @Column('time')
-  end: string;
+  end: LocalTime;
 
   @IsOptional()
   @IsNumber()

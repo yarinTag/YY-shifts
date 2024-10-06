@@ -9,6 +9,7 @@ import { Shift } from '../shifts/shift.schema';
 import { WorkCycleConfiguration } from '../workCycleConfiguration/workCycleConfiguration.schema';
 import { BaseEntity } from '../BaseEntity';
 import { WorkDay } from '../../types/enum/workDay';
+import { LocalTime } from '@js-joda/core';
 
 @Entity()
 export class ShiftConfiguration extends BaseEntity {
@@ -16,10 +17,10 @@ export class ShiftConfiguration extends BaseEntity {
   id: string;
 
   @Column('time')
-  start: string;
+  start: LocalTime;
 
   @Column('time')
-  end: string;
+  end: LocalTime;
 
   @Column({ type: 'int', default: 0 })
   amountOfWorkers: number;

@@ -2,13 +2,14 @@ import { IsUUID, IsNumber } from 'class-validator';
 
 import { Column } from 'typeorm';
 import { WorkDay } from '../../../types/enum/workDay';
+import { LocalTime } from '@js-joda/core';
 
 export class CreateRequest {
   @Column('time')
-  start: string;
+  start: LocalTime;
 
   @Column('time')
-  end: string;
+  end: LocalTime;
 
   @IsNumber()
   day: WorkDay;
