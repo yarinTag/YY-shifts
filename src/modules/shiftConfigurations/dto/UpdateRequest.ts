@@ -1,16 +1,17 @@
 import { IsOptional, IsNumber, IsUUID } from 'class-validator';
 
 import { WorkDay } from '../../../types/enum/workDay';
+import { LocalTime } from '@js-joda/core';
 
 export class UpdateRequest {
   @IsUUID()
   id: string;
 
   @IsOptional()
-  start: string;
+  start: LocalTime;
 
   @IsOptional()
-  end: string;
+  end: LocalTime;
 
   @IsOptional()
   @IsNumber()
