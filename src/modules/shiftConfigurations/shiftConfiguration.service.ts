@@ -66,7 +66,7 @@ class ShiftConfigurationService implements IShiftConfigurationService {
 
     if (validationResult.sucsses === false) {
       throw new UnprocessableEntityError(
-        `Shift configuration with Id: ${data.id}, Failed to update: ${validationResult.errors}`
+        `${ShiftConfiguration.name} with Id: ${data.id}, Failed to update: ${validationResult.errors}`
       );
     }
 
