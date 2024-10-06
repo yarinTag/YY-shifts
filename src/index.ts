@@ -11,6 +11,7 @@ import shiftConfigurationRoute from './routes/shiftConfigurationRoute';
 import workCycleConfigurationRoute from './routes/workCycleConfigurationRoute';
 import availabilityRoute from './routes/availabilityRoute';
 import shiftRoute from './routes/shiftRoute';
+import WorkCycleRoute from './routes/workCycleRoute';
 
 dotenv.config();
 
@@ -37,6 +38,7 @@ app.use(verifyTokenMiddleware);
 app.use('/department', departmentRouter);
 app.use('/availability', availabilityRoute);
 app.use('/shift', shiftRoute);
+app.use('/workCycle', WorkCycleRoute);
 app.use('/configuration/shift', shiftConfigurationRoute);
 app.use('/configuration/workCycle', workCycleConfigurationRoute);
 app.use(errorHandler);
