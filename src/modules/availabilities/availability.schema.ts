@@ -14,6 +14,12 @@ export class Availability extends BaseEntity {
   @Column('text')
   memo: string;
 
+  @Column({ name: 'user_id' })
+  userId: string;
+
+  @Column({ name: 'shift_id' })
+  shiftId: string;
+
   @ManyToOne(() => User, (user) => user.availabilities)
   user: User;
 
