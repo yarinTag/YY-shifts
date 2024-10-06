@@ -1,12 +1,16 @@
-import { IsUUID } from 'class-validator';
+import { IsBoolean, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class UpdateRequest {
   @IsUUID()
   id: string;
 
-  active?: boolean;
+  @IsOptional()
+  @IsBoolean()
+  active: boolean;
 
-  memo?: string;
+  @IsOptional()
+  @IsString()
+  memo: string;
 
   @IsUUID()
   userId: string;
