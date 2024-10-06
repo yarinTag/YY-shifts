@@ -1,17 +1,19 @@
 import { IsBoolean, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
-import { LocalDateTime } from '@js-joda/core';
+import { LocalDate } from '@js-joda/core';
 
 export class UpdateRequest {
   @IsUUID()
   id: string;
-
+  // ISO 8601
+  // "2024-10-06"
   @IsOptional()
   @IsNotEmpty()
-  start: LocalDateTime;
-
+  start: LocalDate;
+  // ISO 8601
+  // "2024-10-06"
   @IsOptional()
   @IsNotEmpty()
-  end: LocalDateTime;
+  end: LocalDate;
 
   @IsOptional()
   @IsBoolean()

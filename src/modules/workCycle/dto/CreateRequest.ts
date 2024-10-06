@@ -1,12 +1,15 @@
 import { IsBoolean, IsNotEmpty, IsUUID } from 'class-validator';
-import { LocalDateTime } from '@js-joda/core';
+import { LocalDate } from '@js-joda/core';
 
 export class CreateRequest {
+  // ISO 8601
+  // "2024-10-06"
   @IsNotEmpty()
-  start: LocalDateTime;
-
+  start: LocalDate;
+  // ISO 8601
+  // "2024-10-10"
   @IsNotEmpty()
-  end: LocalDateTime;
+  end: LocalDate;
 
   @IsBoolean()
   publish: boolean;

@@ -4,24 +4,28 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   OneToMany,
+  Generated,
 } from 'typeorm';
 import { WorkCycleConfiguration } from '../workCycleConfiguration/workCycleConfiguration.schema';
 import { Shift } from '../shifts/shift.schema';
 import { BaseEntity } from '../BaseEntity';
-import { LocalDateTime } from '@js-joda/core';
+import { LocalDate } from '@js-joda/core';
 
 @Entity()
 export class WorkCycle extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @Column('timestamp')
-  start: LocalDateTime;
-
-  @Column('timestamp')
-  end: LocalDateTime;
+  // ISO 8601
+  // "2024-10-06"
+  @Column('date')
+  start: LocalDate;
+  // ISO 8601
+  // "2024-10-06"
+  @Column('date')
+  end: LocalDate;
 
   @Column('bigint')
+  @Generated('increment')
   workCycleNumber: number;
 
   @Column({ type: 'boolean', default: false })
