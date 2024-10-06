@@ -1,3 +1,4 @@
+import { UpdateResult } from 'typeorm';
 import { Request, Response } from 'express';
 
 import { User } from './user.schema';
@@ -5,7 +6,7 @@ import { SignInRequest } from './dto/SignInRequest';
 import { GetByIdRequest } from './dto/GetByIdRequest';
 import { UpdateUserRequest } from './dto/UpdateRequest';
 import { CreateUserRequest } from './dto/CreateRequest';
-import { UpdateResult } from 'typeorm';
+import { UpdateResponse } from '../../types/response/response.interface';
 
 export interface IUserController {
   signIn(req: Request, res: Response): Promise<Response>;
@@ -26,20 +27,11 @@ export interface IUserService {
     departmentId: string
   ): Promise<User | null>;
   findUserById(data: GetByIdRequest): Promise<User>;
-  updateUserById(
-    data: UpdateUserRequest,
-    id: string
-  ): Promise<{
-    sucsses: boolean;
-    message: string;
-  }>;
+  updateUserById(data: UpdateUserRequest, id: string): Promise<UpdateResponse>;
   updateUser(
     data: UpdateUserRequest,
     userId: string | undefined
-  ): Promise<{
-    sucsses: boolean;
-    message: string;
-  }>;
+  ): Promise<UpdateResponse>;
   deleteUser(id: string): Promise<User>;
 }
 

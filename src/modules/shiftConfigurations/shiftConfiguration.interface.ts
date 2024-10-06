@@ -3,6 +3,7 @@ import { CreateRequest } from './dto/CreateRequest';
 import { ShiftConfiguration } from './shiftConfiguration.schema';
 import { UpdateRequest } from './dto/UpdateRequest';
 import { UpdateResult } from 'typeorm';
+import { UpdateResponse } from '../../types/response/response.interface';
 
 export interface IShiftConfigurationController {
   create(req: Request, res: Response): Promise<Response>;
@@ -16,14 +17,8 @@ export interface IShiftConfigurationService {
   create(data: CreateRequest): Promise<ShiftConfiguration>;
   getAll(workCycleConfigurationId: string): Promise<ShiftConfiguration[]>;
   getById(id: string): Promise<ShiftConfiguration | null>;
-  updateById(data: UpdateRequest): Promise<{
-    sucsses: boolean;
-    message: string;
-  }>;
-  delete(id: string): Promise<{
-    sucsses: boolean;
-    message: string;
-  }>;
+  updateById(data: UpdateRequest): Promise<UpdateResponse>;
+  delete(id: string): Promise<UpdateResponse>;
 }
 
 export interface IShiftConfigurationRepository {

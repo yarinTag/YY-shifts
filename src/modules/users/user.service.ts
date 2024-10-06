@@ -117,7 +117,7 @@ export class UserService implements IUserService {
 
     await this.userRepository.update(entity);
     return {
-      sucsses: true,
+      success: true,
       message: 'User updated successfully',
     };
   }

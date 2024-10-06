@@ -1,16 +1,18 @@
-import { CreateRequest } from './dto/CreateRequest';
-import { UpdateRequest } from './dto/UpdateRequest';
+import { plainToInstance } from 'class-transformer';
+
 import {
   IShiftConfigurationRepository,
   IShiftConfigurationService,
 } from './shiftConfiguration.interface';
-import { ShiftConfiguration } from './shiftConfiguration.schema';
-import { validationEntity } from '../../decorators/validateEntity';
 import {
   EntityNotFoundError,
   UnprocessableEntityError,
 } from '../../middlewares/error/ApiError';
-import { plainToInstance } from 'class-transformer';
+import { CreateRequest } from './dto/CreateRequest';
+import { UpdateRequest } from './dto/UpdateRequest';
+import { ShiftConfiguration } from './shiftConfiguration.schema';
+import { validationEntity } from '../../decorators/validateEntity';
+import { UpdateResponse } from '../../types/response/response.interface';
 
 class ShiftConfigurationService implements IShiftConfigurationService {
   constructor(private repository: IShiftConfigurationRepository) {}
@@ -36,7 +38,7 @@ class ShiftConfigurationService implements IShiftConfigurationService {
   async getAll(
     workCycleConfigurationId: string
   ): Promise<ShiftConfiguration[]> {
-    return this.repository.getAllShifts(workCycleConfigurationId);
+    return await this.repository.getAllShifts(workCycleConfigurationId);
   }
 
   async getById(id: string): Promise<ShiftConfiguration | null> {
@@ -49,9 +51,7 @@ class ShiftConfigurationService implements IShiftConfigurationService {
     return shiftConfiguration;
   }
 
-  async updateById(
-    data: UpdateRequest
-  ): Promise<{ sucsses: boolean; message: string }> {
+  async updateById(data: UpdateRequest): Promise<UpdateResponse> {
     const shiftConfiguration = await this.repository.findById(data.id);
 
     if (!shiftConfiguration) {
@@ -66,18 +66,18 @@ class ShiftConfigurationService implements IShiftConfigurationService {
 
     if (validationResult.sucsses === false) {
       throw new UnprocessableEntityError(
-        `Departments with Id: ${data.id}, Failed to update: ${validationResult.errors}`
+        `Shift configuration with Id: ${data.id}, Failed to update: ${validationResult.errors}`
       );
     }
 
     await this.repository.update(entity);
     return {
-      sucsses: true,
+      success: true,
       message: 'Shift configuration updated successfully',
     };
   }
 
-  async delete(id: string): Promise<{ sucsses: boolean; message: string }> {
+  async delete(id: string): Promise<UpdateResponse> {
     const shiftConfiguration = await this.repository.delete(id);
 
     if (!shiftConfiguration) {
@@ -85,7 +85,7 @@ class ShiftConfigurationService implements IShiftConfigurationService {
     }
 
     return {
-      sucsses: true,
+      success: true,
       message: 'Shift configuration deleted successfully',
     };
   }
