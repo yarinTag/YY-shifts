@@ -1,4 +1,4 @@
-import { IsNumber, IsNumberString, IsUUID, ValidateIf } from 'class-validator';
+import { IsNumberString, IsUUID, ValidateIf } from 'class-validator';
 
 export class FindBy {
   @ValidateIf((obj) => !obj.workCycleNumber)
