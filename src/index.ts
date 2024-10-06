@@ -10,6 +10,7 @@ import { verifyTokenMiddleware } from './middlewares/authMiddleware';
 import shiftConfigurationRoute from './routes/shiftConfigurationRoute';
 import workCycleConfigurationRoute from './routes/workCycleConfigurationRoute';
 import availabilityRoute from './routes/availabilityRoute';
+import WorkCycleRoute from './routes/workCycleRoute';
 
 dotenv.config();
 
@@ -37,4 +38,5 @@ app.use('/department', departmentRouter);
 app.use('/availability', availabilityRoute);
 app.use('/configuration/shift', shiftConfigurationRoute);
 app.use('/configuration/workCycle', workCycleConfigurationRoute);
+app.use('/workCycle', WorkCycleRoute);
 app.use(errorHandler);

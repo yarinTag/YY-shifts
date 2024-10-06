@@ -31,7 +31,7 @@ export class ShiftConfiguration extends BaseEntity {
   @Column({ type: 'boolean', default: true })
   active: boolean;
 
-  @Column({ name: 'work_cycle_configuration_id', nullable: true })
+  @Column({ name: 'work_cycle_configuration_id' })
   workCycleConfigurationId: string;
 
   @ManyToOne(

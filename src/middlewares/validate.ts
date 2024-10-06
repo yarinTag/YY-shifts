@@ -9,6 +9,7 @@ export const validationMiddleware =
     const result = await validationPipe(validationSchema, {
       ...req.body,
       ...req.params,
+      ...req.query,
       ...req.headers,
     });
 
