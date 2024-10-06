@@ -14,18 +14,14 @@ class WorkCycleController implements IWorkCycleController {
     throw new BadRequestError('Error creating shift configuration');
   };
 
-  public getAll = async (req: Request, res: Response): Promise<Response> => {
-    const { workCycleConfigurationId } = req.body;
-    const shiftsConfigurations = await this.service.getAll(
-      workCycleConfigurationId
-    );
+  public findAll = async (req: Request, res: Response): Promise<Response> => {
+    const shiftsConfigurations = await this.service.findAll();
 
     return res.status(200).json(shiftsConfigurations);
   };
 
-  public getById = async (req: Request, res: Response): Promise<Response> => {
-    const id = req.params.id;
-    const WorkCycle = await this.service.getById(id);
+  public findBy = async (req: Request, res: Response): Promise<Response> => {
+    const WorkCycle = await this.service.findBy({ ...req.query });
 
     return res.status(200).json(WorkCycle);
   };

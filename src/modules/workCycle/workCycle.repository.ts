@@ -4,14 +4,12 @@ import { BaseRepository } from '../BaseRepository';
 import { CreateRequest } from './dto/CreateRequest';
 import { WorkCycle } from './workCycle.schema';
 import { IWorkCycleRepository } from './workCycle.interface';
+import { FindBy } from './dto/FIndBy';
 
 export class WorkCycleRepository implements IWorkCycleRepository {
   constructor(private repository: BaseRepository<WorkCycle>) {}
-
-  async getAllShifts(id: string): Promise<WorkCycle[]> {
-    return this.repository.find({
-      where: { workCycleConfigurationId: id, active: true },
-    });
+  findBy(data: FindBy): Promise<WorkCycle | null> {
+    return this.repository.findOneBy(data);
   }
 
   async save(workCycle: WorkCycle): Promise<WorkCycle> {

@@ -10,6 +10,7 @@ import { WorkCycle } from './workCycle.schema';
 import { validationEntity } from '../../decorators/validateEntity';
 import { UpdateResponse } from '../../types/response/response.interface';
 import { IWorkCycleRepository, IWorkCycleService } from './workCycle.interface';
+import { FindBy } from './dto/FIndBy';
 
 class WorkCycleService implements IWorkCycleService {
   constructor(private repository: IWorkCycleRepository) {}
@@ -29,22 +30,18 @@ class WorkCycleService implements IWorkCycleService {
     return result;
   }
 
-  async getAll(workCycleConfigurationId: string): Promise<WorkCycle[]> {
-    return await this.repository.getAllShifts(workCycleConfigurationId);
+  async findAll(): Promise<WorkCycle[]> {
+    return await this.repository.findAll();
   }
 
-  async getById(id: string): Promise<WorkCycle | null> {
-    const workCycle = await this.repository.findById(id);
-
-    if (!workCycle) {
-      throw new EntityNotFoundError(WorkCycle.name, id);
-    }
+  async findBy(req: FindBy): Promise<WorkCycle | null> {
+    const workCycle = await this.repository.findBy(req);
 
     return workCycle;
   }
 
   async updateById(data: UpdateRequest): Promise<UpdateResponse> {
-    const workCycle = await this.repository.findById(data.id);
+    const workCycle = await this.repository.findBy({ id: data.id });
 
     if (!workCycle) {
       throw new EntityNotFoundError(WorkCycle.name, data.id);

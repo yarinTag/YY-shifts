@@ -3,7 +3,7 @@ import { validationMiddleware } from '../middlewares/validate';
 import { BaseRepository } from '../modules/BaseRepository';
 import { CreateRequest } from '../modules/workCycle/dto/CreateRequest';
 import { DeleteRequest } from '../modules/workCycle/dto/DeleteRequest';
-import { GetByIdRequest } from '../modules/workCycle/dto/GetByIdRequest';
+import { FindBy } from '../modules/workCycle/dto/FIndBy';
 import { UpdateRequest } from '../modules/workCycle/dto/UpdateRequest';
 import WorkCycleController from '../modules/workCycle/workCycle.controller';
 import { IWorkCycleController } from '../modules/workCycle/workCycle.interface';
@@ -28,12 +28,8 @@ class WorkCycleRouter extends AsyncRouter {
   }
 
   private initializeRoutes() {
-    this.get('/all', this.workCycleController.getAll);
-    this.get(
-      '/:id',
-      validationMiddleware(GetByIdRequest),
-      this.workCycleController.getById
-    );
+    this.get('/all', this.workCycleController.findAll);
+    this.get('', validationMiddleware(FindBy), this.workCycleController.findBy);
     this.post(
       '/',
       validationMiddleware(CreateRequest),
