@@ -1,11 +1,11 @@
-import { IsNumber, IsOptional, IsUUID } from 'class-validator';
+import { IsNumber, IsNumberString, IsUUID, ValidateIf } from 'class-validator';
 
 export class FindBy {
-  @IsOptional()
+  @ValidateIf((obj) => !obj.workCycleNumber)
   @IsUUID()
   id?: string;
 
-  @IsOptional()
-  @IsNumber()
+  @ValidateIf((obj) => !obj.id)
+  @IsNumberString()
   workCycleNumber?: number;
 }
