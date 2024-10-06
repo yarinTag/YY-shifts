@@ -5,11 +5,13 @@ import {
   ManyToOne,
   OneToMany,
 } from 'typeorm';
-import { ShiftConfiguration } from '../shiftConfigurations/shiftConfiguration.schema';
-import { User } from '../users/user.schema';
-import { Availability } from '../availabilities/availability.schema';
-import { WorkCycle } from '../workCycle/workCycle.schema';
+import { LocalDateTime } from '@js-joda/core';
+
 import { BaseEntity } from '../BaseEntity';
+import { User } from '../users/user.schema';
+import { WorkCycle } from '../workCycle/workCycle.schema';
+import { Availability } from '../availabilities/availability.schema';
+import { ShiftConfiguration } from '../shiftConfigurations/shiftConfiguration.schema';
 
 @Entity()
 export class Shift extends BaseEntity {
@@ -17,10 +19,22 @@ export class Shift extends BaseEntity {
   id: string;
 
   @Column('timestamp')
-  start: Date;
+  start: LocalDateTime;
 
   @Column('timestamp')
-  end: Date;
+  end: LocalDateTime;
+
+  @Column({ type: 'boolean', default: true })
+  active: boolean;
+
+  @Column({ name: 'user_id' })
+  userId: string;
+
+  @Column({ name: 'work_cycle_id' })
+  workCycleId: string;
+
+  @Column({ name: 'shift_configuration_id' })
+  shiftConfigurationId: string;
 
   @ManyToOne(() => WorkCycle, (workCycle: WorkCycle) => workCycle.shifts)
   workCycle: WorkCycle;
