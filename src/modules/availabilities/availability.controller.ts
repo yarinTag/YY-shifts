@@ -37,7 +37,7 @@ class AvailabilityController implements IAvailabilityController {
       ...req.params,
     });
 
-    return res.status(201).json(updateAvailability);
+    return res.status(200).json(updateAvailability);
   };
 }
 
