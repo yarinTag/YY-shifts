@@ -1,4 +1,4 @@
-import { IsBoolean, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsBoolean, IsUUID } from 'class-validator';
 import { LocalDateTime } from '@js-joda/core';
 
 export class CreateRequest {

@@ -1,4 +1,4 @@
-import { IsOptional, IsUUID, ValidateIf } from 'class-validator';
+import { IsUUID, ValidateIf } from 'class-validator';
 
 export class GetRequest {
   @ValidateIf((o) => !o.workCycleId && !o.userId)
