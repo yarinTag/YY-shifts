@@ -8,6 +8,7 @@ import {
 import { WorkCycleConfiguration } from '../workCycleConfiguration/workCycleConfiguration.schema';
 import { Shift } from '../shifts/shift.schema';
 import { BaseEntity } from '../BaseEntity';
+import { LocalDateTime } from '@js-joda/core';
 
 @Entity()
 export class WorkCycle extends BaseEntity {
@@ -15,16 +16,22 @@ export class WorkCycle extends BaseEntity {
   id: string;
 
   @Column('timestamp')
-  start: Date;
+  start: LocalDateTime;
 
   @Column('timestamp')
-  end: Date;
+  end: LocalDateTime;
 
   @Column('bigint')
   workCycleNumber: number;
 
-  @Column({ type: 'boolean', default: true })
+  @Column({ type: 'boolean', default: false })
   publish: boolean;
+
+  @Column({ type: 'boolean', default: true })
+  active: boolean;
+
+  @Column({ name: 'work_cycle_configuration_id' })
+  workCycleConfigurationId: string;
 
   @OneToMany(() => Shift, (shift: Shift) => shift.workCycle)
   shifts: Shift[];
