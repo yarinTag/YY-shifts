@@ -1,7 +1,10 @@
-import { IsBoolean, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 import { LocalDateTime } from '@js-joda/core';
 
 export class UpdateRequest {
+  @IsUUID()
+  id: string;
+
   @IsOptional()
   @IsNotEmpty()
   start: LocalDateTime;
