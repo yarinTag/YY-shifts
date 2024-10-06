@@ -1,8 +1,9 @@
-import { BaseRepository } from '../BaseRepository';
 import { UpdateResult } from 'typeorm';
-import { IShiftConfigurationRepository } from './shiftConfiguration.interface';
-import { ShiftConfiguration } from './shiftConfiguration.schema';
+
+import { BaseRepository } from '../BaseRepository';
 import { CreateRequest } from './dto/CreateRequest';
+import { ShiftConfiguration } from './shiftConfiguration.schema';
+import { IShiftConfigurationRepository } from './shiftConfiguration.interface';
 
 export class ShiftConfigurationRepository
   implements IShiftConfigurationRepository
