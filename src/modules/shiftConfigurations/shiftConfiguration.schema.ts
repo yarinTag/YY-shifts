@@ -28,6 +28,9 @@ export class ShiftConfiguration extends BaseEntity {
   @Column('int')
   day: WorkDay;
 
+  @Column({ type: 'boolean', default: false })
+  dayOff: boolean;
+
   @Column({ type: 'boolean', default: true })
   active: boolean;
 
