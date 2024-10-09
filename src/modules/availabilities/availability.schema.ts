@@ -1,24 +1,10 @@
-import {
-  Entity,
-  ManyToOne,
-  Column,
-  PrimaryColumn,
-  BeforeInsert,
-} from 'typeorm';
-import crypto from 'crypto';
-import * as uuid from 'uuid';
-
-import { BaseEntity } from '../BaseEntity';
+import { Entity, ManyToOne, Column, PrimaryColumn } from 'typeorm';
 import { User } from '../users/user.schema';
 import { Shift } from '../shifts/shift.schema';
+import { BaseEntity } from '../BaseEntity';
 
 @Entity()
 export class Availability extends BaseEntity {
-  @PrimaryColumn('uuid', {
-    default: () => 'uuid_generate_v4()',
-  })
-  id: string;
-
   @PrimaryColumn('uuid')
   userId: string;
 
@@ -37,10 +23,7 @@ export class Availability extends BaseEntity {
   @ManyToOne(() => Shift, (shift) => shift.availabilities)
   shift: Shift;
 
-  @BeforeInsert()
-  async beforeInsert() {
-    const combined = `${this.userId}-${this.shiftId}`;
-    const hash = crypto.createHash('sha256').update(combined).digest('hex');
-    this.id = uuid.v5(hash, uuid.v4());
+  get id(): string {
+    return `${this.userId}`;
   }
 }

@@ -30,7 +30,7 @@ class AvailabilityRouter extends AsyncRouter {
   }
 
   private initializeRoutes() {
-    this.get('/all', this.availabilityController.getAll);
+    this.get('/', this.availabilityController.getAll);
     this.get(
       '/:id',
       validationMiddleware(GetRequest),

@@ -10,7 +10,7 @@ export class AvailabilityRepository implements IAvailabilityRepository {
 
   async getAllAvailabilities(id: string): Promise<Availability[]> {
     return this.repository.find({
-      where: { userId: id, active: true },
+      where: { shiftId: id, active: true },
     });
   }
 
