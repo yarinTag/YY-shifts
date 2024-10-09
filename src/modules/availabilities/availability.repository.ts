@@ -4,6 +4,7 @@ import { BaseRepository } from '../BaseRepository';
 import { CreateRequest } from './dto/CreateRequest';
 import { Availability } from './availability.schema';
 import { IAvailabilityRepository } from './availability.interface';
+import { FindBy } from './dto/FIndBy';
 
 export class AvailabilityRepository implements IAvailabilityRepository {
   constructor(private repository: BaseRepository<Availability>) {}
@@ -22,8 +23,8 @@ export class AvailabilityRepository implements IAvailabilityRepository {
     return this.repository.create(req);
   }
 
-  async findById(id: string): Promise<Availability | null> {
-    return this.repository.findById(id);
+  async findBy(findBy: FindBy): Promise<Availability | null> {
+    return this.repository.findOneBy({ ...findBy });
   }
 
   async findAll(): Promise<Availability[]> {
