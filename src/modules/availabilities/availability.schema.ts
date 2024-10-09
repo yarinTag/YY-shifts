@@ -22,4 +22,8 @@ export class Availability extends BaseEntity {
 
   @ManyToOne(() => Shift, (shift) => shift.availabilities)
   shift: Shift;
+
+  get id(): string {
+    return `${this.userId}`;
+  }
 }

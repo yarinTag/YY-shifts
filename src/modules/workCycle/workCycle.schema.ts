@@ -36,7 +36,7 @@ export class WorkCycle extends BaseEntity {
   active: boolean;
 
   @Column({ name: 'department_id', type: 'uuid' })
-  deaprtmentId: string;
+  departmentId: string;
 
   @ManyToOne(
     () => Department,
