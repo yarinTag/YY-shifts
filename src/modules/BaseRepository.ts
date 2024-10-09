@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 
 export interface BaseEntityWithId {
-  id: string;
+  id: string | object;
   active?: boolean;
 }
 
@@ -16,12 +16,15 @@ export class BaseRepository<T extends BaseEntityWithId> extends Repository<T> {
     super(entity, dataSource.createEntityManager());
   }
 
-  async findById(id: string): Promise<T | null> {
+  async findById(id: string | object): Promise<T | null> {
     const where: FindOptionsWhere<T> = { id } as FindOptionsWhere<T>;
     return this.findOne({ where });
   }
 
-  async findActiveById(id: string, relations?: string[]): Promise<T | null> {
+  async findActiveById(
+    id: string | object,
+    relations?: string[]
+  ): Promise<T | null> {
     const where: FindOptionsWhere<T> = {
       id,
       active: true,
@@ -33,7 +36,7 @@ export class BaseRepository<T extends BaseEntityWithId> extends Repository<T> {
     return this.find();
   }
 
-  async deleteById(id: string): Promise<T | null> {
+  async deleteById(id: string | object): Promise<T | null> {
     const where: FindOptionsWhere<T> = { id } as FindOptionsWhere<T>;
     const entity = await this.findActiveById(id);
     if (!entity) return null;

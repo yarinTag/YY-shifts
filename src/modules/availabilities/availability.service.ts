@@ -33,7 +33,7 @@ class AvailabilityService implements IAvailabilityService {
   }
 
   async getAll(userId: string): Promise<Availability[]> {
-    return await this.repository.getAllAvailabilities(userId);
+    return await this.repository.getAllAvailabilitiesByUserId(userId);
   }
 
   async getById(id: string): Promise<Availability | null> {

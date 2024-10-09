@@ -20,10 +20,10 @@ export interface IAvailabilityService {
 }
 
 export interface IAvailabilityRepository {
+  getAllAvailabilitiesByUserId(userId: string): Promise<Availability[]>;
+  save(shifConfiguration: Availability): Promise<Availability>;
   create(req: CreateRequest): Promise<Availability>;
   update(entity: Availability): Promise<UpdateResult>;
-  save(shifConfiguration: Availability): Promise<Availability>;
   findById(id: string): Promise<Availability | null>;
   findAll(): Promise<Availability[]>;
-  getAllAvailabilities(id: string): Promise<Availability[]>;
 }

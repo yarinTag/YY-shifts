@@ -13,9 +13,7 @@ import { CreateRequest } from '../modules/availabilities/dto/CreateRequest';
 import { GetRequest } from '../modules/availabilities/dto/GetRequest';
 
 class AvailabilityRouter extends AsyncRouter {
-  constructor(
-    private availabilityController: IAvailabilityController
-  ) {
+  constructor(private availabilityController: IAvailabilityController) {
     super();
     this.initializeRoutes();
   }
@@ -30,7 +28,7 @@ class AvailabilityRouter extends AsyncRouter {
   }
 
   private initializeRoutes() {
-    this.get('/', this.availabilityController.getAll);
+    this.get('/all', this.availabilityController.getAll);
     this.get(
       '/:id',
       validationMiddleware(GetRequest),
