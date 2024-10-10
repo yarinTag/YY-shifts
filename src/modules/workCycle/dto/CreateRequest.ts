@@ -16,4 +16,7 @@ export class CreateRequest {
 
   @IsUUID()
   workCycleConfigurationId: string;
+
+  @IsUUID()
+  departmentId: string;
 }

@@ -10,6 +10,7 @@ import { WorkCycleConfiguration } from '../workCycleConfiguration/workCycleConfi
 import { Shift } from '../shifts/shift.schema';
 import { BaseEntity } from '../BaseEntity';
 import { LocalDate } from '@js-joda/core';
+import { Department } from '../departments/department.schema';
 
 @Entity()
 export class WorkCycle extends BaseEntity {
@@ -33,6 +34,15 @@ export class WorkCycle extends BaseEntity {
 
   @Column({ type: 'boolean', default: true })
   active: boolean;
+
+  @Column({ name: 'department_id', type: 'uuid' })
+  departmentId: string;
+
+  @ManyToOne(
+    () => Department,
+    (deaprtment: Department) => deaprtment.workCycles
+  )
+  department: Department;
 
   @Column({ name: 'work_cycle_configuration_id' })
   workCycleConfigurationId: string;

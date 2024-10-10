@@ -3,6 +3,7 @@ import { Length } from 'class-validator';
 import { User } from '../users/user.schema';
 import { WorkCycleConfiguration } from '../workCycleConfiguration/workCycleConfiguration.schema';
 import { BaseEntity } from '../BaseEntity';
+import { WorkCycle } from '../workCycle/workCycle.schema';
 
 @Entity()
 export class Department extends BaseEntity {
@@ -21,6 +22,9 @@ export class Department extends BaseEntity {
 
   @OneToMany(() => User, (user: User) => user.department)
   users: User[];
+
+  @OneToMany(() => WorkCycle, (workCycle: WorkCycle) => workCycle.department)
+  workCycles: WorkCycle[];
 
   @OneToMany(
     () => WorkCycleConfiguration,

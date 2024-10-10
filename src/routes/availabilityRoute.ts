@@ -10,12 +10,10 @@ import AvailabilityController from '../modules/availabilities/availability.contr
 import AvailabilityService from '../modules/availabilities/availability.service';
 import { UpdateRequest } from '../modules/availabilities/dto/UpdateRequest';
 import { CreateRequest } from '../modules/availabilities/dto/CreateRequest';
-import { GetRequest } from '../modules/availabilities/dto/GetRequest';
+import { FindBy } from '../modules/availabilities/dto/FIndBy';
 
 class AvailabilityRouter extends AsyncRouter {
-  constructor(
-    private availabilityController: IAvailabilityController
-  ) {
+  constructor(private availabilityController: IAvailabilityController) {
     super();
     this.initializeRoutes();
   }
@@ -30,11 +28,11 @@ class AvailabilityRouter extends AsyncRouter {
   }
 
   private initializeRoutes() {
-    this.get('/', this.availabilityController.getAll);
+    this.get('/all', this.availabilityController.getAll);
     this.get(
-      '/:id',
-      validationMiddleware(GetRequest),
-      this.availabilityController.getById
+      '',
+      validationMiddleware(FindBy),
+      this.availabilityController.findBy
     );
     this.post(
       '/',

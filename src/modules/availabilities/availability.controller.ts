@@ -24,9 +24,8 @@ class AvailabilityController implements IAvailabilityController {
     return res.status(200).json(availability);
   };
 
-  public getById = async (req: Request, res: Response): Promise<Response> => {
-    const id = req.params.id;
-    const availability = await this.service.getById(id);
+  public findBy = async (req: Request, res: Response): Promise<Response> => {
+    const availability = await this.service.findBy({ ...req.query });
 
     return res.status(200).json(availability);
   };
