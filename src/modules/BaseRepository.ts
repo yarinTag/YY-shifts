@@ -11,18 +11,21 @@ export interface BaseEntityWithId {
   active?: boolean;
 }
 
+type TKeys = 'id' | 'userId' | 'shiftId' | 'workCycleId' | 'active';
+type BaseRequest = string | Partial<Record<TKeys, string>>;
+
 export class BaseRepository<T extends BaseEntityWithId> extends Repository<T> {
   constructor(entity: EntityTarget<T>, dataSource: DataSource) {
     super(entity, dataSource.createEntityManager());
   }
 
-  async findById(id: string | object): Promise<T | null> {
+  async findById(id: BaseRequest): Promise<T | null> {
     const where: FindOptionsWhere<T> = { id } as FindOptionsWhere<T>;
     return this.findOne({ where });
   }
 
   async findActiveById(
-    id: string | object,
+    id: BaseRequest,
     relations?: string[]
   ): Promise<T | null> {
     const where: FindOptionsWhere<T> = {
@@ -36,7 +39,7 @@ export class BaseRepository<T extends BaseEntityWithId> extends Repository<T> {
     return this.find();
   }
 
-  async deleteById(id: string | object): Promise<T | null> {
+  async deleteById(id: BaseRequest): Promise<T | null> {
     const where: FindOptionsWhere<T> = { id } as FindOptionsWhere<T>;
     const entity = await this.findActiveById(id);
     if (!entity) return null;
