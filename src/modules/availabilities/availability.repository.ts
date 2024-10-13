@@ -4,13 +4,14 @@ import { BaseRepository } from '../BaseRepository';
 import { CreateRequest } from './dto/CreateRequest';
 import { Availability } from './availability.schema';
 import { IAvailabilityRepository } from './availability.interface';
+import { FindBy } from './dto/FIndBy';
 
 export class AvailabilityRepository implements IAvailabilityRepository {
   constructor(private repository: BaseRepository<Availability>) {}
 
-  async getAllAvailabilities(id: string): Promise<Availability[]> {
+  async getAllAvailabilitiesByUserId(userId: string): Promise<Availability[]> {
     return this.repository.find({
-      where: { shiftId: id, active: true },
+      where: { userId, active: true },
     });
   }
 
@@ -22,8 +23,8 @@ export class AvailabilityRepository implements IAvailabilityRepository {
     return this.repository.create(req);
   }
 
-  async findById(id: string): Promise<Availability | null> {
-    return this.repository.findById(id);
+  async findBy(findBy: FindBy): Promise<Availability | null> {
+    return this.repository.findOneBy({ ...findBy });
   }
 
   async findAll(): Promise<Availability[]> {
@@ -31,6 +32,9 @@ export class AvailabilityRepository implements IAvailabilityRepository {
   }
 
   async update(entity: Availability): Promise<UpdateResult> {
-    return this.repository.update({ id: entity.id }, entity);
+    return this.repository.update(
+      { userId: entity.userId, shiftId: entity.shiftId },
+      entity
+    );
   }
 }

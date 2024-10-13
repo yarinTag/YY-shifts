@@ -13,6 +13,7 @@ import { UpdateRequest } from './dto/UpdateRequest';
 import { Availability } from './availability.schema';
 import { validationEntity } from '../../decorators/validateEntity';
 import { UpdateResponse } from '../../types/response/response.interface';
+import { FindBy } from './dto/FIndBy';
 
 class AvailabilityService implements IAvailabilityService {
   constructor(private repository: IAvailabilityRepository) {}
@@ -33,21 +34,26 @@ class AvailabilityService implements IAvailabilityService {
   }
 
   async getAll(userId: string): Promise<Availability[]> {
-    return await this.repository.getAllAvailabilities(userId);
+    return await this.repository.getAllAvailabilitiesByUserId(userId);
   }
 
-  async getById(id: string): Promise<Availability | null> {
-    const availability = await this.repository.findById(id);
+  async findBy(findBy: FindBy): Promise<Availability | null> {
+    const availability = await this.repository.findBy(findBy);
 
     if (!availability) {
-      throw new EntityNotFoundError(Availability.name, id);
+      throw new EntityNotFoundError(
+        Availability.name,
+        `${findBy.userId},${findBy.shiftId}`
+      );
     }
 
     return availability;
   }
 
   async updateById(data: UpdateRequest): Promise<UpdateResponse> {
-    const availability = await this.repository.findById(data.id);
+    const findBy = plainToInstance(FindBy, data);
+    const availability = await this.repository.findBy(findBy);
+    plainToInstance(FindBy, data);
 
     if (!availability) {
       throw new EntityNotFoundError(Availability.name, data.id);
