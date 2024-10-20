@@ -12,6 +12,8 @@ import workCycleConfigurationRoute from './routes/workCycleConfigurationRoute';
 import availabilityRoute from './routes/availabilityRoute';
 import shiftRoute from './routes/shiftRoute';
 import WorkCycleRoute from './routes/workCycleRoute';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './swagger-output.json';
 
 dotenv.config();
 
@@ -33,6 +35,8 @@ dataSource
     console.error('Error connecting to PostgreSQL database:', err);
     process.exit(1); // Exit the process if the database connection fails
   });
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 app.use('/user', userRouter);
 app.use(verifyTokenMiddleware);
 app.use('/department', departmentRouter);

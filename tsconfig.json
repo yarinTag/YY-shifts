@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2016",
+    "resolveJsonModule": true,
     "module": "commonjs",
     "rootDir": "./src",
     "outDir": "./dist",
@@ -12,6 +13,8 @@
     "strictPropertyInitialization": false,
     "emitDecoratorMetadata": true,
     "moduleResolution": "node",
-    "typeRoots": ["@types", "node_modules/@types"]
-  }
+    "typeRoots": ["@types", "./src/types", "node_modules/@types"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
