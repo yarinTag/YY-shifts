@@ -1,10 +1,7 @@
-import { IsBoolean, IsNotEmpty, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsUUID } from 'class-validator';
 import { LocalDateTime } from '@js-joda/core';
 
 export class CreateRequest {
-  @IsBoolean()
-  active: boolean;
-
   @IsNotEmpty()
   start: LocalDateTime;
 

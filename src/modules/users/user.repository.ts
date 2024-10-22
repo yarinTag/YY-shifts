@@ -28,12 +28,12 @@ export class UserRepository implements IUserRepository {
   }
 
   async findByPhone(phone: string): Promise<User | null> {
-    return this.repository.findOne({ where: { phone, active: true } });
+    return this.repository.findOne({ where: { phone } });
   }
 
   async findByIdAndDepartment(id: string, departmentId: string) {
     return this.repository.findOne({
-      where: { id, active: true, department: { id: departmentId } },
+      where: { id, department: { id: departmentId } },
     });
   }
 
@@ -42,13 +42,13 @@ export class UserRepository implements IUserRepository {
     departmentId: string
   ): Promise<User[]> {
     return this.repository.find({
-      where: { id: Not(id), active: true, departmentId },
+      where: { id: Not(id), departmentId },
     });
   }
 
   async getAllUsers(id: string): Promise<User[]> {
     return this.repository.find({
-      where: { id: Not(id), active: true },
+      where: { id: Not(id) },
     });
   }
 }

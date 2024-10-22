@@ -12,7 +12,7 @@ export class ShiftConfigurationRepository
 
   async getAllShifts(id: string): Promise<ShiftConfiguration[]> {
     return this.repository.find({
-      where: { workCycleConfigurationId: id, active: true },
+      where: { workCycleConfigurationId: id },
     });
   }
 

@@ -13,11 +13,11 @@ export const verifyTokenMiddleware = async (
   next: NextFunction
 ): Promise<Response | void> => {
   const token = req.cookies.token;
-  
+
   if (!token) {
     return res
-    .status(ClientStatusCode.Unauthorized)
-    .json({ message: 'Token not found' });
+      .status(ClientStatusCode.Unauthorized)
+      .json({ message: 'Token not found' });
   }
 
   try {
@@ -102,7 +102,7 @@ export const checkDepartmentMiddleware = async (
   try {
     const departmentRepository = dataSource.getRepository(Department);
     const department = await departmentRepository.findOne({
-      where: { id: departmentId, active: true },
+      where: { id: departmentId },
     });
 
     if (!department) {

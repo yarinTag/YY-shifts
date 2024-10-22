@@ -1,6 +1,6 @@
 import { LocalDateTime } from '@js-joda/core';
 
-import { IsOptional, IsUUID, IsBoolean } from 'class-validator';
+import { IsOptional, IsUUID } from 'class-validator';
 
 export class UpdateRequest {
   @IsUUID()
@@ -11,8 +11,4 @@ export class UpdateRequest {
 
   @IsOptional()
   end: LocalDateTime;
-
-  @IsOptional()
-  @IsBoolean()
-  active: boolean;
 }
