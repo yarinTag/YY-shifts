@@ -43,9 +43,7 @@ export class BaseRepository<T extends BaseEntityWithId> extends Repository<T> {
     const where: FindOptionsWhere<T> = { id } as FindOptionsWhere<T>;
     const entity = await this.findActiveById(id);
     if (!entity) return null;
-    entity.active = false;
-
-    await this.update(where, entity as any);
+    await this.softDelete(where);
     return entity;
   }
 }

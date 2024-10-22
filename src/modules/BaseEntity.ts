@@ -3,7 +3,10 @@ import {
   UpdateDateColumn,
   Column,
   DeleteDateColumn,
+  BeforeUpdate,
+  BeforeInsert,
 } from 'typeorm';
+import HttpContext from 'express-http-context';
 
 export abstract class BaseEntity {
   @CreateDateColumn({
@@ -37,6 +40,25 @@ export abstract class BaseEntity {
   })
   updatedBy: string;
 
-  @DeleteDateColumn()
+  @DeleteDateColumn({
+    name: 'deleted_at',
+    type: 'timestamp',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
   deletedAt?: Date;
+
+  @BeforeInsert()
+  setCreatedByAndDate() {
+    const context = HttpContext.get('user');
+    if (context) this.createdBy = context.id;
+  }
+
+  @BeforeUpdate()
+  setUpdatedByAndDate() {
+    const context = HttpContext.get('user');
+
+    if (context) this.updatedBy = context.id;
+
+    this.updatedAt = new Date();
+  }
 }
