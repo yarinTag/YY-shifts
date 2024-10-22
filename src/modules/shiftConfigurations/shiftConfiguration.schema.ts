@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   ManyToOne,
+  Unique,
 } from 'typeorm';
 import { Shift } from '../shifts/shift.schema';
 import { WorkCycleConfiguration } from '../workCycleConfiguration/workCycleConfiguration.schema';
@@ -12,6 +13,13 @@ import { WorkDay } from '../../types/enum/workDay';
 import { LocalTime } from '@js-joda/core';
 
 @Entity()
+@Unique([
+  'day',
+  'start',
+  'end',
+  'work_cycle_configuration_id',
+  'deleted_at != null',
+])
 export class ShiftConfiguration extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -27,9 +35,6 @@ export class ShiftConfiguration extends BaseEntity {
 
   @Column('int')
   day: WorkDay;
-
-  @Column({ type: 'boolean', default: false })
-  dayOff: boolean;
 
   @Column({ name: 'work_cycle_configuration_id' })
   workCycleConfigurationId: string;
