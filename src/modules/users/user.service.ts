@@ -38,11 +38,10 @@ export class UserService implements IUserService {
     return await this.userRepository.save(user);
   }
 
-  async signIn(authCredentials: SignInRequest) {
-    const { phone, password } = authCredentials;
-    const user = await this.userRepository.findByPhone(phone);
+  async signIn(req: SignInRequest) {
+    const user = await this.userRepository.findByPhone(req.phone);
 
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (user && (await bcrypt.compare(req.password, user.password))) {
       const payload = {
         id: user.id,
         role: user.role,

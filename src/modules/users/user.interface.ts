@@ -19,7 +19,7 @@ export interface IUserController {
 
 export interface IUserService {
   createUser(data: CreateUserRequest): Promise<User>;
-  signIn(authCredentials: SignInRequest): Promise<string | undefined>;
+  signIn(req: SignInRequest): Promise<string | undefined>;
   getAllUsers(id: string, departmentId?: string): Promise<User[]>;
   getUsersByDepartmentId(id: string, departmentId: string): Promise<User[]>;
   findUserByIdAndDepartment(
