@@ -41,9 +41,6 @@ export class User extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   photo?: string;
 
-  @Column({ type: 'boolean', default: true })
-  active: boolean;
-
   @Column({ nullable: true })
   departmentId: string;
 

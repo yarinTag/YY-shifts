@@ -24,9 +24,6 @@ export class Shift extends BaseEntity {
   @Column('timestamp')
   end: LocalDateTime;
 
-  @Column({ type: 'boolean', default: true })
-  active: boolean;
-
   @Column({ name: 'user_id' })
   userId: string;
 

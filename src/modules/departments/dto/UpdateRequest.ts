@@ -9,6 +9,4 @@ export class UpdateRequest {
   @IsOptional()
   @IsString()
   address: string;
-  @IsOptional()
-  active: boolean;
 }

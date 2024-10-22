@@ -11,7 +11,7 @@ export class AvailabilityRepository implements IAvailabilityRepository {
 
   async getAllAvailabilitiesByUserId(userId: string): Promise<Availability[]> {
     return this.repository.find({
-      where: { userId, active: true },
+      where: { userId },
     });
   }
 
