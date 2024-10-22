@@ -1,23 +1,25 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import cookieParser from 'cookie-parser';
+import HttpContext from 'express-http-context';
 
 import { dataSource } from './db';
 import userRouter from './routes/userRoute';
-import departmentRouter from './routes/departmentRoute';
-import { errorHandler } from './middlewares/error/asyncErrorHandler';
-import { verifyTokenMiddleware } from './middlewares/authMiddleware';
-import shiftConfigurationRoute from './routes/shiftConfigurationRoute';
-import workCycleConfigurationRoute from './routes/workCycleConfigurationRoute';
-import availabilityRoute from './routes/availabilityRoute';
 import shiftRoute from './routes/shiftRoute';
 import WorkCycleRoute from './routes/workCycleRoute';
+import departmentRouter from './routes/departmentRoute';
+import availabilityRoute from './routes/availabilityRoute';
+import { verifyTokenMiddleware } from './middlewares/authMiddleware';
+import { errorHandler } from './middlewares/error/asyncErrorHandler';
+import shiftConfigurationRoute from './routes/shiftConfigurationRoute';
+import workCycleConfigurationRoute from './routes/workCycleConfigurationRoute';
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+app.use(HttpContext.middleware);
 
 dataSource
   .initialize()

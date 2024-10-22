@@ -1,10 +1,11 @@
 import jwt from 'jsonwebtoken';
+import HttpContext from 'express-http-context';
 import { Request, Response, NextFunction } from 'express';
 
 import { dataSource } from '../db';
-import { Department } from '../modules/departments/department.schema';
-import { ClientStatusCode } from '../types/enum/ClientStatusCode';
 import { Role } from '../types/enum/Role';
+import { ClientStatusCode } from '../types/enum/ClientStatusCode';
+import { Department } from '../modules/departments/department.schema';
 
 export const verifyTokenMiddleware = async (
   req: Request,
@@ -12,11 +13,11 @@ export const verifyTokenMiddleware = async (
   next: NextFunction
 ): Promise<Response | void> => {
   const token = req.cookies.token;
-
+  
   if (!token) {
     return res
-      .status(ClientStatusCode.Unauthorized)
-      .json({ message: 'Token not found' });
+    .status(ClientStatusCode.Unauthorized)
+    .json({ message: 'Token not found' });
   }
 
   try {
@@ -27,7 +28,11 @@ export const verifyTokenMiddleware = async (
     req.userId = user.id;
     req.userRole = user.role;
     req.departmentId = user.departmentId;
-
+    HttpContext.set('user', {
+      id: user.id,
+      role: user.role,
+      departmentId: user.departmentId,
+    });
     next();
   } catch (err) {
     console.error(err);
