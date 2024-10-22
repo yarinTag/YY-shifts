@@ -30,9 +30,9 @@ export class BaseRepository<T extends BaseEntityWithId> extends Repository<T> {
   ): Promise<T | null> {
     const where: FindOptionsWhere<T> = {
       id,
-      active: true,
     } as FindOptionsWhere<T>;
-    return this.findOne({ where, relations });
+
+    return this.findOne({ where, withDeleted: false, relations });
   }
 
   async findAll(): Promise<T[]> {

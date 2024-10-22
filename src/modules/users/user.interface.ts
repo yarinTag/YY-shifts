@@ -39,7 +39,7 @@ export interface IUserRepository {
   deleteUser(id: string): Promise<User | null>;
   update(entity: User): Promise<UpdateResult>;
   findById(id: string): Promise<User | null>;
-  findActiveById(userId: string, arg1: string[]): Promise<User | null>;
+  findActiveById(userId: string, relations?: string[]): Promise<User | null>;
   findByIdAndDepartment(id: string, departmentId: string): Promise<User | null>;
   getAllUsersByDepartmentId(id: string, departmentId: string): Promise<User[]>;
   getAllUsers(id: string): Promise<User[]>;
