@@ -96,7 +96,7 @@ export const validateDepartmentMatch = async (
 
   return res
     .status(ClientStatusCode.Forbidden)
-    .json({ message: 'Invalid department' });
+    .json({ message: `Department id doesn't match` });
 };
 
 export const validateDepartmentActive = async (
@@ -127,7 +127,7 @@ export const validateDepartmentActive = async (
     if (!department) {
       return res
         .status(ClientStatusCode.Forbidden)
-        .json({ message: 'Invalid department' });
+        .json({ message: 'Department not active' });
     }
 
     next();

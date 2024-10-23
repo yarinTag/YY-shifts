@@ -40,7 +40,6 @@ class WorkCycleConfigurationRouter extends AsyncRouter {
       '/all',
       RoleGuard([Role.ADMIN, Role.MANAGER]),
       validateDepartmentActive,
-      validateDepartmentMatch,
       this.workCycleConfigurationController.findAll
     );
     this.get(
@@ -48,7 +47,6 @@ class WorkCycleConfigurationRouter extends AsyncRouter {
       validationMiddleware(GetByIdRequest),
       RoleGuard([Role.ADMIN, Role.MANAGER]),
       validateDepartmentActive,
-      validateDepartmentMatch,
       this.workCycleConfigurationController.findById
     );
     this.post(
@@ -64,7 +62,6 @@ class WorkCycleConfigurationRouter extends AsyncRouter {
       validationMiddleware(UpdateRequest),
       RoleGuard([Role.ADMIN, Role.MANAGER]),
       validateDepartmentActive,
-      validateDepartmentMatch,
       this.workCycleConfigurationController.patch
     );
     this.delete(
@@ -72,7 +69,6 @@ class WorkCycleConfigurationRouter extends AsyncRouter {
       validationMiddleware(DeleteRequest),
       RoleGuard([Role.ADMIN, Role.MANAGER]),
       validateDepartmentActive,
-      validateDepartmentMatch,
       this.workCycleConfigurationController.delete
     );
   }
