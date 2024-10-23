@@ -4,6 +4,8 @@ import { WorkDay } from '../../../types/enum/workDay';
 export class UpdateRequest {
   @IsUUID()
   id: string;
+  @IsUUID()
+  departmentId: string;
   @IsOptional()
   @IsNumber()
   cycleDays: number;

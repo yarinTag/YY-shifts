@@ -62,6 +62,7 @@ class WorkCycleConfigurationRouter extends AsyncRouter {
       validationMiddleware(UpdateRequest),
       RoleGuard([Role.ADMIN, Role.MANAGER]),
       validateDepartmentActive,
+      validateDepartmentMatch,
       this.workCycleConfigurationController.patch
     );
     this.delete(

@@ -10,7 +10,10 @@ import {
 } from './workCycleConfiguration.interface';
 import { plainToInstance } from 'class-transformer';
 import { validationEntity } from '../../decorators/validateEntity';
-import { UnprocessableEntityError } from '../../middlewares/error/ApiError';
+import {
+  ForbiddenError,
+  UnprocessableEntityError,
+} from '../../middlewares/error/ApiError';
 
 export class WorkCycleConfigurationService
   implements IWorkCycleConfigurationService
@@ -48,6 +51,12 @@ export class WorkCycleConfigurationService
       throw new EntityNotFoundError(WorkCycleConfiguration.name, req.id);
     }
 
+    if (req.departmentId != workCycleConfiguration.departmentId) {
+      throw new ForbiddenError(
+        'Cant update another department work cycle configuration'
+      );
+    }
+
     const entity = plainToInstance(WorkCycleConfiguration, {
       ...workCycleConfiguration,
       ...req,
@@ -64,6 +73,10 @@ export class WorkCycleConfigurationService
     }
 
     return await this.repository.update(entity);
+  }
+
+  private isUserDepartmentMatch(): boolean {
+    return false;
   }
   async delete(req: DeleteRequest): Promise<WorkCycleConfiguration> {
     const entity = await this.repository.deleteById(req.id);
