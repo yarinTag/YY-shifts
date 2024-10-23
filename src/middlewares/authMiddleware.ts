@@ -99,7 +99,7 @@ export const validateDepartmentMatch = async (
     .json({ message: 'Invalid department' });
 };
 
-export const validateDepartmentAccess = async (
+export const validateDepartmentActive = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -120,7 +120,8 @@ export const validateDepartmentAccess = async (
   try {
     const departmentRepository = dataSource.getRepository(Department);
     const department = await departmentRepository.findOne({
-      where: { id: departmentId },withDeleted: false
+      where: { id: departmentId },
+      withDeleted: false,
     });
 
     if (!department) {

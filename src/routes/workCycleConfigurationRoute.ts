@@ -11,6 +11,12 @@ import { GetByIdRequest } from '../modules/workCycleConfiguration/dto/GetByIdReq
 import { CreateRequest } from '../modules/workCycleConfiguration/dto/CreateRequest';
 import { DeleteRequest } from '../modules/workCycleConfiguration/dto/DeleteRequest';
 import { UpdateRequest } from '../modules/workCycleConfiguration/dto/UpdateRequest';
+import { Role } from '../types/enum/Role';
+import {
+  RoleGuard,
+  validateDepartmentActive,
+  validateDepartmentMatch,
+} from '../middlewares/authMiddleware';
 
 class WorkCycleConfigurationRouter extends AsyncRouter {
   constructor(
@@ -30,25 +36,43 @@ class WorkCycleConfigurationRouter extends AsyncRouter {
   }
 
   private initializeRoutes() {
-    this.get('/all', this.workCycleConfigurationController.findAll);
+    this.get(
+      '/all',
+      RoleGuard([Role.ADMIN, Role.MANAGER]),
+      validateDepartmentActive,
+      validateDepartmentMatch,
+      this.workCycleConfigurationController.findAll
+    );
     this.get(
       '/:id',
       validationMiddleware(GetByIdRequest),
+      RoleGuard([Role.ADMIN, Role.MANAGER]),
+      validateDepartmentActive,
+      validateDepartmentMatch,
       this.workCycleConfigurationController.findById
     );
     this.post(
       '/',
       validationMiddleware(CreateRequest),
+      RoleGuard([Role.ADMIN, Role.MANAGER]),
+      validateDepartmentActive,
+      validateDepartmentMatch,
       this.workCycleConfigurationController.create
     );
     this.patch(
       '/:id',
       validationMiddleware(UpdateRequest),
+      RoleGuard([Role.ADMIN, Role.MANAGER]),
+      validateDepartmentActive,
+      validateDepartmentMatch,
       this.workCycleConfigurationController.patch
     );
     this.delete(
       '/:id',
       validationMiddleware(DeleteRequest),
+      RoleGuard([Role.ADMIN, Role.MANAGER]),
+      validateDepartmentActive,
+      validateDepartmentMatch,
       this.workCycleConfigurationController.delete
     );
   }
