@@ -81,7 +81,25 @@ export function RoleGuard(requiredRoles: string[]) {
   };
 }
 
-export const checkDepartmentMiddleware = async (
+export const validateDepartmentMatch = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const departmentId = req.departmentId;
+  const userDepartment = req.body.departmentId;
+  const isAcountAdmin = req.userRole === Role.ADMIN;
+
+  if (isAcountAdmin) return next();
+
+  if (departmentId === userDepartment) return next();
+
+  return res
+    .status(ClientStatusCode.Forbidden)
+    .json({ message: 'Invalid department' });
+};
+
+export const validateDepartmentAccess = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -102,7 +120,7 @@ export const checkDepartmentMiddleware = async (
   try {
     const departmentRepository = dataSource.getRepository(Department);
     const department = await departmentRepository.findOne({
-      where: { id: departmentId },
+      where: { id: departmentId },withDeleted: false
     });
 
     if (!department) {

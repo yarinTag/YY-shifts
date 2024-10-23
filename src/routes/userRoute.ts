@@ -1,8 +1,9 @@
 import dotenv from 'dotenv';
 import {
-  checkDepartmentMiddleware,
+  validateDepartmentAccess,
   RoleGuard,
   verifyTokenMiddleware,
+  validateDepartmentMatch,
 } from '../middlewares/authMiddleware';
 import { dataSource } from '../db';
 import AsyncRouter from './AsyncRouter';
@@ -50,13 +51,13 @@ class UserRouter extends AsyncRouter {
       this.userController.getAllUsers
     );
 
-    this.get('/', checkDepartmentMiddleware, this.userController.getUserById);
+    this.get('/', validateDepartmentAccess, this.userController.getUserById);
 
     this.get(
       '/:id',
       verifyTokenMiddleware,
       RoleGuard([Role.ADMIN, Role.MANAGER]),
-      checkDepartmentMiddleware,
+      validateDepartmentAccess,
       this.userController.getUserById
     );
 
@@ -64,7 +65,9 @@ class UserRouter extends AsyncRouter {
       '/',
       verifyTokenMiddleware,
       validationMiddleware(CreateUserRequest),
-      checkDepartmentMiddleware,
+      RoleGuard([Role.ADMIN, Role.MANAGER]),
+      validateDepartmentAccess,
+      validateDepartmentMatch,
       this.userController.createUser
     );
 
@@ -83,7 +86,7 @@ class UserRouter extends AsyncRouter {
       '/:id',
       verifyTokenMiddleware,
       RoleGuard([Role.ADMIN, Role.MANAGER]),
-      checkDepartmentMiddleware,
+      validateDepartmentAccess,
       validationMiddleware(DeleteUserRequest),
       this.userController.deleteUser
     );
