@@ -17,8 +17,8 @@ export class ShiftConfigurationRepository
   }
 
   async save(
-    shifConfiguration: ShiftConfiguration
-  ): Promise<ShiftConfiguration> {
+    shifConfiguration: ShiftConfiguration[]
+  ): Promise<ShiftConfiguration[]> {
     return this.repository.save(shifConfiguration);
   }
   async create(req: CreateRequest): Promise<ShiftConfiguration> {

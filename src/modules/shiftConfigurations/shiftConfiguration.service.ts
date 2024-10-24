@@ -17,20 +17,28 @@ import { UpdateResponse } from '../../types/response/response.interface';
 class ShiftConfigurationService implements IShiftConfigurationService {
   constructor(private repository: IShiftConfigurationRepository) {}
 
-  async create(data: CreateRequest): Promise<ShiftConfiguration> {
-    const shiftConfiguration = await this.repository.create(data);
-    const validationResult = await validationEntity(
-      ShiftConfiguration,
-      shiftConfiguration
+  async create(data: CreateRequest[]): Promise<ShiftConfiguration[]> {
+
+    const shiftConfigurations = await Promise.all(
+      data.map(async (shiftConfiguration) =>
+        this.repository.create(shiftConfiguration)
+      )
     );
 
-    if (validationResult.sucsses === false) {
-      throw new UnprocessableEntityError(
-        `Failed to create new Department : ${validationResult.errors}`
+    for (const shiftConfiguration of shiftConfigurations) {
+      const validationResult = await validationEntity(
+        ShiftConfiguration,
+        shiftConfiguration
       );
+
+      if (validationResult.sucsses === false) {
+        throw new UnprocessableEntityError(
+          `Failed to create new Department : ${validationResult.errors}`
+        );
+      }
     }
 
-    const result = await this.repository.save(shiftConfiguration);
+    const result = await this.repository.save(shiftConfigurations);
 
     return result;
   }

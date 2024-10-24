@@ -1,7 +1,8 @@
 import { ValidationResponse } from '../types/response/ValidationResponse';
+import { ValidationError } from 'class-validator';
 
-export function flattenErrors(errorObject: ValidationResponse) {
-  return errorObject.errors.map((error) => {
+export function flattenErrors(errorObject: ValidationError[]) {
+  return errorObject.map((error) => {
     return {
       property: error.property,
       constraints: error.constraints,
