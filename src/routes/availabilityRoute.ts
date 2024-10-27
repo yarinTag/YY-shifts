@@ -11,6 +11,7 @@ import AvailabilityService from '../modules/availabilities/availability.service'
 import { UpdateRequest } from '../modules/availabilities/dto/UpdateRequest';
 import { CreateRequest } from '../modules/availabilities/dto/CreateRequest';
 import { FindBy } from '../modules/availabilities/dto/FIndBy';
+import { DeleteRequest } from '../modules/availabilities/dto/DeleteRequest';
 
 class AvailabilityRouter extends AsyncRouter {
   constructor(private availabilityController: IAvailabilityController) {
@@ -43,6 +44,11 @@ class AvailabilityRouter extends AsyncRouter {
       '/:id',
       validationMiddleware(UpdateRequest),
       this.availabilityController.update
+    );
+    this.delete(
+      '/:shiftId',
+      validationMiddleware(DeleteRequest),
+      this.availabilityController.delete
     );
   }
 }

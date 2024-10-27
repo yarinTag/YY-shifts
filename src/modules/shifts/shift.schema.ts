@@ -25,11 +25,11 @@ export class Shift extends BaseEntity {
   @Column('timestamp')
   end: LocalDateTime;
 
-  @Column()
+  @Column({ nullable: true })
   userId: string;
 
   @Column({ type: 'text', default: ShiftType.WORKING })
-  shift_type: ShiftType;
+  shiftYype: ShiftType;
 
   @Column()
   workCycleId: string;
