@@ -45,7 +45,7 @@ export abstract class BaseEntity {
     type: 'timestamp',
     onUpdate: 'CURRENT_TIMESTAMP',
   })
-  deletedAt?: Date;
+  deletedAt: Date | null;
 
   @BeforeInsert()
   setCreatedByAndDate() {

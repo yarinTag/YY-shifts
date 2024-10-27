@@ -1,10 +1,11 @@
-import { UpdateResult } from 'typeorm';
+import { FindOptionsWhere, UpdateResult } from 'typeorm';
 
 import { BaseRepository } from '../BaseRepository';
 import { CreateRequest } from './dto/CreateRequest';
 import { Availability } from './availability.schema';
 import { IAvailabilityRepository } from './availability.interface';
-import { FindBy } from './dto/FIndBy';
+import { FindBy } from './dto/FindBy';
+import { DeleteRequest } from './dto/DeleteRequest';
 
 export class AvailabilityRepository implements IAvailabilityRepository {
   constructor(private repository: BaseRepository<Availability>) {}
@@ -16,6 +17,7 @@ export class AvailabilityRepository implements IAvailabilityRepository {
   }
 
   async save(availability: Availability): Promise<Availability> {
+    availability.deletedAt = null;
     return this.repository.save(availability);
   }
 
@@ -36,5 +38,9 @@ export class AvailabilityRepository implements IAvailabilityRepository {
       { userId: entity.userId, shiftId: entity.shiftId },
       entity
     );
+  }
+
+  async deleteById(req: DeleteRequest): Promise<UpdateResult> {
+    return await this.repository.softDelete(req);
   }
 }

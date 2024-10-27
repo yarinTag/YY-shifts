@@ -6,6 +6,7 @@ export class CreateRequest {
   memo: string;
 
   @IsUUID()
+  @IsOptional()
   userId: string;
 
   @IsUUID()

@@ -4,16 +4,17 @@ import {
   IAvailabilityRepository,
   IAvailabilityService,
 } from './availability.interface';
+import { FindBy } from './dto/FindBy';
 import {
   EntityNotFoundError,
   UnprocessableEntityError,
 } from '../../middlewares/error/ApiError';
 import { CreateRequest } from './dto/CreateRequest';
 import { UpdateRequest } from './dto/UpdateRequest';
+import { DeleteRequest } from './dto/DeleteRequest';
 import { Availability } from './availability.schema';
 import { validationEntity } from '../../decorators/validateEntity';
 import { UpdateResponse } from '../../types/response/response.interface';
-import { FindBy } from './dto/FIndBy';
 
 class AvailabilityService implements IAvailabilityService {
   constructor(private repository: IAvailabilityRepository) {}
@@ -56,7 +57,7 @@ class AvailabilityService implements IAvailabilityService {
     plainToInstance(FindBy, data);
 
     if (!availability) {
-      throw new EntityNotFoundError(Availability.name, data.id);
+      throw new EntityNotFoundError(Availability.name, data.shiftId);
     }
 
     const entity = plainToInstance(Availability, {
@@ -67,11 +68,24 @@ class AvailabilityService implements IAvailabilityService {
 
     if (validationResult.sucsses === false) {
       throw new UnprocessableEntityError(
-        `Availability with Id: ${data.id}, Failed to update: ${validationResult.errors}`
+        `Availability with Id: ${data.shiftId}, Failed to update: ${validationResult.errors}`
       );
     }
 
     await this.repository.update(entity);
+    return {
+      success: true,
+      message: 'Availability updated successfully',
+    };
+  }
+
+  async delete(req: DeleteRequest): Promise<UpdateResponse> {
+    const result = await this.repository.deleteById(req);
+
+    if (!result) {
+      throw new EntityNotFoundError(Availability.name, req.userId);
+    }
+
     return {
       success: true,
       message: 'Availability updated successfully',

@@ -10,6 +10,7 @@ export class CreateRequest {
   end: LocalDateTime;
 
   @IsUUID()
+  @IsOptional()
   userId: string;
 
   @IsUUID()
