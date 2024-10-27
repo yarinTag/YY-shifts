@@ -1,4 +1,3 @@
-import { ValidationResponse } from '../types/response/ValidationResponse';
 import { ValidationError } from 'class-validator';
 
 export function flattenErrors(errorObject: ValidationError[]) {

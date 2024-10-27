@@ -9,11 +9,11 @@ import {
   UnprocessableEntityError,
 } from '../../middlewares/error/ApiError';
 import { Role } from '../../types/enum/Role';
-import { IUserRepository, IUserService } from './user.interface';
 import { SignInRequest } from './dto/SignInRequest';
 import { GetByIdRequest } from './dto/GetByIdRequest';
 import { CreateUserRequest } from './dto/CreateRequest';
 import { UpdateUserRequest } from './dto/UpdateRequest';
+import { IUserRepository, IUserService } from './user.interface';
 import { validationEntity } from '../../decorators/validateEntity';
 
 export class UserService implements IUserService {
