@@ -75,9 +75,6 @@ export class WorkCycleConfigurationService
     return await this.repository.update(entity);
   }
 
-  private isUserDepartmentMatch(): boolean {
-    return false;
-  }
   async delete(req: DeleteRequest): Promise<WorkCycleConfiguration> {
     const entity = await this.repository.deleteById(req.id);
 
