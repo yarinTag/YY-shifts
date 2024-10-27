@@ -10,7 +10,7 @@ import AvailabilityController from '../modules/availabilities/availability.contr
 import AvailabilityService from '../modules/availabilities/availability.service';
 import { UpdateRequest } from '../modules/availabilities/dto/UpdateRequest';
 import { CreateRequest } from '../modules/availabilities/dto/CreateRequest';
-import { FindBy } from '../modules/availabilities/dto/FIndBy';
+import { FindBy } from '../modules/availabilities/dto/FindBy';
 import { DeleteRequest } from '../modules/availabilities/dto/DeleteRequest';
 
 class AvailabilityRouter extends AsyncRouter {

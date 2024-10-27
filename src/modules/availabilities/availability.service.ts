@@ -4,7 +4,7 @@ import {
   IAvailabilityRepository,
   IAvailabilityService,
 } from './availability.interface';
-import { FindBy } from './dto/FIndBy';
+import { FindBy } from './dto/FindBy';
 import {
   EntityNotFoundError,
   UnprocessableEntityError,

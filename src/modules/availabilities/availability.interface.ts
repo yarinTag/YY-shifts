@@ -4,7 +4,7 @@ import { Availability } from './availability.schema';
 import { UpdateRequest } from './dto/UpdateRequest';
 import { UpdateResult } from 'typeorm';
 import { UpdateResponse } from '../../types/response/response.interface';
-import { FindBy } from './dto/FIndBy';
+import { FindBy } from './dto/FindBy';
 import { DeleteRequest } from './dto/DeleteRequest';
 
 export interface IAvailabilityController {

@@ -4,7 +4,7 @@ import { BaseRepository } from '../BaseRepository';
 import { CreateRequest } from './dto/CreateRequest';
 import { Availability } from './availability.schema';
 import { IAvailabilityRepository } from './availability.interface';
-import { FindBy } from './dto/FIndBy';
+import { FindBy } from './dto/FindBy';
 import { DeleteRequest } from './dto/DeleteRequest';
 
 export class AvailabilityRepository implements IAvailabilityRepository {

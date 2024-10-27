@@ -29,7 +29,7 @@ export class Shift extends BaseEntity {
   userId: string;
 
   @Column({ type: 'text', default: ShiftType.WORKING })
-  shiftYype: ShiftType;
+  shiftType: ShiftType;
 
   @Column()
   workCycleId: string;
