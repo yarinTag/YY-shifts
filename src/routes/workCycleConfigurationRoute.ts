@@ -18,7 +18,7 @@ import {
   validateDepartmentMatch,
 } from '../middlewares/authMiddleware';
 
-class WorkCycleConfigurationRouter extends AsyncRouter {
+export default class WorkCycleConfigurationRouter extends AsyncRouter {
   constructor(
     private workCycleConfigurationController: IWorkCycleConfigurationController
   ) {
@@ -74,5 +74,3 @@ class WorkCycleConfigurationRouter extends AsyncRouter {
     );
   }
 }
-
-export default WorkCycleConfigurationRouter.create().getRouter();

@@ -4,27 +4,13 @@ import { CreateRequest } from '../modules/departments/dto/CreateRequest';
 import { UpdateRequest } from '../modules/departments/dto/UpdateRequest';
 import { DeleteRequest } from '../modules/departments/dto/DeleteRequest';
 import { GetByIdRequest } from '../modules/departments/dto/GetByIdRequest';
-import { DepartmentController } from '../modules/departments/department.controller';
-import { DepartmentService } from '../modules/departments/department.service';
-import { DepartmentRepository } from '../modules/departments/department.repository';
-import { dataSource } from '../db';
 import { IDepartmentController } from '../modules/departments/department.interface';
-import { BaseRepository } from '../modules/BaseRepository';
-import { Department } from '../modules/departments/department.schema';
 
-class DepartmentRouter extends AsyncRouter {
+export default class DepartmentRouter extends AsyncRouter {
   constructor(private departmentController: IDepartmentController) {
     super();
     this.initializeRoutes();
   }
-
-  static create() {
-    const departmentRepository = new DepartmentRepository((new BaseRepository(Department, dataSource)));
-    const departmentService = new DepartmentService(departmentRepository);
-    const departmentController = new DepartmentController(departmentService);
-    return new DepartmentRouter(departmentController);
-  }
-
   private initializeRoutes() {
     this.get('/all', this.departmentController.getAllDepartments);
     this.get('/', this.departmentController.getDepartmentById);
@@ -50,5 +36,3 @@ class DepartmentRouter extends AsyncRouter {
     );
   }
 }
-
-export default DepartmentRouter.create().getRouter();
