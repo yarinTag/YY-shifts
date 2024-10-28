@@ -51,7 +51,7 @@ class AvailabilityController implements IAvailabilityController {
     await this.service.delete({ ...req.body, shiftId, userId });
 
     return res.status(200).json({
-      sucsses: true,
+      success: true,
       message: 'Availability deactivated successfully',
     });
   };

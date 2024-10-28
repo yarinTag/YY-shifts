@@ -30,7 +30,7 @@ export class UserService implements IUserService {
     const entity = plainToInstance(User, user);
     const validationResult = await validationEntity(User, entity);
 
-    if (validationResult.sucsses === false) {
+    if (validationResult.success === false) {
       throw new UnprocessableEntityError(
         `User with name: ${data.name}, Failed to create: ${validationResult.errors}`
       );
@@ -108,7 +108,7 @@ export class UserService implements IUserService {
     const entity = plainToInstance(User, { ...existingUser, ...data });
     const validationResult = await validationEntity(User, entity);
 
-    if (validationResult.sucsses === false) {
+    if (validationResult.success === false) {
       throw new UnprocessableEntityError(
         `User with Id: ${id}, Failed to update: ${validationResult.errors}`
       );

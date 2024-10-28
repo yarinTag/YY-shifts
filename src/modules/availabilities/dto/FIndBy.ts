@@ -1,6 +1,6 @@
 import { IsNumberString, IsUUID, ValidateIf } from 'class-validator';
 
-export class FindBy {
+export default class FindBy {
   @ValidateIf((obj) => !obj.shiftId)
   @IsUUID()
   userId?: string;

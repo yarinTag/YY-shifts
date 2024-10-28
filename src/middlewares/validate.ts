@@ -1,5 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
-import { ValidationError, validationPipe } from './validation';
+import {
+  ValidationError,
+  validationPipe,
+  ValidationResult,
+} from './validation';
 import { ClientStatusCode } from '../types/enum/ClientStatusCode';
 import { flattenErrors } from '../utils/CodeUtils';
 
@@ -19,19 +23,41 @@ export const validationMiddleware =
       )
     );
 
-    const errors: ValidationError[] = validationResults
-      .filter((result): result is { success: false; errors: ValidationError[] } => {
-        return result.success === false && Array.isArray(result.errors);
-      })
-      .flatMap(result => result.errors);
-
-    if (errors.length > 0) {
+    if (isFailed(validationResults)) {
       return res
         .status(ClientStatusCode.BadRequest)
-        .json(flattenErrors(errors));
+        .json(flattenErrors(mapToValidationErrors(validationResults)));
     }
-    req.body = result.transformedClass;
+
+    req.body = mapToBody(validationResults);
 
     next();
     return true;
   };
+
+function mapToValidationErrors(
+  validationResults: ValidationResult[]
+): ValidationError[] {
+  return validationResults.reduce<ValidationError[]>((arr, current) => {
+    if (current.success === false && Array.isArray(current.errors)) {
+      return [...arr, ...current.errors];
+    }
+
+    return arr;
+  }, []);
+}
+
+function mapToBody(validationResults: ValidationResult[]): object[] {
+  return validationResults.reduce<object[]>((arr, current) => {
+    if (current.transformedClass) {
+      arr.push(current.transformedClass);
+    }
+
+    return arr;
+  }, []);
+}
+function isFailed(validationResults: ValidationResult[]): boolean {
+  return (
+    validationResults.filter((result) => result.success === false).length > 0
+  );
+}

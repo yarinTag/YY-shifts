@@ -1,11 +1,11 @@
-import { FindOptionsWhere, UpdateResult } from 'typeorm';
+import { UpdateResult } from 'typeorm';
 
 import { BaseRepository } from '../BaseRepository';
 import { CreateRequest } from './dto/CreateRequest';
 import { Availability } from './availability.schema';
 import { IAvailabilityRepository } from './availability.interface';
-import { FindBy } from './dto/FindBy';
 import { DeleteRequest } from './dto/DeleteRequest';
+import FindBy from './dto/FindBy';
 
 export class AvailabilityRepository implements IAvailabilityRepository {
   constructor(private repository: BaseRepository<Availability>) {}
