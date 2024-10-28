@@ -96,10 +96,10 @@ export const validateDepartmentMatch = async (
 
   return res
     .status(ClientStatusCode.Forbidden)
-    .json({ message: 'Invalid department' });
+    .json({ message: `Department id doesn't match` });
 };
 
-export const validateDepartmentAccess = async (
+export const validateDepartmentActive = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -120,13 +120,14 @@ export const validateDepartmentAccess = async (
   try {
     const departmentRepository = dataSource.getRepository(Department);
     const department = await departmentRepository.findOne({
-      where: { id: departmentId },withDeleted: false
+      where: { id: departmentId },
+      withDeleted: false,
     });
 
     if (!department) {
       return res
         .status(ClientStatusCode.Forbidden)
-        .json({ message: 'Invalid department' });
+        .json({ message: 'Department not active' });
     }
 
     next();

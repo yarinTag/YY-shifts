@@ -30,6 +30,7 @@ export const validationMiddleware =
         .status(ClientStatusCode.BadRequest)
         .json(flattenErrors(errors));
     }
+    req.body = result.transformedClass;
 
     next();
     return true;

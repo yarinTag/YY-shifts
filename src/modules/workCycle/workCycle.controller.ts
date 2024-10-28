@@ -7,9 +7,9 @@ class WorkCycleController implements IWorkCycleController {
   constructor(private service: IWorkCycleService) {}
 
   public create = async (req: Request, res: Response): Promise<Response> => {
-    const WewworkCycle = await this.service.create(req.body);
+    const workCycle = await this.service.create(req.body);
 
-    if (WewworkCycle) return res.status(201).json(WewworkCycle);
+    if (workCycle) return res.status(201).json(workCycle);
 
     throw new BadRequestError('Error creating shift configuration');
   };

@@ -27,6 +27,6 @@ export interface IShiftConfigurationRepository {
   save(shifConfiguration: ShiftConfiguration[]): Promise<ShiftConfiguration[]>;
   findById(id: string): Promise<ShiftConfiguration | null>;
   findAll(): Promise<ShiftConfiguration[]>;
-  getAllShifts(id: string): Promise<ShiftConfiguration[]>;
+  findAllByWorkCycleConfigurationId(id: string): Promise<ShiftConfiguration[]>;
   delete(id: string): Promise<ShiftConfiguration | null>;
 }

@@ -1,42 +1,26 @@
 import dotenv from 'dotenv';
 import {
-  validateDepartmentAccess,
+  validateDepartmentActive,
   RoleGuard,
   verifyTokenMiddleware,
   validateDepartmentMatch,
 } from '../middlewares/authMiddleware';
-import { dataSource } from '../db';
 import AsyncRouter from './AsyncRouter';
 import { Role } from '../types/enum/Role';
-import { UserService } from '../modules/users/user.service';
-import UserController from '../modules/users/user.controller';
 import { validationMiddleware } from '../middlewares/validate';
-import { UserRepository } from '../modules/users/user.repository';
 import { SingInRequest } from '../modules/users/dto/SingInRequest';
 import { CreateUserRequest } from '../modules/users/dto/CreateRequest';
 import { UpdateUserRequest } from '../modules/users/dto/UpdateRequest';
 import { DeleteUserRequest } from '../modules/users/dto/DeleteRequest';
-import { BaseRepository } from '../modules/BaseRepository';
-import { User } from '../modules/users/user.schema';
 import { IUserController } from '../modules/users/user.interface';
 
 dotenv.config();
 
-class UserRouter extends AsyncRouter {
+export default class UserRouter extends AsyncRouter {
   constructor(private userController: IUserController) {
     super();
     this.initializeRoutes();
   }
-
-  static create() {
-    const userRepository = new UserRepository(
-      new BaseRepository(User, dataSource)
-    );
-    const userService = new UserService(userRepository);
-    const userController = new UserController(userService);
-    return new UserRouter(userController);
-  }
-
   private initializeRoutes() {
     this.post(
       '/sign-in',
@@ -51,13 +35,13 @@ class UserRouter extends AsyncRouter {
       this.userController.getAllUsers
     );
 
-    this.get('/', validateDepartmentAccess, this.userController.getUserById);
+    this.get('/', validateDepartmentActive, this.userController.getUserById);
 
     this.get(
       '/:id',
       verifyTokenMiddleware,
       RoleGuard([Role.ADMIN, Role.MANAGER]),
-      validateDepartmentAccess,
+      validateDepartmentActive,
       this.userController.getUserById
     );
 
@@ -66,7 +50,7 @@ class UserRouter extends AsyncRouter {
       verifyTokenMiddleware,
       validationMiddleware(CreateUserRequest),
       RoleGuard([Role.ADMIN, Role.MANAGER]),
-      validateDepartmentAccess,
+      validateDepartmentActive,
       validateDepartmentMatch,
       this.userController.createUser
     );
@@ -86,10 +70,9 @@ class UserRouter extends AsyncRouter {
       '/:id',
       verifyTokenMiddleware,
       RoleGuard([Role.ADMIN, Role.MANAGER]),
-      validateDepartmentAccess,
+      validateDepartmentActive,
       validationMiddleware(DeleteUserRequest),
       this.userController.deleteUser
     );
   }
 }
-export default UserRouter.create().getRouter();
