@@ -38,7 +38,9 @@ class ShiftConfigurationService implements IShiftConfigurationService {
   async getAll(
     workCycleConfigurationId: string
   ): Promise<ShiftConfiguration[]> {
-    return await this.repository.getAllShifts(workCycleConfigurationId);
+    return await this.repository.findAllByWorkCycleConfigurationId(
+      workCycleConfigurationId
+    );
   }
 
   async getById(id: string): Promise<ShiftConfiguration | null> {

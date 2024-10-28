@@ -11,6 +11,7 @@ import { WorkCycleConfiguration } from '../workCycleConfiguration/workCycleConfi
 import { BaseEntity } from '../BaseEntity';
 import { WorkDay } from '../../types/enum/workDay';
 import { LocalTime } from '@js-joda/core';
+import WorkDayTransformer from '../../types/transformer/WorkDayTransformer';
 
 @Entity()
 @Index(
@@ -34,7 +35,7 @@ export class ShiftConfiguration extends BaseEntity {
   @Column({ type: 'int', default: 0 })
   amountOfWorkers: number;
 
-  @Column('int')
+  @Column({ type: 'int', transformer: new WorkDayTransformer() })
   day: WorkDay;
 
   @Column()

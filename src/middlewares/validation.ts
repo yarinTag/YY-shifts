@@ -13,5 +13,6 @@ export const validationPipe = async (
   }
   return {
     sucsses: true,
+    transformedClass,
   };
 };
