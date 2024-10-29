@@ -12,6 +12,7 @@ import { BaseEntity } from '../BaseEntity';
 import { WorkDay } from '../../types/enum/workDay';
 import { LocalTime } from '@js-joda/core';
 import WorkDayTransformer from '../../types/transformer/WorkDayTransformer';
+import { Max, Min } from 'class-validator';
 
 @Entity()
 @Index(
@@ -35,7 +36,9 @@ export class ShiftConfiguration extends BaseEntity {
   @Column({ type: 'int', default: 0 })
   amountOfWorkers: number;
 
-  @Column({ type: 'int', transformer: new WorkDayTransformer() })
+  @Column({ type: 'int', transformer: new WorkDayTransformer()})
+  @Min(1)
+  @Max(7)
   day: WorkDay;
 
   @Column()
