@@ -9,7 +9,7 @@ export const validationPipe = async (
   const transformedClass: object = plainToInstance(schema, requestObject);
   const errors = await validate(transformedClass);
   if (errors.length > 0) {
-    return { success: false, errors: errors };
+    return { success: false, errors: errors, transformedClass: {} };
   }
   return {
     success: true,
@@ -20,5 +20,5 @@ export const validationPipe = async (
 export interface ValidationResult {
   success: boolean;
   errors?: ValidationError[];
-  transformedClass?: object;
+  transformedClass: object;
 }

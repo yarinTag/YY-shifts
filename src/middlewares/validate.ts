@@ -51,7 +51,7 @@ function mapToValidationErrors(
 function mapToBody(
   isArray: boolean,
   validationResults: ValidationResult[]
-): object | object[] | undefined {
+): object | object[] {
   if (isArray) {
     return flatTransformClass(validationResults);
   }
