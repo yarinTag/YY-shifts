@@ -4,8 +4,8 @@ import { validationMiddleware } from '../middlewares/validate';
 import { IAvailabilityController } from '../modules/availabilities/availability.interface';
 import { UpdateRequest } from '../modules/availabilities/dto/UpdateRequest';
 import { CreateRequest } from '../modules/availabilities/dto/CreateRequest';
-import { FindBy } from '../modules/availabilities/dto/FindBy';
 import { DeleteRequest } from '../modules/availabilities/dto/DeleteRequest';
+import FindBy from '../modules/availabilities/dto/FindBy';
 
 export default class AvailabilityRouter extends AsyncRouter {
   constructor(private availabilityController: IAvailabilityController) {

@@ -9,11 +9,11 @@ import {
   IWorkCycleConfigurationService,
 } from './workCycleConfiguration.interface';
 import { plainToInstance } from 'class-transformer';
-import { validationEntity } from '../../decorators/validateEntity';
 import {
   ForbiddenError,
   UnprocessableEntityError,
 } from '../../middlewares/error/ApiError';
+import { validationEntity } from '../../decorators/validateEntity';
 
 export class WorkCycleConfigurationService
   implements IWorkCycleConfigurationService
@@ -37,7 +37,7 @@ export class WorkCycleConfigurationService
       entity
     );
 
-    if (validationResult.sucsses === false) {
+    if (validationResult.success === false) {
       throw new UnprocessableEntityError(
         `Failed to create new WorkCycleConfiguration : ${validationResult.errors}`
       );
@@ -66,7 +66,7 @@ export class WorkCycleConfigurationService
       entity
     );
 
-    if (validationResult.sucsses === false) {
+    if (validationResult.success === false) {
       throw new UnprocessableEntityError(
         `User with Id: ${req.id}, Failed to update: ${validationResult.errors}`
       );

@@ -4,7 +4,6 @@ import {
   IAvailabilityRepository,
   IAvailabilityService,
 } from './availability.interface';
-import { FindBy } from './dto/FindBy';
 import {
   EntityNotFoundError,
   UnprocessableEntityError,
@@ -15,6 +14,7 @@ import { DeleteRequest } from './dto/DeleteRequest';
 import { Availability } from './availability.schema';
 import { validationEntity } from '../../decorators/validateEntity';
 import { UpdateResponse } from '../../types/response/response.interface';
+import FindBy from './dto/FindBy';
 
 class AvailabilityService implements IAvailabilityService {
   constructor(private repository: IAvailabilityRepository) {}
@@ -23,7 +23,7 @@ class AvailabilityService implements IAvailabilityService {
     const availability = await this.repository.create(data);
     const validationResult = await validationEntity(Availability, availability);
 
-    if (validationResult.sucsses === false) {
+    if (validationResult.success === false) {
       throw new UnprocessableEntityError(
         `Failed to create new availability : ${validationResult.errors}`
       );
@@ -66,7 +66,7 @@ class AvailabilityService implements IAvailabilityService {
     });
     const validationResult = await validationEntity(Availability, entity);
 
-    if (validationResult.sucsses === false) {
+    if (validationResult.success === false) {
       throw new UnprocessableEntityError(
         `Availability with Id: ${data.shiftId}, Failed to update: ${validationResult.errors}`
       );

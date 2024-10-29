@@ -18,7 +18,6 @@ class ShiftConfigurationService implements IShiftConfigurationService {
   constructor(private repository: IShiftConfigurationRepository) {}
 
   async create(data: CreateRequest[]): Promise<ShiftConfiguration[]> {
-
     const shiftConfigurations = await Promise.all(
       data.map(async (shiftConfiguration) =>
         this.repository.create(shiftConfiguration)
@@ -31,7 +30,7 @@ class ShiftConfigurationService implements IShiftConfigurationService {
         shiftConfiguration
       );
 
-      if (validationResult.sucsses === false) {
+      if (validationResult.success === false) {
         throw new UnprocessableEntityError(
           `Failed to create new Department : ${validationResult.errors}`
         );
@@ -74,7 +73,7 @@ class ShiftConfigurationService implements IShiftConfigurationService {
     });
     const validationResult = await validationEntity(ShiftConfiguration, entity);
 
-    if (validationResult.sucsses === false) {
+    if (validationResult.success === false) {
       throw new UnprocessableEntityError(
         `${ShiftConfiguration.name} with Id: ${data.id}, Failed to update: ${validationResult.errors}`
       );

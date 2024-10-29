@@ -4,8 +4,8 @@ import { Availability } from './availability.schema';
 import { UpdateRequest } from './dto/UpdateRequest';
 import { UpdateResult } from 'typeorm';
 import { UpdateResponse } from '../../types/response/response.interface';
-import { FindBy } from './dto/FindBy';
 import { DeleteRequest } from './dto/DeleteRequest';
+import FindBy from './dto/FindBy';
 
 export interface IAvailabilityController {
   create(req: Request, res: Response): Promise<Response>;

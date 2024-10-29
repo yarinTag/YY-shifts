@@ -51,7 +51,7 @@ class ShiftController implements IShiftController {
     await this.service.delete({ id });
 
     return res.status(200).json({
-      sucsses: true,
+      success: true,
       message: 'Shift deactivated successfully',
     });
   };
