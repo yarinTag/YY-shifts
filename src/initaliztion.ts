@@ -34,7 +34,7 @@ import ShiftConfigurationRouter from './routes/shiftConfigurationRoute';
 import ShiftRouter from './routes/shiftRoute';
 import UserRouter from './routes/userRoute';
 import WorkCycleConfigurationRouter from './routes/workCycleConfigurationRoute';
-import WorkCycleRouter from './routes/workCycleRoute';
+import WorkCycleRouter from './routes/WorkCycleRouter';
 
 export class Initialize {
   readonly repositoryWorkCycleRepository = new WorkCycleRepository(

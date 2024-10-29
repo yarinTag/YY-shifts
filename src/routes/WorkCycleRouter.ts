@@ -1,3 +1,4 @@
+import { Injectable } from '../DI/Injectable';
 import { validationMiddleware } from '../middlewares/validate';
 import { CreateRequest } from '../modules/workCycle/dto/CreateRequest';
 import { DeleteRequest } from '../modules/workCycle/dto/DeleteRequest';
@@ -6,6 +7,7 @@ import { UpdateRequest } from '../modules/workCycle/dto/UpdateRequest';
 import { IWorkCycleController } from '../modules/workCycle/workCycle.interface';
 import AsyncRouter from './AsyncRouter';
 
+@Injectable(true)
 export default class WorkCycleRouter extends AsyncRouter {
   constructor(private workCycleController: IWorkCycleController) {
     super();

@@ -5,7 +5,9 @@ import { CreateRequest } from './dto/CreateRequest';
 import { WorkCycle } from './workCycle.schema';
 import { IWorkCycleRepository } from './workCycle.interface';
 import { FindBy } from './dto/FIndBy';
+import { Injectable } from '../../DI/Injectable';
 
+@Injectable(true)
 export class WorkCycleRepository implements IWorkCycleRepository {
   constructor(private repository: BaseRepository<WorkCycle>) {}
   findBy(data: FindBy): Promise<WorkCycle | null> {

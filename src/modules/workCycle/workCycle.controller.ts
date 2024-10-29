@@ -2,7 +2,9 @@ import { Request, Response } from 'express';
 
 import { BadRequestError } from '../../middlewares/error/ApiError';
 import { IWorkCycleController, IWorkCycleService } from './workCycle.interface';
+import { Injectable } from '../../DI/Injectable';
 
+@Injectable(true)
 class WorkCycleController implements IWorkCycleController {
   constructor(private service: IWorkCycleService) {}
 

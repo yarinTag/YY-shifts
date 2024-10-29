@@ -11,7 +11,9 @@ import { validationEntity } from '../../decorators/validateEntity';
 import { UpdateResponse } from '../../types/response/response.interface';
 import { IWorkCycleRepository, IWorkCycleService } from './workCycle.interface';
 import { FindBy } from './dto/FIndBy';
+import { Injectable } from '../../DI/Injectable';
 
+@Injectable(true)
 class WorkCycleService implements IWorkCycleService {
   constructor(private repository: IWorkCycleRepository) {}
 
