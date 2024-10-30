@@ -10,24 +10,23 @@ import { WorkCycle } from './workCycle.schema';
 import { validationEntity } from '../../decorators/validateEntity';
 import { UpdateResponse } from '../../types/response/response.interface';
 import { IWorkCycleRepository, IWorkCycleService } from './workCycle.interface';
-import { FindBy } from './dto/FIndBy';
+import { FindBy } from './dto/FindBy';
+import { ShiftComponent } from '../shifts/component/shift.component';
 
 class WorkCycleService implements IWorkCycleService {
-  constructor(private repository: IWorkCycleRepository) {}
+  constructor(
+    private readonly repository: IWorkCycleRepository,
+    private readonly shiftComponent: ShiftComponent
+  ) {}
 
   async create(data: CreateRequest): Promise<WorkCycle> {
     const workCycle = await this.repository.create(data);
-    const validationResult = await validationEntity(WorkCycle, workCycle);
+    await validationEntity(WorkCycle, workCycle);
 
-    if (validationResult.success === false) {
-      throw new UnprocessableEntityError(
-        `Failed to create new Department : ${validationResult.errors}`
-      );
-    }
+    const entity = await this.repository.save(workCycle);
+    await this.shiftComponent.createShifts(workCycle);
 
-    const result = await this.repository.save(workCycle);
-
-    return result;
+    return entity;
   }
 
   async findAll(): Promise<WorkCycle[]> {

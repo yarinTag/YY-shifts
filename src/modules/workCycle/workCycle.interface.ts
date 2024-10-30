@@ -4,7 +4,7 @@ import { UpdateRequest } from './dto/UpdateRequest';
 import { UpdateResult } from 'typeorm';
 import { UpdateResponse } from '../../types/response/response.interface';
 import { WorkCycle } from './workCycle.schema';
-import { FindBy as FindBy } from './dto/FIndBy';
+import { FindBy } from './dto/FindBy';
 
 export interface IWorkCycleController {
   create(req: Request, res: Response): Promise<Response>;

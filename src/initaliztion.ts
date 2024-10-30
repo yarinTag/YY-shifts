@@ -12,6 +12,7 @@ import ShiftConfigurationController from './modules/shiftConfigurations/shiftCon
 import { ShiftConfigurationRepository } from './modules/shiftConfigurations/shiftConfiguration.repository';
 import { ShiftConfiguration } from './modules/shiftConfigurations/shiftConfiguration.schema';
 import ShiftConfigurationService from './modules/shiftConfigurations/shiftConfiguration.service';
+import { ShiftComponent } from './modules/shifts/component/shift.component';
 import ShiftController from './modules/shifts/shift.controller';
 import { ShiftRepository } from './modules/shifts/shift.repository';
 import { Shift } from './modules/shifts/shift.schema';
@@ -44,8 +45,19 @@ export class Initialize {
     new BaseRepository(ShiftConfiguration, dataSource)
   );
 
+  readonly shiftRepository = new ShiftRepository(
+      new BaseRepository(Shift, dataSource)
+  );
+
+  readonly shiftComponent = new ShiftComponent(
+    this.shiftConfigurationRepository,this.shiftRepository
+  );
+
   createWorkCycleRouter() {
-    const service = new WorkCycleService(this.repositoryWorkCycleRepository);
+    const service = new WorkCycleService(
+      this.repositoryWorkCycleRepository,
+      this.shiftComponent
+    );
     const controller = new WorkCycleController(service);
     return new WorkCycleRouter(controller).getRouter();
   }
