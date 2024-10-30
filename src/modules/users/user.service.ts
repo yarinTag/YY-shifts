@@ -9,11 +9,11 @@ import {
   UnprocessableEntityError,
 } from '../../middlewares/error/ApiError';
 import { Role } from '../../types/enum/Role';
-import { IUserRepository, IUserService } from './user.interface';
 import { SignInRequest } from './dto/SignInRequest';
 import { GetByIdRequest } from './dto/GetByIdRequest';
 import { CreateUserRequest } from './dto/CreateRequest';
 import { UpdateUserRequest } from './dto/UpdateRequest';
+import { IUserRepository, IUserService } from './user.interface';
 import { validationEntity } from '../../decorators/validateEntity';
 
 export class UserService implements IUserService {
@@ -30,7 +30,7 @@ export class UserService implements IUserService {
     const entity = plainToInstance(User, user);
     const validationResult = await validationEntity(User, entity);
 
-    if (validationResult.sucsses === false) {
+    if (validationResult.success === false) {
       throw new UnprocessableEntityError(
         `User with name: ${data.name}, Failed to create: ${validationResult.errors}`
       );
@@ -38,11 +38,10 @@ export class UserService implements IUserService {
     return await this.userRepository.save(user);
   }
 
-  async signIn(authCredentials: SignInRequest) {
-    const { phone, password } = authCredentials;
-    const user = await this.userRepository.findByPhone(phone);
+  async signIn(req: SignInRequest) {
+    const user = await this.userRepository.findByPhone(req.phone);
 
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (user && (await bcrypt.compare(req.password, user.password))) {
       const payload = {
         id: user.id,
         role: user.role,
@@ -109,7 +108,7 @@ export class UserService implements IUserService {
     const entity = plainToInstance(User, { ...existingUser, ...data });
     const validationResult = await validationEntity(User, entity);
 
-    if (validationResult.sucsses === false) {
+    if (validationResult.success === false) {
       throw new UnprocessableEntityError(
         `User with Id: ${id}, Failed to update: ${validationResult.errors}`
       );

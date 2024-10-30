@@ -17,20 +17,27 @@ import { UpdateResponse } from '../../types/response/response.interface';
 class ShiftConfigurationService implements IShiftConfigurationService {
   constructor(private repository: IShiftConfigurationRepository) {}
 
-  async create(data: CreateRequest): Promise<ShiftConfiguration> {
-    const shiftConfiguration = await this.repository.create(data);
-    const validationResult = await validationEntity(
-      ShiftConfiguration,
-      shiftConfiguration
+  async create(data: CreateRequest[]): Promise<ShiftConfiguration[]> {
+    const shiftConfigurations = await Promise.all(
+      data.map(async (shiftConfiguration) =>
+        this.repository.create(shiftConfiguration)
+      )
     );
 
-    if (validationResult.sucsses === false) {
-      throw new UnprocessableEntityError(
-        `Failed to create new Department : ${validationResult.errors}`
+    for (const shiftConfiguration of shiftConfigurations) {
+      const validationResult = await validationEntity(
+        ShiftConfiguration,
+        shiftConfiguration
       );
+
+      if (validationResult.success === false) {
+        throw new UnprocessableEntityError(
+          `Failed to create new Department : ${validationResult.errors}`
+        );
+      }
     }
 
-    const result = await this.repository.save(shiftConfiguration);
+    const result = await this.repository.save(shiftConfigurations);
 
     return result;
   }
@@ -38,7 +45,9 @@ class ShiftConfigurationService implements IShiftConfigurationService {
   async getAll(
     workCycleConfigurationId: string
   ): Promise<ShiftConfiguration[]> {
-    return await this.repository.getAllShifts(workCycleConfigurationId);
+    return await this.repository.findAllByWorkCycleConfigurationId(
+      workCycleConfigurationId
+    );
   }
 
   async getById(id: string): Promise<ShiftConfiguration | null> {
@@ -64,7 +73,7 @@ class ShiftConfigurationService implements IShiftConfigurationService {
     });
     const validationResult = await validationEntity(ShiftConfiguration, entity);
 
-    if (validationResult.sucsses === false) {
+    if (validationResult.success === false) {
       throw new UnprocessableEntityError(
         `${ShiftConfiguration.name} with Id: ${data.id}, Failed to update: ${validationResult.errors}`
       );

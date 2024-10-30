@@ -31,9 +31,6 @@ export class WorkCycleConfiguration extends BaseEntity {
   @Column('uuid')
   departmentId: string;
 
-  @Column({ type: 'boolean', default: true })
-  active: boolean;
-
   @ManyToOne(
     () => Department,
     (department: Department) => department.workCycleConfigurations

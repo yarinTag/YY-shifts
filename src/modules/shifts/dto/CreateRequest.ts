@@ -1,10 +1,8 @@
-import { IsBoolean, IsNotEmpty, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 import { LocalDateTime } from '@js-joda/core';
+import { ShiftType } from '../../../types/enum/ShiftType';
 
 export class CreateRequest {
-  @IsBoolean()
-  active: boolean;
-
   @IsNotEmpty()
   start: LocalDateTime;
 
@@ -12,6 +10,7 @@ export class CreateRequest {
   end: LocalDateTime;
 
   @IsUUID()
+  @IsOptional()
   userId: string;
 
   @IsUUID()
@@ -19,4 +18,8 @@ export class CreateRequest {
 
   @IsUUID()
   workCycleId: string;
+
+  @IsOptional()
+  @IsNotEmpty()
+  shiftType: ShiftType;
 }

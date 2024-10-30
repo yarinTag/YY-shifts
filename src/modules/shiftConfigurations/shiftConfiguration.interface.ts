@@ -14,7 +14,7 @@ export interface IShiftConfigurationController {
 }
 
 export interface IShiftConfigurationService {
-  create(data: CreateRequest): Promise<ShiftConfiguration>;
+  create(data: CreateRequest[]): Promise<ShiftConfiguration[]>;
   getAll(workCycleConfigurationId: string): Promise<ShiftConfiguration[]>;
   getById(id: string): Promise<ShiftConfiguration | null>;
   updateById(data: UpdateRequest): Promise<UpdateResponse>;
@@ -24,9 +24,9 @@ export interface IShiftConfigurationService {
 export interface IShiftConfigurationRepository {
   create(req: CreateRequest): Promise<ShiftConfiguration>;
   update(entity: ShiftConfiguration): Promise<UpdateResult>;
-  save(shifConfiguration: ShiftConfiguration): Promise<ShiftConfiguration>;
+  save(shifConfiguration: ShiftConfiguration[]): Promise<ShiftConfiguration[]>;
   findById(id: string): Promise<ShiftConfiguration | null>;
   findAll(): Promise<ShiftConfiguration[]>;
-  getAllShifts(id: string): Promise<ShiftConfiguration[]>;
+  findAllByWorkCycleConfigurationId(id: string): Promise<ShiftConfiguration[]>;
   delete(id: string): Promise<ShiftConfiguration | null>;
 }

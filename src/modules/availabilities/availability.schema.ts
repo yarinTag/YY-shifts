@@ -11,9 +11,6 @@ export class Availability extends BaseEntity {
   @PrimaryColumn('uuid')
   shiftId: string;
 
-  @Column({ type: 'boolean', default: true })
-  active: boolean;
-
   @Column('text')
   memo: string;
 

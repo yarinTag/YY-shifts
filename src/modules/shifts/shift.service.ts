@@ -24,7 +24,7 @@ export class ShiftService implements IShiftService {
     const shift = await this.repository.create(req);
     const validationResult = await validationEntity(Shift, shift);
 
-    if (validationResult.sucsses === false) {
+    if (validationResult.success === false) {
       throw new UnprocessableEntityError(
         `Failed to create new shift : ${validationResult.errors}`
       );
@@ -55,7 +55,7 @@ export class ShiftService implements IShiftService {
     const entity = plainToInstance(Shift, { ...shift, ...req });
     const validationResult = await validationEntity(Shift, entity);
 
-    if (validationResult.sucsses === false) {
+    if (validationResult.success === false) {
       throw new UnprocessableEntityError(
         `Shift with Id: ${req.id}, Failed to update: ${validationResult.errors}`
       );

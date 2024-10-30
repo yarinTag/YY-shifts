@@ -38,7 +38,7 @@ export class DepartmentService implements IDepartmentService {
     const department = await this.departmentRepository.create(req);
     const validationResult = await validationEntity(Department, department);
 
-    if (validationResult.sucsses === false) {
+    if (validationResult.success === false) {
       throw new UnprocessableEntityError(
         `Failed to create new Department : ${validationResult.errors}`
       );
@@ -59,7 +59,7 @@ export class DepartmentService implements IDepartmentService {
     const entity = plainToInstance(Department, { ...department, ...req });
     const validationResult = await validationEntity(Department, entity);
 
-    if (validationResult.sucsses === false) {
+    if (validationResult.success === false) {
       throw new UnprocessableEntityError(
         `Departments with Id: ${req.id}, Failed to update: ${validationResult.errors}`
       );
@@ -76,7 +76,7 @@ export class DepartmentService implements IDepartmentService {
     }
 
     return {
-      sucsses: true,
+      success: true,
       message: 'Department updated successfully',
     };
   }

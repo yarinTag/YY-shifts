@@ -14,9 +14,6 @@ export class Department extends BaseEntity {
   @Column()
   name: string;
 
-  @Column({ type: 'boolean', default: true })
-  active: boolean;
-
   @Column({ type: 'text', nullable: true })
   address: string;
 

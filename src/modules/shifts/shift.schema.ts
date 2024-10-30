@@ -12,6 +12,7 @@ import { User } from '../users/user.schema';
 import { WorkCycle } from '../workCycle/workCycle.schema';
 import { Availability } from '../availabilities/availability.schema';
 import { ShiftConfiguration } from '../shiftConfigurations/shiftConfiguration.schema';
+import { ShiftType } from '../../types/enum/ShiftType';
 
 @Entity()
 export class Shift extends BaseEntity {
@@ -24,16 +25,16 @@ export class Shift extends BaseEntity {
   @Column('timestamp')
   end: LocalDateTime;
 
-  @Column({ type: 'boolean', default: true })
-  active: boolean;
-
-  @Column({ name: 'user_id' })
+  @Column({ nullable: true })
   userId: string;
 
-  @Column({ name: 'work_cycle_id' })
+  @Column({ type: 'text', default: ShiftType.WORKING })
+  shiftType: ShiftType;
+
+  @Column()
   workCycleId: string;
 
-  @Column({ name: 'shift_configuration_id' })
+  @Column()
   shiftConfigurationId: string;
 
   @ManyToOne(() => WorkCycle, (workCycle: WorkCycle) => workCycle.shifts)

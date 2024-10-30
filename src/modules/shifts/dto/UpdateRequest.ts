@@ -1,6 +1,7 @@
 import { LocalDateTime } from '@js-joda/core';
 
-import { IsOptional, IsUUID, IsBoolean } from 'class-validator';
+import { IsOptional, IsUUID } from 'class-validator';
+import { ShiftType } from '../../../types/enum/ShiftType';
 
 export class UpdateRequest {
   @IsUUID()
@@ -13,6 +14,5 @@ export class UpdateRequest {
   end: LocalDateTime;
 
   @IsOptional()
-  @IsBoolean()
-  active: boolean;
+  shiftType: ShiftType;
 }

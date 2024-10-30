@@ -8,7 +8,7 @@ export const validationEntity = async (
   const result = await validationPipe(validationSchema, entity);
 
   if (result.success === false) {
-    return { sucsses: false, errors: flattenErrors(result) };
+    return { success: false, errors: flattenErrors(result.errors) };
   }
   return result;
 };

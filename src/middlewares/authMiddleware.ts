@@ -1,10 +1,11 @@
 import jwt from 'jsonwebtoken';
+import HttpContext from 'express-http-context';
 import { Request, Response, NextFunction } from 'express';
 
 import { dataSource } from '../db';
-import { Department } from '../modules/departments/department.schema';
-import { ClientStatusCode } from '../types/enum/ClientStatusCode';
 import { Role } from '../types/enum/Role';
+import { ClientStatusCode } from '../types/enum/ClientStatusCode';
+import { Department } from '../modules/departments/department.schema';
 
 export const verifyTokenMiddleware = async (
   req: Request,
@@ -27,7 +28,11 @@ export const verifyTokenMiddleware = async (
     req.userId = user.id;
     req.userRole = user.role;
     req.departmentId = user.departmentId;
-
+    HttpContext.set('user', {
+      id: user.id,
+      role: user.role,
+      departmentId: user.departmentId,
+    });
     next();
   } catch (err) {
     console.error(err);
@@ -76,7 +81,25 @@ export function RoleGuard(requiredRoles: string[]) {
   };
 }
 
-export const checkDepartmentMiddleware = async (
+export const validateDepartmentMatch = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const departmentId = req.departmentId;
+  const userDepartment = req.body.departmentId;
+  const isAcountAdmin = req.userRole === Role.ADMIN;
+
+  if (isAcountAdmin) return next();
+
+  if (departmentId === userDepartment) return next();
+
+  return res
+    .status(ClientStatusCode.Forbidden)
+    .json({ message: `Department id doesn't match` });
+};
+
+export const validateDepartmentActive = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -97,13 +120,14 @@ export const checkDepartmentMiddleware = async (
   try {
     const departmentRepository = dataSource.getRepository(Department);
     const department = await departmentRepository.findOne({
-      where: { id: departmentId, active: true },
+      where: { id: departmentId },
+      withDeleted: false,
     });
 
     if (!department) {
       return res
         .status(ClientStatusCode.Forbidden)
-        .json({ message: 'Invalid department' });
+        .json({ message: 'Department not active' });
     }
 
     next();

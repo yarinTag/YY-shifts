@@ -19,7 +19,7 @@ class WorkCycleService implements IWorkCycleService {
     const workCycle = await this.repository.create(data);
     const validationResult = await validationEntity(WorkCycle, workCycle);
 
-    if (validationResult.sucsses === false) {
+    if (validationResult.success === false) {
       throw new UnprocessableEntityError(
         `Failed to create new Department : ${validationResult.errors}`
       );
@@ -53,7 +53,7 @@ class WorkCycleService implements IWorkCycleService {
     });
     const validationResult = await validationEntity(WorkCycle, entity);
 
-    if (validationResult.sucsses === false) {
+    if (validationResult.success === false) {
       throw new UnprocessableEntityError(
         `${WorkCycle.name} with Id: ${data.id}, Failed to update: ${validationResult.errors}`
       );

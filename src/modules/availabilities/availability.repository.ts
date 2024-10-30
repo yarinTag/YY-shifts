@@ -4,18 +4,20 @@ import { BaseRepository } from '../BaseRepository';
 import { CreateRequest } from './dto/CreateRequest';
 import { Availability } from './availability.schema';
 import { IAvailabilityRepository } from './availability.interface';
-import { FindBy } from './dto/FIndBy';
+import { DeleteRequest } from './dto/DeleteRequest';
+import FindBy from './dto/FindBy';
 
 export class AvailabilityRepository implements IAvailabilityRepository {
   constructor(private repository: BaseRepository<Availability>) {}
 
   async getAllAvailabilitiesByUserId(userId: string): Promise<Availability[]> {
     return this.repository.find({
-      where: { userId, active: true },
+      where: { userId },
     });
   }
 
   async save(availability: Availability): Promise<Availability> {
+    availability.deletedAt = null;
     return this.repository.save(availability);
   }
 
@@ -36,5 +38,9 @@ export class AvailabilityRepository implements IAvailabilityRepository {
       { userId: entity.userId, shiftId: entity.shiftId },
       entity
     );
+  }
+
+  async deleteById(req: DeleteRequest): Promise<UpdateResult> {
+    return await this.repository.softDelete(req);
   }
 }

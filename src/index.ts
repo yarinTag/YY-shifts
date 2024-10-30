@@ -1,17 +1,12 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import cookieParser from 'cookie-parser';
+import HttpContext from 'express-http-context';
 
 import { dataSource } from './db';
-import userRouter from './routes/userRoute';
-import departmentRouter from './routes/departmentRoute';
-import { errorHandler } from './middlewares/error/asyncErrorHandler';
 import { verifyTokenMiddleware } from './middlewares/authMiddleware';
-import shiftConfigurationRoute from './routes/shiftConfigurationRoute';
-import workCycleConfigurationRoute from './routes/workCycleConfigurationRoute';
-import availabilityRoute from './routes/availabilityRoute';
-import shiftRoute from './routes/shiftRoute';
-import WorkCycleRoute from './routes/workCycleRoute';
+import { errorHandler } from './middlewares/error/asyncErrorHandler';
+import { Initialize } from './initaliztion';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './swagger-output.json';
 
@@ -20,6 +15,8 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+app.use(HttpContext.middleware);
+const initializeRoutes = new Initialize();
 
 dataSource
   .initialize()
@@ -35,14 +32,20 @@ dataSource
     console.error('Error connecting to PostgreSQL database:', err);
     process.exit(1); // Exit the process if the database connection fails
   });
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use('/user', userRouter);
+app.use('/user', initializeRoutes.createUserRouter());
 app.use(verifyTokenMiddleware);
-app.use('/department', departmentRouter);
-app.use('/availability', availabilityRoute);
-app.use('/shift', shiftRoute);
-app.use('/workCycle', WorkCycleRoute);
-app.use('/configuration/shift', shiftConfigurationRoute);
-app.use('/configuration/workCycle', workCycleConfigurationRoute);
+app.use('/department', initializeRoutes.createDepartmentRouter());
+app.use('/availability', initializeRoutes.createAvailabilityRouter());
+app.use('/shift', initializeRoutes.createShiftRouter());
+app.use('/workCycle', initializeRoutes.createWorkCycleRouter());
+app.use(
+  '/configuration/shift',
+  initializeRoutes.createShiftConfigurationRouter()
+);
+app.use(
+  '/configuration/workCycle',
+  initializeRoutes.createWorkCycleConfigurationRouter()
+);
 app.use(errorHandler);
