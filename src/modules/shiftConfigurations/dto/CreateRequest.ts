@@ -1,7 +1,7 @@
-import { IsUUID, IsNumber, IsNotEmpty } from 'class-validator';
+import { LocalTime } from '@js-joda/core';
+import { IsUUID, IsNumber, IsNotEmpty, Min, Max } from 'class-validator';
 
 import { WorkDay } from '../../../types/enum/workDay';
-import { LocalTime } from '@js-joda/core';
 
 export class CreateRequest {
   @IsNotEmpty()
@@ -11,6 +11,8 @@ export class CreateRequest {
   end: LocalTime;
 
   @IsNumber()
+  @Min(1)
+  @Max(7)
   day: WorkDay;
 
   @IsNumber()
