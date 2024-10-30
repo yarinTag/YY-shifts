@@ -1,4 +1,4 @@
-import { IsOptional, IsNumber, IsUUID, IsNotEmpty } from 'class-validator';
+import { IsOptional, IsNumber, IsUUID, IsNotEmpty, Min, Max } from 'class-validator';
 
 import { WorkDay } from '../../../types/enum/workDay';
 import { LocalTime } from '@js-joda/core';
@@ -17,6 +17,8 @@ export class UpdateRequest {
 
   @IsOptional()
   @IsNumber()
+  @Min(1)
+  @Max(7)
   day: WorkDay;
 
   @IsOptional()
