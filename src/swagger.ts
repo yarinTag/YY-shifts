@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import swaggerAutogen from 'swagger-autogen';
 
 const outputFile = './swagger-output.json';
