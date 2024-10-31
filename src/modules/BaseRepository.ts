@@ -40,10 +40,9 @@ export class BaseRepository<T extends BaseEntityWithId> extends Repository<T> {
   }
 
   async deleteById(id: BaseRequest): Promise<T | null> {
-    const where: FindOptionsWhere<T> = { id } as FindOptionsWhere<T>;
     const entity = await this.findActiveById(id);
     if (!entity) return null;
-    await this.softDelete(where);
+    await this.softRemove(entity);
     return entity;
   }
 }

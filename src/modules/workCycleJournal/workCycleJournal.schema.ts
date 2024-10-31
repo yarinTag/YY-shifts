@@ -1,26 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { BaseEntity } from '../BaseEntity';
+import { WorkCycle } from '../workCycle/workCycle.schema';
 
 @Entity()
 export class WorkCycleJournal extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('text')
-  start: Date;
-
-  @Column('text')
-  end: Date;
-
-  @Column('bigint')
-  workCycleNumber: number;
-
-  @Column({ type: 'boolean', default: true })
-  publish: boolean;
-
-  @Column('uuid')
-  workCycleId: string;
-
-  @Column('uuid')
-  workCycleConfigurationId: string;
+  @Column('jsonb', { nullable: false })
+  data: WorkCycle;
 }
