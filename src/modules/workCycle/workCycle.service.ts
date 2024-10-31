@@ -1,17 +1,14 @@
-import { plainToInstance } from 'class-transformer';
+import {plainToInstance} from 'class-transformer';
 
-import {
-  EntityNotFoundError,
-  UnprocessableEntityError,
-} from '../../middlewares/error/ApiError';
-import { CreateRequest } from './dto/CreateRequest';
-import { UpdateRequest } from './dto/UpdateRequest';
-import { WorkCycle } from './workCycle.schema';
-import { validationEntity } from '../../decorators/validateEntity';
-import { UpdateResponse } from '../../types/response/response.interface';
-import { IWorkCycleRepository, IWorkCycleService } from './workCycle.interface';
-import { FindBy } from './dto/FindBy';
-import { ShiftComponent } from '../shifts/component/shift.component';
+import {EntityNotFoundError, UnprocessableEntityError,} from '../../middlewares/error/ApiError';
+import {CreateRequest} from './dto/CreateRequest';
+import {UpdateRequest} from './dto/UpdateRequest';
+import {WorkCycle} from './workCycle.schema';
+import {validationEntity} from '../../decorators/validateEntity';
+import {UpdateResponse} from '../../types/response/response.interface';
+import {IWorkCycleRepository, IWorkCycleService} from './workCycle.interface';
+import {FindBy} from './dto/FindBy';
+import {ShiftComponent} from '../shifts/component/shift.component';
 
 class WorkCycleService implements IWorkCycleService {
   constructor(
@@ -20,10 +17,14 @@ class WorkCycleService implements IWorkCycleService {
   ) {}
 
   async create(data: CreateRequest): Promise<WorkCycle> {
-    const workCycle = await this.repository.create(data);
-    await validationEntity(WorkCycle, workCycle);
-    const entity = await this.repository.save(workCycle);
-    // await this.shiftComponent.createShifts(workCycle);
+    // const workCycle = await this.repository.create(data);
+    // await validationEntity(WorkCycle, workCycle);
+    // const entity = await this.repository.save(workCycle);
+    const entity = await this.repository.findBy({id:'b18568a2-855a-4c6d-a3bf-ffbe2c7b5e51'})
+
+    if(!entity)
+      throw new EntityNotFoundError(WorkCycle.name,'b18568a2-855a-4c6d-a3bf-ffbe2c7b5e51')
+    await this.shiftComponent.createShifts(entity);
     return entity;
   }
 
