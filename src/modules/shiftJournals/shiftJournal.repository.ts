@@ -20,7 +20,7 @@ export class ShiftJournalRepository implements IShiftJournalRepository {
 
   async findAllBy(workCycleId: string): Promise<ShiftJournal[]> {
     return await this.repository
-      .createQueryBuilder('shiftJournal')
+      .createQueryBuilder(ShiftJournal.name)
       .where("shiftJournal.data->>'workCycleId' = :workCycleId", {
         workCycleId,
       })

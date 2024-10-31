@@ -10,14 +10,9 @@ import { validationEntity } from '../../decorators/validateEntity';
 import { IShiftRepository, IShiftService } from './shift.interface';
 import { UpdateResponse } from '../../types/response/response.interface';
 import { UnprocessableEntityError } from '../../middlewares/error/ApiError';
-import ShiftJournalController from '../shiftJournals/shiftJournal.controller';
-import { ShiftJournalRepository } from '../shiftJournals/shiftJournal.repository';
 
 export class ShiftService implements IShiftService {
   constructor(private repository: IShiftRepository) {}
-  private shiftJournal: ShiftJournalController = new ShiftJournalController(
-    new ShiftJournalRepository()
-  );
   async findAll(req: GetRequest): Promise<Shift[]> {
     const shifts = await this.repository.findAllBy(req);
 
@@ -35,8 +30,7 @@ export class ShiftService implements IShiftService {
     }
 
     const result = await this.repository.save(shift);
-   
-    await this.shiftJournal.createShiftJournal(result);
+
     return result;
   }
 
@@ -57,7 +51,7 @@ export class ShiftService implements IShiftService {
       throw new EntityNotFoundError(Shift.name, req.id);
     }
 
-    const entity = plainToInstance(Shift, { ...shift, ...req });
+    const entity = plainToInstance(Shift,shift);
     const validationResult = await validationEntity(Shift, entity);
 
     if (validationResult.success === false) {

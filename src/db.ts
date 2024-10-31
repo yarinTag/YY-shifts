@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { ShiftSubscriber } from './modules/shifts/shift.subscriber';
 
 dotenv.config();
 
@@ -12,6 +13,7 @@ export const dataSource = new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   entities: [__dirname + '/../**/*.schema{.js,.ts}'],
+  subscribers: [ShiftSubscriber],
   logging: true,
   synchronize: true,
   namingStrategy: new SnakeNamingStrategy(),
