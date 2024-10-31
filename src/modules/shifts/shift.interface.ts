@@ -32,4 +32,5 @@ export interface IShiftRepository {
   deleteById(id: string): Promise<Shift | null>;
   update(entity: Shift): Promise<UpdateResult>;
   save(shift: Shift): Promise<Shift>;
+  saveAll(shifts: Shift[]): Promise<Shift[]>;
 }

@@ -11,7 +11,7 @@ export class CreateRequest {
 
   @IsUUID()
   @IsOptional()
-  userId: string;
+  userId?: string;
 
   @IsUUID()
   shiftConfigurationId: string;
@@ -21,5 +21,5 @@ export class CreateRequest {
 
   @IsOptional()
   @IsNotEmpty()
-  shiftType: ShiftType;
+  shiftType?: ShiftType;
 }

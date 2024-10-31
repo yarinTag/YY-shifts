@@ -22,17 +22,9 @@ export class ShiftService implements IShiftService {
 
   async create(req: CreateRequest): Promise<Shift> {
     const shift = await this.repository.create(req);
-    const validationResult = await validationEntity(Shift, shift);
+    await validationEntity(Shift, shift);
 
-    if (validationResult.success === false) {
-      throw new UnprocessableEntityError(
-        `Failed to create new shift : ${validationResult.errors}`
-      );
-    }
-
-    const result = await this.repository.save(shift);
-
-    return result;
+    return await this.repository.save(shift);
   }
 
   async getById(req: GetRequest): Promise<Shift | null> {
