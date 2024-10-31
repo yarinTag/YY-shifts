@@ -16,7 +16,7 @@ export class ShiftComponent {
     ) {
     }
 
-    async createShifts(workCycle: WorkCycle):Promise<Shift[]> {
+    async createShifts(workCycle: WorkCycle, daysOff: Array<number>): Promise<Shift[]> {
         const createShiftPromises: Promise<Shift>[] = [];
         const shiftConfigurations: ShiftConfiguration[] =
             await this.shiftConfigurationRepository.findAllByWorkCycleConfigurationId(
@@ -30,22 +30,23 @@ export class ShiftComponent {
         const days = workCycle.start.until(workCycle.end).days();
 
         for (let day = 0; day < days; day++) {
-            const currentDay = start.plusDays(day);
+            const currentLocalDate = start.plusDays(day);
             const shiftConfigurationsByDay = workDayToShiftConfigurationMap.get(
-                currentDay.dayOfWeek().value()
+                currentLocalDate.dayOfWeek().value()
             );
 
             if (!shiftConfigurationsByDay) {
                 continue;
             }
 
-            // isDayOff ? -> continue or create empty shift or config it on work cycle configuration
+            if (!this.isDayOff(daysOff,day)) {
+                const workingShifts = this.createWorkingShifts(shiftConfigurationsByDay, currentLocalDate, workCycle.id);
+                createShiftPromises.push(...workingShifts);
+            }
 
-            for (const shiftConfiguration of shiftConfigurationsByDay) {
-                for (let i = 0; i < shiftConfiguration.amountOfWorkers; i++) {
-                    const createRequest = this.create(this.mapToCreateShiftRequest(shiftConfiguration,currentDay,workCycle.id));
-                    createShiftPromises.push(createRequest);
-                }
+            if (this.isDayOff(daysOff,day)) {
+                const daysOffShifts = this.createDayOffShift(shiftConfigurationsByDay, currentLocalDate, workCycle.id);
+                createShiftPromises.push(...daysOffShifts);
             }
 
         }
@@ -53,9 +54,36 @@ export class ShiftComponent {
         return await this.shiftRepository.saveAll(await Promise.all(createShiftPromises));
     }
 
-    mapToCreateShiftRequest(shiftConfiguration: ShiftConfiguration,day:LocalDate,workCycleId:string): CreateRequest {
-        const startShift = this.mapToLocalDateTime(day,shiftConfiguration.start);
-        const endShift = this.mapToLocalDateTime(day,shiftConfiguration.end);
+    private isDayOff(daysOff: Array<number>, day: number) {
+        if (!daysOff)
+            return false;
+
+        return daysOff.includes(day);
+    }
+
+    private createWorkingShifts(shiftConfigurations: ShiftConfiguration[], currentLocalDate: LocalDate, workCycleId: string): Promise<Shift>[] {
+        const createShiftPromises: Promise<Shift>[] = [];
+        for (const shiftConfiguration of shiftConfigurations) {
+            for (let i = 0; i < shiftConfiguration.amountOfWorkers; i++) {
+                const createRequest = this.create(this.mapToCreateShiftRequest(shiftConfiguration, currentLocalDate, workCycleId));
+                createShiftPromises.push(createRequest);
+            }
+        }
+
+        return createShiftPromises;
+    }
+
+    private createDayOffShift(shiftConfigurations: ShiftConfiguration[], currentLocalDate: LocalDate, workCycleId: string): Promise<Shift>[] {
+        const createShiftPromises: Promise<Shift>[] = [];
+        const createRequest = this.create(this.mapToCreateDayOffShiftRequest(shiftConfigurations[0], currentLocalDate, workCycleId));
+        createShiftPromises.push(createRequest);
+
+        return createShiftPromises;
+    }
+
+    private mapToCreateShiftRequest(shiftConfiguration: ShiftConfiguration, day: LocalDate, workCycleId: string): CreateRequest {
+        const startShift = this.mapToLocalDateTime(day, shiftConfiguration.start);
+        const endShift = this.mapToLocalDateTime(day, shiftConfiguration.end);
 
         return {
             start: startShift, end: endShift,
@@ -65,20 +93,28 @@ export class ShiftComponent {
         };
     }
 
-    mapToLocalDateTime(day:LocalDate,time:LocalTime):LocalDateTime {
+    private mapToCreateDayOffShiftRequest(shiftConfiguration: ShiftConfiguration, day: LocalDate, workCycleId: string): CreateRequest {
+        const startShift = this.mapToLocalDateTime(day, LocalTime.of(0, 0, 0));
+        const endShift = this.mapToLocalDateTime(day, LocalTime.of(23, 59, 0));
+
+        return {
+            start: startShift, end: endShift,
+            shiftConfigurationId: shiftConfiguration.id,
+            workCycleId: workCycleId,
+            shiftType: ShiftType.DAY_OFF
+        };
+    }
+
+    private mapToLocalDateTime(day: LocalDate, time: LocalTime): LocalDateTime {
         return day.atStartOfDay()
             .withHour(time.hour())
             .withMinute(time.minute());
     }
 
-    async create(req: CreateRequest): Promise<Shift> {
+    private async create(req: CreateRequest): Promise<Shift> {
         const shift = this.shiftRepository.create(req);
         await validationEntity(Shift, shift);
 
         return shift;
     }
-
-    // private isDayOff(day: LocalDate): boolean {
-    //   return false;
-    // }
 }

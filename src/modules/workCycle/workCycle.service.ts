@@ -20,7 +20,7 @@ class WorkCycleService implements IWorkCycleService {
     const workCycle = await this.repository.create(data);
     await validationEntity(WorkCycle, workCycle);
     const entity = await this.repository.save(workCycle);
-    await this.shiftComponent.createShifts(workCycle);
+    await this.shiftComponent.createShifts(workCycle, data.daysOff);
 
     return entity;
   }

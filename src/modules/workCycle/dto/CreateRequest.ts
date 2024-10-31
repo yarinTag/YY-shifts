@@ -1,4 +1,4 @@
-import {IsBoolean, IsNotEmpty, IsUUID} from 'class-validator';
+import {IsArray, IsBoolean, IsNotEmpty, IsOptional, IsUUID} from 'class-validator';
 import {LocalDate} from '@js-joda/core';
 import {Transform} from 'class-transformer';
 
@@ -13,6 +13,10 @@ export class CreateRequest {
     @IsNotEmpty()
     @Transform(({value}) => LocalDate.parse(value))
     end: LocalDate;
+
+    @IsArray()
+    @IsOptional()
+    daysOff: number[];
 
     @IsBoolean()
     publish: boolean;
