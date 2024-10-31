@@ -12,6 +12,7 @@ import { BaseEntity } from '../BaseEntity';
 import { LocalDate } from '@js-joda/core';
 import { Department } from '../departments/department.schema';
 import LocalDateTransformer from '../../types/transformer/LocalDateTransformer';
+import {Type} from "class-transformer";
 
 @Entity()
 export class WorkCycle extends BaseEntity {
@@ -20,10 +21,12 @@ export class WorkCycle extends BaseEntity {
   // ISO 8601
   // "2024-10-06"
   @Column({ type: 'date', transformer: new LocalDateTransformer() })
+  @Type(() => Date)
   start: LocalDate;
   // ISO 8601
   // "2024-10-06"
   @Column({ type: 'date', transformer: new LocalDateTransformer() })
+  @Type(() => Date)
   end: LocalDate;
 
   @Column('bigint')

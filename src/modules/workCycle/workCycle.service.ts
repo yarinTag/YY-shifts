@@ -22,10 +22,8 @@ class WorkCycleService implements IWorkCycleService {
   async create(data: CreateRequest): Promise<WorkCycle> {
     const workCycle = await this.repository.create(data);
     await validationEntity(WorkCycle, workCycle);
-
     const entity = await this.repository.save(workCycle);
-    await this.shiftComponent.createShifts(workCycle);
-
+    // await this.shiftComponent.createShifts(workCycle);
     return entity;
   }
 
