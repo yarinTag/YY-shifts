@@ -42,9 +42,7 @@ export class ShiftComponent {
             if (!this.isDayOff(daysOff,day)) {
                 const workingShifts = this.createWorkingShifts(shiftConfigurationsByDay, currentLocalDate, workCycle.id);
                 createShiftPromises.push(...workingShifts);
-            }
-
-            if (this.isDayOff(daysOff,day)) {
+            } else {
                 const daysOffShifts = this.createDayOffShift(shiftConfigurationsByDay, currentLocalDate, workCycle.id);
                 createShiftPromises.push(...daysOffShifts);
             }
