@@ -1,12 +1,12 @@
-import {convert, LocalDateTime} from '@js-joda/core';
+import {convert, Instant, LocalDateTime} from '@js-joda/core';
 import {ValueTransformer} from 'typeorm';
 
 export default class LocalDateTimeTransformer implements ValueTransformer {
-  to(value: LocalDateTime): Date | null {
-    return value ? convert(value).toDate() : null; // Convert LocalDateTime to Date for the database
-  }
+    to(localDateTime: LocalDateTime): Date | null {
+        return localDateTime ? convert(localDateTime).toDate() : null; // Convert LocalDateTime to Date for the database
+    }
 
-  from(value: Date): LocalDateTime | null {
-    return value ? LocalDateTime.parse(value.toString()) : null; // Convert Date from the database to LocalDateTime
-  }
+    from(date: Date): LocalDateTime | null {
+        return date ? LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime())) : null; // Convert Date from the database to LocalDateTime
+    }
 }
