@@ -17,14 +17,11 @@ class WorkCycleService implements IWorkCycleService {
   ) {}
 
   async create(data: CreateRequest): Promise<WorkCycle> {
-    // const workCycle = await this.repository.create(data);
-    // await validationEntity(WorkCycle, workCycle);
-    // const entity = await this.repository.save(workCycle);
-    const entity = await this.repository.findBy({id:'b18568a2-855a-4c6d-a3bf-ffbe2c7b5e51'})
+    const workCycle = await this.repository.create(data);
+    await validationEntity(WorkCycle, workCycle);
+    const entity = await this.repository.save(workCycle);
+    await this.shiftComponent.createShifts(workCycle);
 
-    if(!entity)
-      throw new EntityNotFoundError(WorkCycle.name,'b18568a2-855a-4c6d-a3bf-ffbe2c7b5e51')
-    await this.shiftComponent.createShifts(entity);
     return entity;
   }
 

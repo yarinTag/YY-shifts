@@ -17,7 +17,7 @@ export class ShiftComponent {
     }
 
     async createShifts(workCycle: WorkCycle):Promise<Shift[]> {
-        const promises: Promise<Shift>[] = [];
+        const createShiftPromises: Promise<Shift>[] = [];
         const shiftConfigurations: ShiftConfiguration[] =
             await this.shiftConfigurationRepository.findAllByWorkCycleConfigurationId(
                 workCycle.workCycleConfigurationId
@@ -42,13 +42,15 @@ export class ShiftComponent {
             // isDayOff ? -> continue or create empty shift or config it on work cycle configuration
 
             for (const shiftConfiguration of shiftConfigurationsByDay) {
-                const createRequest = this.create(this.mapToCreateShiftRequest(shiftConfiguration,currentDay,workCycle.id));
-                promises.push(createRequest);
+                for (let i = 0; i < shiftConfiguration.amountOfWorkers; i++) {
+                    const createRequest = this.create(this.mapToCreateShiftRequest(shiftConfiguration,currentDay,workCycle.id));
+                    createShiftPromises.push(createRequest);
+                }
             }
 
         }
 
-        return await this.shiftRepository.saveAll(await Promise.all(promises));
+        return await this.shiftRepository.saveAll(await Promise.all(createShiftPromises));
     }
 
     mapToCreateShiftRequest(shiftConfiguration: ShiftConfiguration,day:LocalDate,workCycleId:string): CreateRequest {
