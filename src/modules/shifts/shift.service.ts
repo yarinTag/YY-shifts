@@ -1,3 +1,4 @@
+import { plainToInstance } from 'class-transformer';
 import { EntityNotFoundError, UpdateResult } from 'typeorm';
 
 import { Shift } from './shift.schema';
@@ -5,15 +6,18 @@ import { GetRequest } from './dto/GetRequest';
 import { CreateRequest } from './dto/CreateRequest';
 import { DeleteRequest } from './dto/DeleteRequest';
 import { UpdateRequest } from './dto/UpdateRequest';
+import { validationEntity } from '../../decorators/validateEntity';
 import { IShiftRepository, IShiftService } from './shift.interface';
 import { UpdateResponse } from '../../types/response/response.interface';
-import { validationEntity } from '../../decorators/validateEntity';
 import { UnprocessableEntityError } from '../../middlewares/error/ApiError';
-import { plainToInstance } from 'class-transformer';
+import ShiftJournalController from '../shiftJournals/shiftJournal.controller';
+import { ShiftJournalRepository } from '../shiftJournals/shiftJournal.repository';
 
 export class ShiftService implements IShiftService {
   constructor(private repository: IShiftRepository) {}
-
+  private shiftJournal: ShiftJournalController = new ShiftJournalController(
+    new ShiftJournalRepository()
+  );
   async findAll(req: GetRequest): Promise<Shift[]> {
     const shifts = await this.repository.findAllBy(req);
 
@@ -31,7 +35,8 @@ export class ShiftService implements IShiftService {
     }
 
     const result = await this.repository.save(shift);
-
+   
+    await this.shiftJournal.createShiftJournal(result);
     return result;
   }
 

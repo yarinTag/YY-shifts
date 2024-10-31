@@ -1,7 +1,7 @@
 import { validationMiddleware } from '../middlewares/validate';
 import { CreateRequest } from '../modules/workCycle/dto/CreateRequest';
 import { DeleteRequest } from '../modules/workCycle/dto/DeleteRequest';
-import { FindBy } from '../modules/workCycle/dto/FIndBy';
+import { FindBy } from '../modules/workCycle/dto/FindBy';
 import { UpdateRequest } from '../modules/workCycle/dto/UpdateRequest';
 import { IWorkCycleController } from '../modules/workCycle/workCycle.interface';
 import AsyncRouter from './AsyncRouter';

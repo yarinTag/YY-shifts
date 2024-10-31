@@ -10,7 +10,7 @@ import { WorkCycle } from './workCycle.schema';
 import { validationEntity } from '../../decorators/validateEntity';
 import { UpdateResponse } from '../../types/response/response.interface';
 import { IWorkCycleRepository, IWorkCycleService } from './workCycle.interface';
-import { FindBy } from './dto/FIndBy';
+import { FindBy } from './dto/FindBy';
 
 class WorkCycleService implements IWorkCycleService {
   constructor(private repository: IWorkCycleRepository) {}
