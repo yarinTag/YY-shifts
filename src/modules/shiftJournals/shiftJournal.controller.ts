@@ -17,7 +17,7 @@ class ShiftJournalController implements IShiftJournalController {
   public getAllJournalShiftsBy = async (
     id: string
   ): Promise<ShiftJournal[]> => {
-    const shifts = await this.repository.findAllBy(id);
+    const shifts = await this.repository.findAllByShiftId(id);
     return shifts;
   };
 }

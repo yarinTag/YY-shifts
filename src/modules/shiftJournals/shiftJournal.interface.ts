@@ -8,6 +8,6 @@ export interface IShiftJournalController {
 
 export interface IShiftJournalRepository {
   create(data: Shift): ShiftJournal;
-  findAllBy(id: string): Promise<ShiftJournal[]>;
+  findAllByShiftId(id: string): Promise<ShiftJournal[]>;
   save(shiftJournal: ShiftJournal): Promise<ShiftJournal>;
 }

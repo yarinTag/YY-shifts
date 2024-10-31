@@ -18,7 +18,7 @@ export class ShiftJournalRepository implements IShiftJournalRepository {
     return this.repository.create({ data });
   }
 
-  async findAllBy(id: string): Promise<ShiftJournal[]> {
+  async findAllByShiftId(id: string): Promise<ShiftJournal[]> {
     return await this.repository
       .createQueryBuilder(ShiftJournal.name)
       .where("shiftJournal.data->>'id' = :id", {
