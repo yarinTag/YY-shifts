@@ -9,8 +9,12 @@ import { IShiftRepository } from './shift.interface';
 export class ShiftRepository implements IShiftRepository {
   constructor(private repository: BaseRepository<Shift>) {}
 
-  save(department: Shift): Promise<Shift> {
-    return this.repository.save(department);
+  save(shift: Shift): Promise<Shift> {
+    return this.repository.save(shift);
+  }
+
+  saveAll(shifts: Shift[]): Promise<Shift[]> {
+    return this.repository.save(shifts);
   }
   create(req: CreateRequest): Shift {
     return this.repository.create(req);

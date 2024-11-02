@@ -1,26 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { BaseEntity } from '../BaseEntity';
+import { Shift } from '../shifts/shift.schema';
 
 @Entity()
 export class ShiftJournal extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('text')
-  start: Date;
-
-  @Column('text')
-  end: Date;
-
-  @Column('uuid')
-  userId: string;
-
-  @Column('uuid')
-  shiftId: string;
-
-  @Column('uuid')
-  workCycleId: string;
-
-  @Column('uuid')
-  shiftConfigurationId: string;
+  @Column('jsonb', { nullable: false })
+  data: Shift;
 }

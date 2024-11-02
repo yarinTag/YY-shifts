@@ -4,7 +4,7 @@ import { BaseRepository } from '../BaseRepository';
 import { CreateRequest } from './dto/CreateRequest';
 import { WorkCycle } from './workCycle.schema';
 import { IWorkCycleRepository } from './workCycle.interface';
-import { FindBy } from './dto/FIndBy';
+import { FindBy } from './dto/FindBy';
 
 export class WorkCycleRepository implements IWorkCycleRepository {
   constructor(private repository: BaseRepository<WorkCycle>) {}

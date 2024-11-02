@@ -1,5 +1,5 @@
 import { validationPipe } from '../middlewares/validation';
-import { flattenErrors } from '../utils/CodeUtils';
+import {UnprocessableEntityError} from "../middlewares/error/ApiError";
 
 export const validationEntity = async (
   validationSchema: new () => object,
@@ -7,8 +7,10 @@ export const validationEntity = async (
 ) => {
   const result = await validationPipe(validationSchema, entity);
 
-  if (result.success === false) {
-    return { success: false, errors: flattenErrors(result.errors) };
-  }
+  if (!result.success) {
+    throw new UnprocessableEntityError(
+        `Failed to create new ${validationSchema.name} : ${result.errors}`
+    );  }
+
   return result;
 };

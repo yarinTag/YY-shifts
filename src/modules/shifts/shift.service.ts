@@ -1,3 +1,4 @@
+import { plainToInstance } from 'class-transformer';
 import { EntityNotFoundError, UpdateResult } from 'typeorm';
 
 import { Shift } from './shift.schema';
@@ -5,15 +6,13 @@ import { GetRequest } from './dto/GetRequest';
 import { CreateRequest } from './dto/CreateRequest';
 import { DeleteRequest } from './dto/DeleteRequest';
 import { UpdateRequest } from './dto/UpdateRequest';
+import { validationEntity } from '../../decorators/validateEntity';
 import { IShiftRepository, IShiftService } from './shift.interface';
 import { UpdateResponse } from '../../types/response/response.interface';
-import { validationEntity } from '../../decorators/validateEntity';
 import { UnprocessableEntityError } from '../../middlewares/error/ApiError';
-import { plainToInstance } from 'class-transformer';
 
 export class ShiftService implements IShiftService {
   constructor(private repository: IShiftRepository) {}
-
   async findAll(req: GetRequest): Promise<Shift[]> {
     const shifts = await this.repository.findAllBy(req);
 
@@ -22,17 +21,9 @@ export class ShiftService implements IShiftService {
 
   async create(req: CreateRequest): Promise<Shift> {
     const shift = await this.repository.create(req);
-    const validationResult = await validationEntity(Shift, shift);
+    await validationEntity(Shift, shift);
 
-    if (validationResult.success === false) {
-      throw new UnprocessableEntityError(
-        `Failed to create new shift : ${validationResult.errors}`
-      );
-    }
-
-    const result = await this.repository.save(shift);
-
-    return result;
+    return await this.repository.save(shift);
   }
 
   async getById(req: GetRequest): Promise<Shift | null> {
@@ -52,7 +43,7 @@ export class ShiftService implements IShiftService {
       throw new EntityNotFoundError(Shift.name, req.id);
     }
 
-    const entity = plainToInstance(Shift, { ...shift, ...req });
+    const entity = plainToInstance(Shift,shift);
     const validationResult = await validationEntity(Shift, entity);
 
     if (validationResult.success === false) {
