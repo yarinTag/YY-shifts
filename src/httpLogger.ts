@@ -1,10 +1,10 @@
 import pino_http from "pino-http";
 import {randomUUID} from "node:crypto";
-import PinoLogger from "./PinoLogger";
+import logger from "./logger";
 
 export default pino_http({
     // Reuse an existing logger instance
-    logger: PinoLogger,
+    logger: logger,
 
     // Define a custom request id function
     genReqId: function (req, res) {

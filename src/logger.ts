@@ -1,5 +1,8 @@
 import pino from "pino";
 import pretty from "pino-pretty";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const stream = pretty({
     levelFirst: true,
@@ -7,12 +10,10 @@ const stream = pretty({
     ignore: "time,hostname,pid",
 });
 
-const PinoLogger = pino(
+export default pino(
     {
-        name: "MyLogger",
-        level: process.env.NODE_ENV === "development" ? "debug" : "info",
+        name: "YY-Logger",
+        level: process.env.PROFILE === 'dev' ? "debug" : "info",
     },
     stream
 );
-
-export default PinoLogger;

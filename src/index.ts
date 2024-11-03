@@ -7,11 +7,9 @@ import {dataSource} from './db';
 import {verifyTokenMiddleware} from './middlewares/authMiddleware';
 import {errorHandler} from './middlewares/error/asyncErrorHandler';
 import {Initialize} from './initaliztion';
-import pinoHttpLogger from "./PinoHttpLogger";
+import pinoHttpLogger from "./httpLogger";
 
 dotenv.config();
-// const pino = pino_http()
-// const pinoHttp
 const app = express();
 app.use(pinoHttpLogger)
 app.use(express.json());
