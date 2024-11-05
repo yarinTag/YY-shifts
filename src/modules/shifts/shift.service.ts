@@ -10,6 +10,9 @@ import { validationEntity } from '../../decorators/validateEntity';
 import { IShiftRepository, IShiftService } from './shift.interface';
 import { UpdateResponse } from '../../types/response/response.interface';
 import { UnprocessableEntityError } from '../../middlewares/error/ApiError';
+import { assignUsersToShifts } from '../../assignShifts';
+import { DefaultUserAssignmentStrategy } from '../../noname/AssignmentStrategy';
+import { ShiftAssigner } from '../../noname/ShiftAssigner';
 
 export class ShiftService implements IShiftService {
   constructor(private repository: IShiftRepository) {}
@@ -43,7 +46,7 @@ export class ShiftService implements IShiftService {
       throw new EntityNotFoundError(Shift.name, req.id);
     }
 
-    const entity = plainToInstance(Shift,shift);
+    const entity = plainToInstance(Shift, shift);
     const validationResult = await validationEntity(Shift, entity);
 
     if (validationResult.success === false) {
@@ -62,6 +65,34 @@ export class ShiftService implements IShiftService {
       throw new EntityNotFoundError(Shift.name, req.id);
     }
 
+    return {
+      success: true,
+      message: 'Shift updated successfully',
+    };
+  }
+
+  async generateShift(req: DeleteRequest): Promise<UpdateResponse> {
+    const shifts = await this.repository.findAllBy({ workCycleId: req.id }, [
+      'availabilities',
+    ]);
+
+    if (!shifts) {
+      throw new EntityNotFoundError(Shift.name, req.id);
+    }
+
+    const userDailyHours: Record<string, Record<string, number>> = {};
+    const userWeeklyDays: Record<string, Set<string>> = {};
+
+    const strategy = new DefaultUserAssignmentStrategy(
+      userDailyHours,
+      userWeeklyDays
+    );
+    const shiftAssigner = new ShiftAssigner(strategy);
+    console.log('====================================');
+    console.log(shiftAssigner.assignUsersToShifts(shifts));
+    console.log('====================================');
+    console.log('User Daily Hours:', userDailyHours); // To view the daily hours assigned
+    console.log('User Weekly Days:', userWeeklyDays);
     return {
       success: true,
       message: 'Shift updated successfully',

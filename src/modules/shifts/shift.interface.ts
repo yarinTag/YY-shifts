@@ -14,6 +14,7 @@ export interface IShiftController {
   deleteShift(req: Request, res: Response): Promise<Response>;
   getShiftById(req: Request, res: Response): Promise<Response>;
   findAllShifts(req: Request, res: Response): Promise<Response>;
+  generateShift(req: Request, res: Response): Promise<Response>;
 }
 
 export interface IShiftService {
@@ -22,13 +23,14 @@ export interface IShiftService {
   getById(req: GetRequest): Promise<Shift | null>;
   update(req: UpdateRequest): Promise<UpdateResult>;
   delete(req: DeleteRequest): Promise<UpdateResponse>;
+  generateShift(req: DeleteRequest): Promise<UpdateResponse>;
 }
 
 export interface IShiftRepository {
   create(req: CreateRequest): Shift;
   findById(id: string): Promise<Shift | null>;
   findActiveById(id: string, relations?: string[]): Promise<Shift | null>;
-  findAllBy(req: GetRequest): Promise<Shift[]>;
+  findAllBy(req: GetRequest, relations?: string[]): Promise<Shift[]>;
   deleteById(id: string): Promise<Shift | null>;
   update(entity: Shift): Promise<UpdateResult>;
   save(shift: Shift): Promise<Shift>;

@@ -55,6 +55,20 @@ class ShiftController implements IShiftController {
       message: 'Shift deactivated successfully',
     });
   };
+
+  public generateShift = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    const {workCycleId} = req.body;
+
+    await this.service.generateShift({ id:workCycleId });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Shift generate successfully',
+    });
+  };
 }
 
 export default ShiftController;
