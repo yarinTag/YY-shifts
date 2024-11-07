@@ -9,10 +9,9 @@ import { UpdateRequest } from './dto/UpdateRequest';
 import { validationEntity } from '../../decorators/validateEntity';
 import { IShiftRepository, IShiftService } from './shift.interface';
 import { UpdateResponse } from '../../types/response/response.interface';
+import { UserAssigner } from '../../strategy/userAssignment/UserAssigner';
 import { UnprocessableEntityError } from '../../middlewares/error/ApiError';
-import { assignUsersToShifts } from '../../assignShifts';
-import { DefaultUserAssignmentStrategy } from '../../noname/AssignmentStrategy';
-import { ShiftAssigner } from '../../noname/ShiftAssigner';
+import { DefaultUserAssignmentStrategy } from '../../strategy/userAssignment/AssignmentStrategy';
 
 export class ShiftService implements IShiftService {
   constructor(private repository: IShiftRepository) {}
@@ -87,9 +86,9 @@ export class ShiftService implements IShiftService {
       userDailyHours,
       userWeeklyDays
     );
-    const shiftAssigner = new ShiftAssigner(strategy);
+    const userAssigner = new UserAssigner(strategy);
     console.log('====================================');
-    console.log(shiftAssigner.assignUsersToShifts(shifts));
+    console.log(userAssigner.assignUsersToShifts(shifts));
     console.log('====================================');
     console.log('User Daily Hours:', userDailyHours); // To view the daily hours assigned
     console.log('User Weekly Days:', userWeeklyDays);

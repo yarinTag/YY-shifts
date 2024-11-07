@@ -1,6 +1,7 @@
-import { ZoneId } from '@js-joda/core';
+import { ChronoUnit, LocalDateTime } from '@js-joda/core';
+
+import { shuffleArray } from '../../utils/CodeUtils';
 import { ShiftGroup, UserAssignmentStrategy } from './interface';
-import { canAssignUser, shuffleArray } from '../assignShifts';
 
 export class DefaultUserAssignmentStrategy implements UserAssignmentStrategy {
   constructor(
@@ -15,14 +16,11 @@ export class DefaultUserAssignmentStrategy implements UserAssignmentStrategy {
     const assignedUsers: string[] = [];
 
     for (const userId of shuffledUsers) {
-      const shiftDuration =
-        (time.end.atZone(ZoneId.UTC).toInstant().toEpochMilli() -
-          time.start.atZone(ZoneId.UTC).toInstant().toEpochMilli()) /
-        (1000 * 60 * 60); // Duration in hours
+      const shiftDuration = time.start.until(time.end,ChronoUnit.HOURS);
       const shiftDate = time.start;
 
       if (
-        canAssignUser(
+        this.canAssignUser(
           userId,
           shiftDuration,
           shiftDate,
@@ -32,7 +30,7 @@ export class DefaultUserAssignmentStrategy implements UserAssignmentStrategy {
       ) {
         assignedUsers.push(userId);
 
-        const currentDate = shiftDate.toString().split('T')[0];
+        const currentDate = shiftDate.toLocalDate().toString();
         if (!this.userDailyHours[userId]) this.userDailyHours[userId] = {};
         if (!this.userDailyHours[userId][currentDate])
           this.userDailyHours[userId][currentDate] = 0;
@@ -47,5 +45,26 @@ export class DefaultUserAssignmentStrategy implements UserAssignmentStrategy {
     }
 
     return assignedUsers;
+  }
+
+// Helper function to check user assignment constraints
+  canAssignUser(
+    userId: string,
+    shiftDuration: number,
+    shiftDate: LocalDateTime,
+    userDailyHours: Record<string, Record<string, number>>,
+    userWeeklyDays: Record<string, Set<string>>
+  ): boolean {
+    const currentDate = shiftDate.toString().split('T')[0];
+    const weeklyDays = userWeeklyDays[userId] || new Set();
+    const dailyHours = userDailyHours[userId] || {};
+  
+    // Check daily hour limit
+    if ((dailyHours[currentDate] || 0) + shiftDuration > 12) return false;
+  
+    // Check weekly day limit
+    if (weeklyDays.size >= 6) return false;
+  
+    return true;
   }
 }

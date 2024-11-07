@@ -1,7 +1,7 @@
-import { Shift } from '../modules/shifts/shift.schema';
+import { Shift } from '../../modules/shifts/shift.schema';
 import { Assignments, ShiftGroup, UserAssignmentStrategy } from './interface';
 
-export class ShiftAssigner {
+export class UserAssigner {
   constructor(private strategy: UserAssignmentStrategy) {}
 
   assignUsersToShifts(shifts: Shift[]): Assignments {

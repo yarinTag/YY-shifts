@@ -25,8 +25,8 @@ export class ShiftRepository implements IShiftRepository {
   findActiveById(id: string, relations?: string[]): Promise<Shift | null> {
     return this.repository.findActiveById(id, relations);
   }
-  findAllBy(req: GetRequest): Promise<Shift[]> {
-    return this.repository.find({ where: req, relations: ['availabilities'] });
+  findAllBy(req: GetRequest,relations?:string[]): Promise<Shift[]> {
+    return this.repository.find({ where: req, relations });
   }
   deleteById(id: string): Promise<Shift | null> {
     return this.repository.deleteById(id);

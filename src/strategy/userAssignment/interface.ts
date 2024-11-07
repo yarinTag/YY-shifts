@@ -1,5 +1,4 @@
 import { LocalDateTime } from '@js-joda/core';
-import { Shift } from '../modules/shifts/shift.schema';
 
 export type Assignments = Record<string, string[]>;
 
