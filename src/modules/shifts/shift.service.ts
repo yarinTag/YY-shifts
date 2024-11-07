@@ -9,9 +9,12 @@ import { UpdateRequest } from './dto/UpdateRequest';
 import { validationEntity } from '../../decorators/validateEntity';
 import { IShiftRepository, IShiftService } from './shift.interface';
 import { UpdateResponse } from '../../types/response/response.interface';
-import { UserAssigner } from '../../strategy/userAssignment/UserAssigner';
 import { UnprocessableEntityError } from '../../middlewares/error/ApiError';
-import { DefaultUserAssignmentStrategy } from '../../strategy/userAssignment/AssignmentStrategy';
+import { ShuffleHandler } from '../../strategy/userAssignment/ShuffleHandler';
+import { GetDataHandler } from '../../strategy/userAssignment/GetDataHandler';
+import { AssignmentContext } from '../../strategy/userAssignment/AssignmentContext';
+import { RunAssignmentHandler } from '../../strategy/userAssignment/RunAssignmentHandler';
+import { GetAssignmentStrategy } from '../../strategy/userAssignment/GetAssignmentStrategy';
 
 export class ShiftService implements IShiftService {
   constructor(private repository: IShiftRepository) {}
@@ -70,28 +73,33 @@ export class ShiftService implements IShiftService {
     };
   }
 
+  //Step1: validate the request
+  //Step2: find strategy
+  //Step3: get all data needed.
+  //Step4: shuffle the availabelities
+  //Step5: run strategy
+  //Step6: save the shifts
+  //Step7: log iser daily+hours
+
   async generateShift(req: DeleteRequest): Promise<UpdateResponse> {
-    const shifts = await this.repository.findAllBy({ workCycleId: req.id }, [
-      'availabilities',
-    ]);
+    const context = new AssignmentContext(req.id);
+    const getAssignmentStrategy = new GetAssignmentStrategy();
+    const getDataHandler = new GetDataHandler(this.repository);
 
-    if (!shifts) {
-      throw new EntityNotFoundError(Shift.name, req.id);
-    }
+    const shuffleHandler = new ShuffleHandler();
+    const runAssignmentHandler = new RunAssignmentHandler();
 
-    const userDailyHours: Record<string, Record<string, number>> = {};
-    const userWeeklyDays: Record<string, Set<string>> = {};
+    getAssignmentStrategy
+      .setNext(getDataHandler)
+      .setNext(shuffleHandler)
+      .setNext(runAssignmentHandler);
 
-    const strategy = new DefaultUserAssignmentStrategy(
-      userDailyHours,
-      userWeeklyDays
-    );
-    const userAssigner = new UserAssigner(strategy);
+    await getAssignmentStrategy.handle(context);
+
     console.log('====================================');
-    console.log(userAssigner.assignUsersToShifts(shifts));
+    console.log(context.assignments);
     console.log('====================================');
-    console.log('User Daily Hours:', userDailyHours); // To view the daily hours assigned
-    console.log('User Weekly Days:', userWeeklyDays);
+
     return {
       success: true,
       message: 'Shift updated successfully',

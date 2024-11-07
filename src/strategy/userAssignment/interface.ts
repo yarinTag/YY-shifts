@@ -1,4 +1,5 @@
 import { LocalDateTime } from '@js-joda/core';
+import { AssignmentContext } from './AssignmentContext';
 
 export type Assignments = Record<string, string[]>;
 
@@ -10,5 +11,19 @@ export interface ShiftGroup {
 }
 
 export interface UserAssignmentStrategy {
-  assignUsers(shiftGroup: ShiftGroup): string[];
+  assignUsers(context: AssignmentContext): Assignments;
+}
+
+export interface AssignmentHandler {
+  setNext(handler: AssignmentHandler): AssignmentHandler;
+  handle(context: AssignmentContext): Promise<void>;
+}
+
+export interface ConstrainHandler {
+  check(
+    userId: string,
+    shiftDuration: number,
+    shiftDate: LocalDateTime,
+    context: AssignmentContext
+  ): boolean;
 }
