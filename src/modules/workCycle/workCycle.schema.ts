@@ -1,18 +1,13 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  OneToMany,
-  Generated,
-} from 'typeorm';
-import { WorkCycleConfiguration } from '../workCycleConfiguration/workCycleConfiguration.schema';
-import { Shift } from '../shifts/shift.schema';
-import { BaseEntity } from '../BaseEntity';
-import { LocalDate } from '@js-joda/core';
-import { Department } from '../departments/department.schema';
+import {Column, Entity, Generated, ManyToOne, OneToMany, PrimaryGeneratedColumn,} from 'typeorm';
+import {WorkCycleConfiguration} from '../workCycleConfiguration/workCycleConfiguration.schema';
+import {Shift} from '../shifts/shift.schema';
+import {BaseEntity} from '../BaseEntity';
+import {LocalDate} from '@js-joda/core';
+import {Department} from '../departments/department.schema';
 import LocalDateTransformer from '../../types/transformer/LocalDateTransformer';
 import {Type} from "class-transformer";
+import {Validate} from "class-validator";
+import {UniqueWorkCycleDate} from "../../decorators/UniqueWorkCycleDate";
 
 @Entity()
 export class WorkCycle extends BaseEntity {
@@ -22,11 +17,13 @@ export class WorkCycle extends BaseEntity {
   // "2024-10-06"
   @Column({ type: 'date', transformer: new LocalDateTransformer() })
   @Type(() => Date)
+  @Validate(UniqueWorkCycleDate, { message: 'Start date overlaps with another work cycle in the same department' })
   start: LocalDate;
   // ISO 8601
   // "2024-10-06"
   @Column({ type: 'date', transformer: new LocalDateTransformer() })
   @Type(() => Date)
+  @Validate(UniqueWorkCycleDate, { message: 'End date overlaps with another work cycle in the same department' })
   end: LocalDate;
 
   @Column('bigint')
