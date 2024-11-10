@@ -15,6 +15,7 @@ import { GetDataHandler } from '../../strategy/userAssignment/GetDataHandler';
 import { AssignmentContext } from '../../strategy/userAssignment/AssignmentContext';
 import { RunAssignmentHandler } from '../../strategy/userAssignment/RunAssignmentHandler';
 import { GetAssignmentStrategy } from '../../strategy/userAssignment/GetAssignmentStrategy';
+import { SaveDataHandler } from '../../strategy/userAssignment/SaveDataHandler';
 
 export class ShiftService implements IShiftService {
   constructor(private repository: IShiftRepository) {}
@@ -88,17 +89,14 @@ export class ShiftService implements IShiftService {
 
     const shuffleHandler = new ShuffleHandler();
     const runAssignmentHandler = new RunAssignmentHandler();
+    const saveDataHandler = new SaveDataHandler(this.repository);
 
     getAssignmentStrategy
       .setNext(getDataHandler)
       .setNext(shuffleHandler)
-      .setNext(runAssignmentHandler);
+      .setNext(runAssignmentHandler).setNext(saveDataHandler);
 
     await getAssignmentStrategy.handle(context);
-
-    console.log('====================================');
-    console.log(context.assignments);
-    console.log('====================================');
 
     return {
       success: true,
