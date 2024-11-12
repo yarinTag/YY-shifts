@@ -11,9 +11,14 @@ export default class ShiftRouter extends AsyncRouter {
     super();
     this.initializeRoutes();
   }
-
+  
   private initializeRoutes() {
     this.get('/all', this.controller.findAllShifts);
+    this.get(
+      '/generate',
+      validationMiddleware(GetRequest),
+      this.controller.generateShift
+    );
     this.get(
       '/:id',
       validationMiddleware(GetRequest),

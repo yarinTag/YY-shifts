@@ -8,6 +8,10 @@ export class UpdateRequest {
   id: string;
 
   @IsOptional()
+  @IsUUID()
+  userId: string;
+
+  @IsOptional()
   start: LocalDateTime;
 
   @IsOptional()

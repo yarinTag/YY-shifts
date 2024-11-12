@@ -10,6 +10,12 @@ import { validationEntity } from '../../decorators/validateEntity';
 import { IShiftRepository, IShiftService } from './shift.interface';
 import { UpdateResponse } from '../../types/response/response.interface';
 import { UnprocessableEntityError } from '../../middlewares/error/ApiError';
+import { ShuffleHandler } from '../../strategy/userAssignment/ShuffleHandler';
+import { GetDataHandler } from '../../strategy/userAssignment/GetDataHandler';
+import { AssignmentContext } from '../../strategy/userAssignment/AssignmentContext';
+import { RunAssignmentHandler } from '../../strategy/userAssignment/RunAssignmentHandler';
+import { GetAssignmentStrategy } from '../../strategy/userAssignment/GetAssignmentStrategy';
+import { SaveDataHandler } from '../../strategy/userAssignment/SaveDataHandler';
 
 export class ShiftService implements IShiftService {
   constructor(private repository: IShiftRepository) {}
@@ -43,7 +49,7 @@ export class ShiftService implements IShiftService {
       throw new EntityNotFoundError(Shift.name, req.id);
     }
 
-    const entity = plainToInstance(Shift,shift);
+    const entity = plainToInstance(Shift, shift);
     const validationResult = await validationEntity(Shift, entity);
 
     if (validationResult.success === false) {
@@ -61,6 +67,36 @@ export class ShiftService implements IShiftService {
     if (!shift) {
       throw new EntityNotFoundError(Shift.name, req.id);
     }
+
+    return {
+      success: true,
+      message: 'Shift updated successfully',
+    };
+  }
+
+  //Step1: validate the request
+  //Step2: find strategy
+  //Step3: get all data needed.
+  //Step4: shuffle the availabelities
+  //Step5: run strategy
+  //Step6: save the shifts
+  //Step7: log iser daily+hours
+
+  async generateShift(req: DeleteRequest): Promise<UpdateResponse> {
+    const context = new AssignmentContext(req.id);
+    const getAssignmentStrategy = new GetAssignmentStrategy();
+    const getDataHandler = new GetDataHandler(this.repository);
+
+    const shuffleHandler = new ShuffleHandler();
+    const runAssignmentHandler = new RunAssignmentHandler();
+    const saveDataHandler = new SaveDataHandler(this.repository);
+
+    getAssignmentStrategy
+      .setNext(getDataHandler)
+      .setNext(shuffleHandler)
+      .setNext(runAssignmentHandler).setNext(saveDataHandler);
+
+    await getAssignmentStrategy.handle(context);
 
     return {
       success: true,
