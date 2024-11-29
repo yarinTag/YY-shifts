@@ -7,6 +7,8 @@ import { dataSource } from './db';
 import { verifyTokenMiddleware } from './middlewares/authMiddleware';
 import { errorHandler } from './middlewares/error/asyncErrorHandler';
 import { Initialize } from './initaliztion';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './swagger-output.json';
 
 dotenv.config();
 
@@ -30,6 +32,8 @@ dataSource
     console.error('Error connecting to PostgreSQL database:', err);
     process.exit(1); // Exit the process if the database connection fails
   });
+  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 app.use('/user', initializeRoutes.createUserRouter());
 app.use(verifyTokenMiddleware);
 app.use('/department', initializeRoutes.createDepartmentRouter());
