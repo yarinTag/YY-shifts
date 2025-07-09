@@ -23,7 +23,7 @@ Each employee submits their availability per work cycle, and the system automati
 
 ## 🛠 Tech Stack
 
-- **Node.js** 20.17.0
+- **Node.js** 
 - **TypeScript**
 - **PostgreSQL**
 - **Express**
@@ -83,7 +83,7 @@ The system follows a modular and flexible design for managing shifts across mult
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/yy-shifts.git
+git clone https://github.com/yarinTag/YY-shifts.git
 cd yy-shifts
 ```
 
